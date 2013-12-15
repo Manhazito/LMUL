@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <bitmap 
+            android:scaleType="fitCenter"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:src="@drawable/background"
+            />
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/tr_pink" />
+        </shape>
+    </item>
+</layer-list>

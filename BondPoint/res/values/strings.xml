@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Bond Point</string>
+    <string name="facebook_app_id">528242427267566</string>
+    <string name="google_map_id">AIzaSyB5-ejefp-_suMkZyQG7UvZh31fWhrZ1oc</string>
+    
+    <string name="action_settings">Settings</string>
+    <string name="username">Username</string>
+    <string name="friendName">Friend Name</string>
+    <string name="userPicture">User picture</string>
+
+    <string name="logout">Logout</string>
+    
+</resources>

@@ -1,0 +1,16 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+	<style name="bond_point">
+	    <item name="android:windowNoTitle">true</item>
+	    <item name="android:windowBackground">@color/bp_dark_grey</item>
+	    <item name="android:textViewStyle">@style/textView_normal</item>
+	</style>
+	<style name="textView_normal" parent="@style/bond_point">
+	    <item name="android:background">@color/bp_dark_grey</item>
+	    <item name="android:textColor">@color/bp_white</item>
+	    <item name="android:textSize">20sp</item>
+	</style>
+	<style name="textView_green" parent="@style/bond_point">
+	    <item name="android:background">@color/bp_dark_grey</item>
+	    <item name="android:textColor">@color/bp_green</item>
+	</style>
+</resources>

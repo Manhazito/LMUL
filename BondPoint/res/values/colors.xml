@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>    
+    <color name="bp_pink">#ff5657</color>
+    <color name="bp_green">#94c900</color>
+    <color name="bp_orange">#ff8b00</color>
+    <color name="bp_dark_grey">#3c4647</color>
+    <color name="bp_light_grey">#6d6e72</color>
+    <color name="bp_hover">#FFFF00</color>
+    <color name="bp_white">#ffffff</color>
+    
+    <color name="tr_pink">#DDff5657</color>
+    <color name="tr_white">#ccffffff</color>
+
+</resources>
