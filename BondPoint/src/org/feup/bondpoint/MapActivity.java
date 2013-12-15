@@ -35,8 +35,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends Activity {
-	static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-	static final LatLng KIEL = new LatLng(53.551, 9.993);
+	// private static final String TAG = "MapActivity";
+
 	private GoogleMap map;
 
 	private String[] namesStr = null;
@@ -46,10 +46,8 @@ public class MapActivity extends Activity {
 	private UiLifecycleHelper uiHelper;
 
 	private Bitmap userBmp = null;
-	private Bitmap mask = null;
-	private Bitmap tMask = null;
-	private Bitmap result = null;
-	private Bitmap newMarkerPic = null;
+	private Bitmap maskBmp = null;
+	private Bitmap resultBmp = null;
 	private Bitmap friendMarker = null;
 
 	private byte[] byteArray = null;
@@ -74,13 +72,20 @@ public class MapActivity extends Activity {
 
 		View view = findViewById(android.R.id.content).getRootView();
 		Button logoutBtn = (Button) view.findViewById(R.id.logout);
+		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+				.getMap();
+
+		View marker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+				.inflate(R.layout.custom_marker, null);
+
+		Resources resources = view.getResources();
 
 		logoutBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				session = Session.getActiveSession();
 				session.closeAndClearTokenInformation();
-				MainFragment.setMapStarted(false);
+				MainFragment.setMapStarted(false); // É mesmo necessário???
 				finish();
 			}
 		});
@@ -101,15 +106,7 @@ public class MapActivity extends Activity {
 				Double.parseDouble(latitudesStr[nFriends]),
 				Double.parseDouble(longitudesStr[nFriends]));
 
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-				.getMap();
-
-		View marker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-				.inflate(R.layout.custom_marker, null);
-
-		Resources resources = view.getResources();
-
-		// bitmap para o marker dos amigos
+		// Bitmap para o marker dos amigos
 		friendMarker = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(resources, R.drawable.bp_group),
 				50, 50, true);
@@ -126,59 +123,66 @@ public class MapActivity extends Activity {
 					.icon(BitmapDescriptorFactory.fromBitmap(friendMarker)));
 		}
 
-		// ----------------------
-		// user marker with round mask
-		// ----------------------
+		// ----------------------------
+		// User marker with round mask
+		// ----------------------------
 		ImageView markerPic = (ImageView) marker.findViewById(R.id.marker_pic);
+		Bitmap squaredUserBmp = createCenteredSquaredImage(userBmp);
 
-		DisplayMetrics metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		float logicalDensity = metrics.density;
-		int px = (int) (110 * logicalDensity + 0.5);
-		// int dp = (int) (50 / logicalDensity + 0.5);
+		maskBmp = BitmapFactory.decodeResource(resources, R.drawable.av_mask);
+		Bitmap scaledMaskBmp = Bitmap.createScaledBitmap(maskBmp,
+				squaredUserBmp.getWidth(), squaredUserBmp.getHeight(), true);
 
-		newMarkerPic = Bitmap.createScaledBitmap(userBmp, px, px, true);
+		resultBmp = Bitmap.createBitmap(squaredUserBmp.getHeight(),
+				squaredUserBmp.getWidth(), Config.ARGB_8888);
 
-		tMask = BitmapFactory.decodeResource(resources, R.drawable.av_mask);
-		mask = Bitmap.createScaledBitmap(tMask, px, px, true);
-		result = Bitmap.createBitmap(px, px, Config.ARGB_8888);
-
-		Canvas c = new Canvas(result);
-		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		Canvas c = new Canvas(resultBmp);
+		Paint paint = new Paint();
+		// Set Transfer Mode (cookie cutter style)
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-		c.drawBitmap(newMarkerPic, 0, 0, null);
-		c.drawBitmap(mask, 0, 0, paint);
-		// reset Xfermode
+		c.drawBitmap(squaredUserBmp, 0, 0, null);
+		c.drawBitmap(scaledMaskBmp, 0, 0, paint);
+		// Reset Transfer Mode
 		paint.setXfermode(null);
 
-		markerPic.setImageBitmap(result);
+		markerPic.setImageBitmap(resultBmp);
 		// ----------------------
 
+		Bitmap userMarkerBmp = createDrawableFromView(this, marker);
+
 		// User Marker
-		map.addMarker(new MarkerOptions()
-				.anchor((float) 0.5, (float) 0.5)
-				.position(userLocation)
-				.title(namesStr[nFriends])
+		map.addMarker(new MarkerOptions().anchor((float) 0.5, (float) 0.5)
+				.position(userLocation).title(namesStr[nFriends])
 				.snippet(idsStr[nFriends])
-				.icon(BitmapDescriptorFactory
-						.fromBitmap(createDrawableFromView(this, marker))));
+				.icon(BitmapDescriptorFactory.fromBitmap(userMarkerBmp)));
 
 		ImageView img = (ImageView) view.findViewById(R.id.photo);
-		img.setImageBitmap(userBmp);
+		img.setImageBitmap(squaredUserBmp);
 
 		TextView username = (TextView) view.findViewById(R.id.username);
 		username.setText(namesStr[nFriends]);
 
-		// Move the camera instantly with a zoom of 15.
+		// Move the camera instantly with a zoom of 17.
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
 
 		// Zoom in, animating the camera.
 		map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
 	}
 
+	private Bitmap createCenteredSquaredImage(Bitmap tmpBmp) {
+		if (tmpBmp.getHeight() > tmpBmp.getWidth()) {
+			int startY = (int) ((tmpBmp.getHeight() - tmpBmp.getWidth()) / 2);
+			return Bitmap.createBitmap(tmpBmp, 0, startY, tmpBmp.getWidth(),
+					tmpBmp.getWidth());
+		} else {
+			int startX = (int) ((tmpBmp.getWidth() - tmpBmp.getHeight()) / 2);
+			return Bitmap.createBitmap(tmpBmp, startX, 0, tmpBmp.getHeight(),
+					tmpBmp.getHeight());
+		}
+	}
+
 	@Override
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
-		// TODO Auto-generated method stub
 		return super.onCreateView(name, context, attrs);
 	}
 

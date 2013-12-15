@@ -9,7 +9,8 @@
     <string name="username">Username</string>
     <string name="friendName">Friend Name</string>
     <string name="userPicture">User picture</string>
-
+    <string name="userMarker">User Marker</string>
+    <string name="userMarkerBorder">User Marker Border</string>
     <string name="logout">Logout</string>
     
 </resources>

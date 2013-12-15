@@ -322,6 +322,7 @@ containing a value of this type.
         public static final int com_facebook_profilepictureview_preset_size_small=0x7f07000a;
         public static final int com_facebook_usersettingsfragment_profile_picture_height=0x7f070003;
         public static final int com_facebook_usersettingsfragment_profile_picture_width=0x7f070002;
+        public static final int user_marker_size=0x7f07000f;
     }
     public static final class drawable {
         public static final int add_bp=0x7f020000;
@@ -602,7 +603,9 @@ containing a value of this type.
         public static final int facebook_app_id=0x7f060033;
         public static final int friendName=0x7f060037;
         public static final int google_map_id=0x7f060034;
-        public static final int logout=0x7f060039;
+        public static final int logout=0x7f06003b;
+        public static final int userMarker=0x7f060039;
+        public static final int userMarkerBorder=0x7f06003a;
         public static final int userPicture=0x7f060038;
         public static final int username=0x7f060036;
     }

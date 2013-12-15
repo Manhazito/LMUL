@@ -53,9 +53,10 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 		imgURL = null;
 		imgBmp = null;
 
+		// http://graph.facebook.com/userid/picture?type=large
 		try {
 			imgURL = new URL("http://graph.facebook.com/"
-					+ fragment.getUserID() + "/picture");
+					+ fragment.getUserID() + "/picture?type=large");
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -73,6 +73,7 @@ int dimen com_facebook_profilepictureview_preset_size_normal 0x7f07000b
 int dimen com_facebook_profilepictureview_preset_size_small 0x7f07000a
 int dimen com_facebook_usersettingsfragment_profile_picture_height 0x7f070003
 int dimen com_facebook_usersettingsfragment_profile_picture_width 0x7f070002
+int dimen user_marker_size 0x7f07000f
 int drawable add_bp 0x7f020000
 int drawable add_to_bp 0x7f020001
 int drawable av 0x7f020002
@@ -278,7 +279,9 @@ int string common_signin_button_text_long 0x7f060012
 int string facebook_app_id 0x7f060033
 int string friendName 0x7f060037
 int string google_map_id 0x7f060034
-int string logout 0x7f060039
+int string logout 0x7f06003b
+int string userMarker 0x7f060039
+int string userMarkerBorder 0x7f06003a
 int string userPicture 0x7f060038
 int string username 0x7f060036
 int strings userPicture 0x7f0a0000

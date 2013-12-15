@@ -6,24 +6,14 @@
              
     <ImageView
         android:id="@+id/marker_pic"
-        android:layout_width="110dp"
-        android:layout_height="110dp" />
+        android:layout_width="@dimen/user_marker_size"
+        android:layout_height="@dimen/user_marker_size"
+        android:contentDescription="@string/userMarker" />
     
     <ImageView
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:src="@drawable/av" />
-    
-<!--     <TextView
-        android:id="@+id/num_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:text="20"
-        android:textColor="#ce8223"
-        android:textSize="25dp"
-        android:textStyle="bold" />
- --> 
+        android:layout_width="@dimen/user_marker_size"
+        android:layout_height="@dimen/user_marker_size"
+        android:src="@drawable/av"
+        android:contentDescription="@string/userMarkerBorder" />
+
 </RelativeLayout>
