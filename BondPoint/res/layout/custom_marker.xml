@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="@dimen/user_marker_size"
         android:layout_height="@dimen/user_marker_size"
-        android:src="@drawable/av"
+        android:src="@drawable/not_av"
         android:contentDescription="@string/userMarkerBorder" />
 
 </RelativeLayout>

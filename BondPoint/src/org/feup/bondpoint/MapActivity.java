@@ -75,7 +75,7 @@ public class MapActivity extends Activity {
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
-		View marker = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+		View markerLayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 				.inflate(R.layout.custom_marker, null);
 
 		Resources resources = view.getResources();
@@ -108,8 +108,8 @@ public class MapActivity extends Activity {
 
 		// Bitmap para o marker dos amigos
 		friendMarker = Bitmap.createScaledBitmap(
-				BitmapFactory.decodeResource(resources, R.drawable.bp_group),
-				50, 50, true);
+				BitmapFactory.decodeResource(resources, R.drawable.av), 50, 50,
+				true);
 
 		for (int i = 0; i < nFriends; i++) {
 			Log.i("PEOPLE", namesStr[i]);
@@ -126,7 +126,8 @@ public class MapActivity extends Activity {
 		// ----------------------------
 		// User marker with round mask
 		// ----------------------------
-		ImageView markerPic = (ImageView) marker.findViewById(R.id.marker_pic);
+		ImageView markerPic = (ImageView) markerLayout
+				.findViewById(R.id.marker_pic);
 		Bitmap squaredUserBmp = createCenteredSquaredImage(userBmp);
 
 		maskBmp = BitmapFactory.decodeResource(resources, R.drawable.av_mask);
@@ -148,7 +149,7 @@ public class MapActivity extends Activity {
 		markerPic.setImageBitmap(resultBmp);
 		// ----------------------
 
-		Bitmap userMarkerBmp = createDrawableFromView(this, marker);
+		Bitmap userMarkerBmp = createDrawableFromView(this, markerLayout);
 
 		// User Marker
 		map.addMarker(new MarkerOptions().anchor((float) 0.5, (float) 0.5)
