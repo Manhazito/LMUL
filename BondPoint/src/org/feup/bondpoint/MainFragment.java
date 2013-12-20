@@ -150,10 +150,12 @@ public class MainFragment extends Fragment {
 		mapIntent.putExtra("latitudes", latitudes);
 		mapIntent.putExtra("longitudes", longitudes);
 
-		// for (int i = 0; i < nElements; i++) {
-		// label = "picture" + i;
-		// mapIntent.putExtra(label, imgsBmpByteArray[i]);
-		// }
+		for (int i = 0; i < nElements; i++) {
+			label = "picture" + i;
+			mapIntent.putExtra(label, imgsBmpByteArray[i]);
+			Log.d(TAG, "Enviada a imagem do amigo #" + (i + 1) + ": "
+					+ imgsBmpByteArray[i]);
+		}
 		mapIntent.putExtra("picture", imgsBmpByteArray[nElements - 1]);
 
 		startActivity(mapIntent);
@@ -234,12 +236,11 @@ public class MainFragment extends Fragment {
 	}
 
 	public void setByteArray(Bitmap[] imgsBmp) {
-		// for (int i = 0; i < nElements; i++) {
-		// imgsBmp[i].compress(Bitmap.CompressFormat.PNG, 100, stream);
-		// imgsBmpByteArray[i] = stream.toByteArray();
-		// }
-		imgsBmp[nElements - 1].compress(Bitmap.CompressFormat.PNG, 100, stream);
-		imgsBmpByteArray[nElements - 1] = stream.toByteArray();
+		for (int i = 0; i < nElements; i++) {
+			stream = new ByteArrayOutputStream();
+			imgsBmp[i].compress(Bitmap.CompressFormat.PNG, 100, stream);
+			imgsBmpByteArray[i] = stream.toByteArray();
+		}
 	}
 
 	public void setnElements(int nElements) {

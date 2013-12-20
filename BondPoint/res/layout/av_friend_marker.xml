@@ -13,7 +13,7 @@
 	<ImageView
         android:layout_width="@dimen/friend_marker_size"
         android:layout_height="@dimen/friend_marker_size"
-        android:src="@drawable/custom_marker"
+        android:src="@drawable/av"
         android:contentDescription="@string/friendMarkerBorder"
     />
 

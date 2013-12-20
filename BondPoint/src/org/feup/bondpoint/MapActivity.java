@@ -133,18 +133,24 @@ public class MapActivity extends Activity {
 
 		Log.d(TAG, "Loaded " + nFriends + ".");
 
-		// for (int i = 0; i < nFriends; i++) {
-		// label = "picture" + i;
-		// Log.d(TAG, "Friend " + i + "-> Label: " + label + ".");
-		// imgsBmpByteArray[i] = mapIntent.getByteArrayExtra(label);
-		// imgsBmp[i] = BitmapFactory.decodeByteArray(imgsBmpByteArray[i], 0,
-		// imgsBmpByteArray[i].length);
-		// break;
-		// }
-		imgsBmpByteArray[nFriends] = mapIntent.getByteArrayExtra("picture");
-		imgsBmp[nFriends] = BitmapFactory.decodeByteArray(
-				imgsBmpByteArray[nFriends], 0,
-				imgsBmpByteArray[nFriends].length);
+		for (int i = 0; i <= nFriends; i++) {
+			label = "picture" + i;
+			imgsBmpByteArray[i] = mapIntent.getByteArrayExtra(label);
+			if (imgsBmpByteArray[i] != null) {
+				Log.d(TAG, "Friend " + i + "-> Label: " + label + ".");
+				imgsBmp[i] = BitmapFactory.decodeByteArray(imgsBmpByteArray[i],
+						0, imgsBmpByteArray[i].length);
+			} else {
+				Log.d(TAG, "Friend " + i + "-> no picyure!");
+				if (i == nFriends) { // User Picture!
+					imgsBmp[i] = BitmapFactory.decodeResource(resources,
+							R.drawable.user_no_pic);
+				} else {
+					imgsBmp[i] = BitmapFactory.decodeResource(resources,
+							R.drawable.av_no_pic);
+				}
+			}
+		}
 
 		userLocation = new LatLng(Double.parseDouble(latitudesStr[nFriends]),
 				Double.parseDouble(longitudesStr[nFriends]));
@@ -159,35 +165,32 @@ public class MapActivity extends Activity {
 		for (int i = 0; i < nFriends; i++) {
 			Log.i("PEOPLE", namesStr[i]);
 
-			// avFriendMarkerPic = (ImageView) avFriendMarkerLayout
-			// .findViewById(R.id.friend_marker_pic);
-			// squaredFriendBmp = createCenteredSquaredImage(imgsBmp[i]);
-			//
-			// friendMaskBmp = BitmapFactory.decodeResource(resources,
-			// R.drawable.av_mask);
-			// scaledFriendMaskBmp = Bitmap.createScaledBitmap(friendMaskBmp,
-			// squaredFriendBmp.getWidth(), squaredFriendBmp.getHeight(),
-			// true);
-			//
-			// friendResultBmp =
-			// Bitmap.createBitmap(squaredFriendBmp.getHeight(),
-			// squaredFriendBmp.getWidth(), Config.ARGB_8888);
-			//
-			// friendCanvas = new Canvas(friendResultBmp);
-			// friendPaint = new Paint();
-			// // Set Transfer Mode (cookie cutter style)
-			// friendPaint.setXfermode(new PorterDuffXfermode(
-			// PorterDuff.Mode.DST_IN));
-			// friendCanvas.drawBitmap(squaredFriendBmp, 0, 0, null);
-			// // friendCanvas.drawBitmap(scaledFriendMaskBmp, 0, 0,
-			// friendPaint);
-			// // Reset Transfer Mode
-			// friendPaint.setXfermode(null);
-			//
-			// avFriendMarkerPic.setImageBitmap(friendResultBmp);
-			//
-			// friendMarkerBmp = createDrawableFromView(this,
-			// avFriendMarkerLayout);
+			avFriendMarkerPic = (ImageView) avFriendMarkerLayout
+					.findViewById(R.id.friend_marker_pic);
+			squaredFriendBmp = createCenteredSquaredImage(imgsBmp[i]);
+
+			friendMaskBmp = BitmapFactory.decodeResource(resources,
+					R.drawable.av_mask);
+			scaledFriendMaskBmp = Bitmap.createScaledBitmap(friendMaskBmp,
+					squaredFriendBmp.getWidth(), squaredFriendBmp.getHeight(),
+					true);
+
+			friendResultBmp = Bitmap.createBitmap(squaredFriendBmp.getHeight(),
+					squaredFriendBmp.getWidth(), Config.ARGB_8888);
+
+			friendCanvas = new Canvas(friendResultBmp);
+			friendPaint = new Paint();
+			// Set Transfer Mode (cookie cutter style)
+			friendPaint.setXfermode(new PorterDuffXfermode(
+					PorterDuff.Mode.DST_IN));
+			friendCanvas.drawBitmap(squaredFriendBmp, 0, 0, null);
+			friendCanvas.drawBitmap(scaledFriendMaskBmp, 0, 0, friendPaint);
+			// Reset Transfer Mode
+			friendPaint.setXfermode(null);
+
+			avFriendMarkerPic.setImageBitmap(friendResultBmp);
+
+			friendMarkerBmp = createDrawableFromView(this, avFriendMarkerLayout);
 
 			// Friend Marker
 			map.addMarker(new MarkerOptions()
@@ -239,7 +242,6 @@ public class MapActivity extends Activity {
 		// User image on top menu
 		userTopImage = (ImageView) mapView.findViewById(R.id.photo);
 		userTopImage.setImageBitmap(squaredUserBmp);
-		// userTopImage.setImageBitmap(friendMarkerBmp);
 
 		// User name on top menu
 		userTopName = (TextView) mapView.findViewById(R.id.username);

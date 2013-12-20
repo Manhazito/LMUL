@@ -29,9 +29,6 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 	private Request request;
 	private Response response;
 
-	private URL[] imgsURL = null;
-	private Bitmap[] imgsBmp = null;
-
 	MainFragment fragment = null;
 
 	@Override
@@ -54,11 +51,8 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 		fragment.setUserID(obj.optString("id"));
 		fragment.setUserName(obj.optString("name"));
 
-		imgsURL = null;
-		imgsBmp = null;
-
-		String fqlQuery = "SELECT uid, name, current_location.latitude, current_location.longitude FROM user WHERE uid IN "
-				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 5)";
+		String fqlQuery = "SELECT uid, name, pic_small, current_location.latitude, current_location.longitude FROM user WHERE uid IN "
+				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 50)";
 		Bundle params = new Bundle();
 		params.putString("q", fqlQuery);
 		Request request = new Request(session, "/fql", params, HttpMethod.GET,
@@ -70,6 +64,9 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 						String[] ids = null;
 						String[] latitudes = null;
 						String[] longitudes = null;
+						URL[] imgsURL = null;
+						Bitmap[] imgsBmp = null;
+
 						int nFriends = 0;
 
 						try {
@@ -90,6 +87,12 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 							for (int i = 0; i < nFriends; i++) {
 								names[i] = data.getJSONObject(i).getString(
 										"name");
+								try {
+									imgsURL[i] = new URL(data.getJSONObject(i)
+											.getString("pic_small"));
+								} catch (MalformedURLException e1) {
+									e1.printStackTrace();
+								}
 								ids[i] = data.getJSONObject(i).getString("uid");
 								try {
 									latitudes[i] = data.getJSONObject(i)
@@ -102,29 +105,21 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 									latitudes[i] = "0.0";
 									longitudes[i] = "0.0";
 								}
-								Log.i("USER " + i + 1, names[i] + " - "
-										+ ids[i] + " - " + latitudes[i] + " : "
-										+ longitudes[i]);
+								Log.i(TAG, "USER " + i + 1 + ": " + names[i]);
+								Log.i(TAG, "ID: " + ids[i]);
+								Log.d(TAG, "Coordenadas: " + latitudes[i]
+										+ " : " + longitudes[i]);
+								Log.i(TAG, "Picture URL: " + imgsURL[i]);
 
-								// http://graph.facebook.com/userid/picture?type=large
-								// try {
-								// imgsURL[i] = new URL(
-								// "http://graph.facebook.com/"
-								// + ids[i]
-								// + "/picture?type=small");
-								// } catch (MalformedURLException e) {
-								// e.printStackTrace();
-								// }
-								// try {
-								// imgsBmp[i] = BitmapFactory
-								// .decodeStream(imgsURL[i]
-								// .openConnection()
-								// .getInputStream());
-								// } catch (IOException e) {
-								// e.printStackTrace();
-								// }
-								//
-								// break;
+								try {
+									imgsBmp[i] = BitmapFactory
+											.decodeStream(imgsURL[i]
+													.openConnection()
+													.getInputStream());
+								} catch (IOException e) {
+									e.printStackTrace();
+									Log.d(TAG, "ERRO!!!!!");
+								}
 							}
 
 							Log.d(TAG, "Loaded " + nFriends + ".");
@@ -170,7 +165,6 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 	private void saveData(int nElements, String[] names, String[] ids,
 			String[] latitudes, String[] longitudes, Bitmap[] imgsBmp) {
 		fragment.setnElements(nElements);
-		// fragment.setnElements(1);
 
 		fragment.setNames(names);
 		fragment.setIds(ids);
