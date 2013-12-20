@@ -35,22 +35,49 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends Activity {
-	// private static final String TAG = "MapActivity";
+	private static final String TAG = "MapActivity";
 
+	private Resources resources = null;
+	private Intent mapIntent = null;
 	private GoogleMap map;
+	private View mapView = null;
 
 	private String[] namesStr = null;
 	private String[] idsStr = null;
 	private String[] latitudesStr = null;
 	private String[] longitudesStr = null;
+	private Bitmap[] imgsBmp = null;
 	private UiLifecycleHelper uiHelper;
 
-	private Bitmap userBmp = null;
-	private Bitmap maskBmp = null;
-	private Bitmap resultBmp = null;
-	private Bitmap friendMarker = null;
+	private View userMarkerLayout = null;
+	private ImageView userMarkerPic = null;
+	private View avFriendMarkerLayout = null;
+	private ImageView avFriendMarkerPic = null;
 
-	private byte[] byteArray = null;
+	private int nFriends = 0;
+	private String label = "";
+	private LatLng userLocation = null;
+
+	private Bitmap userMaskBmp = null;
+	private Bitmap friendMaskBmp = null;
+	private Bitmap scaledUserMaskBmp = null;
+	private Bitmap scaledFriendMaskBmp = null;
+	private Bitmap userMarkerBmp = null;
+	private Bitmap friendMarkerBmp = null;
+	private Bitmap squaredUserBmp = null;
+	private Bitmap squaredFriendBmp = null;
+	private Canvas userCanvas = null;
+	private Canvas friendCanvas = null;
+	private Paint userPaint = null;
+	private Paint friendPaint = null;
+	private Bitmap userResultBmp = null;
+	private Bitmap friendResultBmp = null;
+
+	private Button logoutBtn = null;
+	private ImageView userTopImage = null;
+	private TextView userTopName = null;
+
+	private byte[][] imgsBmpByteArray = null;
 
 	private Session session;
 
@@ -70,86 +97,138 @@ public class MapActivity extends Activity {
 
 		setContentView(R.layout.activity_map);
 
-		View view = findViewById(android.R.id.content).getRootView();
-		Button logoutBtn = (Button) view.findViewById(R.id.logout);
+		mapView = findViewById(android.R.id.content).getRootView();
+		logoutBtn = (Button) mapView.findViewById(R.id.logout);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 				.getMap();
 
-		View markerLayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-				.inflate(R.layout.custom_marker, null);
+		userMarkerLayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+				.inflate(R.layout.user_marker, null);
+		avFriendMarkerLayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+				.inflate(R.layout.av_friend_marker, null);
 
-		Resources resources = view.getResources();
+		resources = mapView.getResources();
 
 		logoutBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				session = Session.getActiveSession();
 				session.closeAndClearTokenInformation();
-				MainFragment.setMapStarted(false); // É mesmo necessário???
 				finish();
 			}
 		});
 
-		Intent intent = getIntent();
+		mapIntent = getIntent();
 
-		namesStr = intent.getStringArrayExtra("names");
-		idsStr = intent.getStringArrayExtra("ids");
-		latitudesStr = intent.getStringArrayExtra("latitudes");
-		longitudesStr = intent.getStringArrayExtra("longitudes");
+		namesStr = mapIntent.getStringArrayExtra("names");
+		idsStr = mapIntent.getStringArrayExtra("ids");
+		latitudesStr = mapIntent.getStringArrayExtra("latitudes");
+		longitudesStr = mapIntent.getStringArrayExtra("longitudes");
 
-		byteArray = intent.getByteArrayExtra("userPicture");
-		userBmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+		nFriends = namesStr.length - 1;
+		label = "";
 
-		int nFriends = namesStr.length - 1;
+		imgsBmpByteArray = new byte[nFriends + 1][];
+		imgsBmp = new Bitmap[nFriends + 1];
 
-		LatLng userLocation = new LatLng(
-				Double.parseDouble(latitudesStr[nFriends]),
+		Log.d(TAG, "Loaded " + nFriends + ".");
+
+		// for (int i = 0; i < nFriends; i++) {
+		// label = "picture" + i;
+		// Log.d(TAG, "Friend " + i + "-> Label: " + label + ".");
+		// imgsBmpByteArray[i] = mapIntent.getByteArrayExtra(label);
+		// imgsBmp[i] = BitmapFactory.decodeByteArray(imgsBmpByteArray[i], 0,
+		// imgsBmpByteArray[i].length);
+		// break;
+		// }
+		imgsBmpByteArray[nFriends] = mapIntent.getByteArrayExtra("picture");
+		imgsBmp[nFriends] = BitmapFactory.decodeByteArray(
+				imgsBmpByteArray[nFriends], 0,
+				imgsBmpByteArray[nFriends].length);
+
+		userLocation = new LatLng(Double.parseDouble(latitudesStr[nFriends]),
 				Double.parseDouble(longitudesStr[nFriends]));
 
-		// Bitmap para o marker dos amigos
-		friendMarker = Bitmap.createScaledBitmap(
+		// -------------------------------------
+		// Friends marker with mask
+		// For now they all appear as AVailable
+		// -------------------------------------
+		friendMarkerBmp = Bitmap.createScaledBitmap(
 				BitmapFactory.decodeResource(resources, R.drawable.av), 50, 50,
 				true);
-
 		for (int i = 0; i < nFriends; i++) {
 			Log.i("PEOPLE", namesStr[i]);
 
+			// avFriendMarkerPic = (ImageView) avFriendMarkerLayout
+			// .findViewById(R.id.friend_marker_pic);
+			// squaredFriendBmp = createCenteredSquaredImage(imgsBmp[i]);
+			//
+			// friendMaskBmp = BitmapFactory.decodeResource(resources,
+			// R.drawable.av_mask);
+			// scaledFriendMaskBmp = Bitmap.createScaledBitmap(friendMaskBmp,
+			// squaredFriendBmp.getWidth(), squaredFriendBmp.getHeight(),
+			// true);
+			//
+			// friendResultBmp =
+			// Bitmap.createBitmap(squaredFriendBmp.getHeight(),
+			// squaredFriendBmp.getWidth(), Config.ARGB_8888);
+			//
+			// friendCanvas = new Canvas(friendResultBmp);
+			// friendPaint = new Paint();
+			// // Set Transfer Mode (cookie cutter style)
+			// friendPaint.setXfermode(new PorterDuffXfermode(
+			// PorterDuff.Mode.DST_IN));
+			// friendCanvas.drawBitmap(squaredFriendBmp, 0, 0, null);
+			// // friendCanvas.drawBitmap(scaledFriendMaskBmp, 0, 0,
+			// friendPaint);
+			// // Reset Transfer Mode
+			// friendPaint.setXfermode(null);
+			//
+			// avFriendMarkerPic.setImageBitmap(friendResultBmp);
+			//
+			// friendMarkerBmp = createDrawableFromView(this,
+			// avFriendMarkerLayout);
+
+			// Friend Marker
 			map.addMarker(new MarkerOptions()
 					.anchor((float) 0.5, (float) 0.5)
 					.position(
 							new LatLng(Double.parseDouble(latitudesStr[i]),
 									Double.parseDouble(longitudesStr[i])))
 					.title(namesStr[i]).snippet(idsStr[i])
-					.icon(BitmapDescriptorFactory.fromBitmap(friendMarker)));
+					.icon(BitmapDescriptorFactory.fromBitmap(friendMarkerBmp)));
 		}
 
-		// ----------------------------
-		// User marker with round mask
-		// ----------------------------
-		ImageView markerPic = (ImageView) markerLayout
-				.findViewById(R.id.marker_pic);
-		Bitmap squaredUserBmp = createCenteredSquaredImage(userBmp);
+		// -------------------------------------
 
-		maskBmp = BitmapFactory.decodeResource(resources, R.drawable.av_mask);
-		Bitmap scaledMaskBmp = Bitmap.createScaledBitmap(maskBmp,
+		// ----------------------
+		// User marker with mask
+		// ----------------------
+		userMarkerPic = (ImageView) userMarkerLayout
+				.findViewById(R.id.user_marker_pic);
+		squaredUserBmp = createCenteredSquaredImage(imgsBmp[nFriends]);
+
+		userMaskBmp = BitmapFactory.decodeResource(resources,
+				R.drawable.custom_marker_mask);
+		scaledUserMaskBmp = Bitmap.createScaledBitmap(userMaskBmp,
 				squaredUserBmp.getWidth(), squaredUserBmp.getHeight(), true);
 
-		resultBmp = Bitmap.createBitmap(squaredUserBmp.getHeight(),
+		userResultBmp = Bitmap.createBitmap(squaredUserBmp.getHeight(),
 				squaredUserBmp.getWidth(), Config.ARGB_8888);
 
-		Canvas c = new Canvas(resultBmp);
-		Paint paint = new Paint();
+		userCanvas = new Canvas(userResultBmp);
+		userPaint = new Paint();
 		// Set Transfer Mode (cookie cutter style)
-		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-		c.drawBitmap(squaredUserBmp, 0, 0, null);
-		c.drawBitmap(scaledMaskBmp, 0, 0, paint);
+		userPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+		userCanvas.drawBitmap(squaredUserBmp, 0, 0, null);
+		userCanvas.drawBitmap(scaledUserMaskBmp, 0, 0, userPaint);
 		// Reset Transfer Mode
-		paint.setXfermode(null);
+		userPaint.setXfermode(null);
 
-		markerPic.setImageBitmap(resultBmp);
-		// ----------------------
+		userMarkerPic.setImageBitmap(userResultBmp);
+		// ----------------
 
-		Bitmap userMarkerBmp = createDrawableFromView(this, markerLayout);
+		userMarkerBmp = createDrawableFromView(this, userMarkerLayout);
 
 		// User Marker
 		map.addMarker(new MarkerOptions().anchor((float) 0.5, (float) 0.5)
@@ -157,11 +236,14 @@ public class MapActivity extends Activity {
 				.snippet(idsStr[nFriends])
 				.icon(BitmapDescriptorFactory.fromBitmap(userMarkerBmp)));
 
-		ImageView img = (ImageView) view.findViewById(R.id.photo);
-		img.setImageBitmap(squaredUserBmp);
+		// User image on top menu
+		userTopImage = (ImageView) mapView.findViewById(R.id.photo);
+		userTopImage.setImageBitmap(squaredUserBmp);
+		// userTopImage.setImageBitmap(friendMarkerBmp);
 
-		TextView username = (TextView) view.findViewById(R.id.username);
-		username.setText(namesStr[nFriends]);
+		// User name on top menu
+		userTopName = (TextView) mapView.findViewById(R.id.username);
+		userTopName.setText(namesStr[nFriends]);
 
 		// Move the camera instantly with a zoom of 17.
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
@@ -171,14 +253,20 @@ public class MapActivity extends Activity {
 	}
 
 	private Bitmap createCenteredSquaredImage(Bitmap tmpBmp) {
-		if (tmpBmp.getHeight() > tmpBmp.getWidth()) {
-			int startY = (int) ((tmpBmp.getHeight() - tmpBmp.getWidth()) / 2);
-			return Bitmap.createBitmap(tmpBmp, 0, startY, tmpBmp.getWidth(),
-					tmpBmp.getWidth());
+		if (tmpBmp == null) {
+			Log.d(TAG, "Imagem vazia...");
+			return Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
 		} else {
-			int startX = (int) ((tmpBmp.getWidth() - tmpBmp.getHeight()) / 2);
-			return Bitmap.createBitmap(tmpBmp, startX, 0, tmpBmp.getHeight(),
-					tmpBmp.getHeight());
+			Log.d(TAG, "Imagem carregada.");
+			if (tmpBmp.getHeight() > tmpBmp.getWidth()) {
+				int startY = (int) ((tmpBmp.getHeight() - tmpBmp.getWidth()) / 2);
+				return Bitmap.createBitmap(tmpBmp, 0, startY,
+						tmpBmp.getWidth(), tmpBmp.getWidth());
+			} else {
+				int startX = (int) ((tmpBmp.getWidth() - tmpBmp.getHeight()) / 2);
+				return Bitmap.createBitmap(tmpBmp, startX, 0,
+						tmpBmp.getHeight(), tmpBmp.getHeight());
+			}
 		}
 	}
 

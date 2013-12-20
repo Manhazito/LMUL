@@ -1,6 +1,5 @@
 package org.feup.bondpoint;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,9 +29,8 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 	private Request request;
 	private Response response;
 
-	private URL imgURL = null;
-	private Bitmap imgBmp = null;
-	private ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	private URL[] imgsURL = null;
+	private Bitmap[] imgsBmp = null;
 
 	MainFragment fragment = null;
 
@@ -46,34 +44,21 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 		request = new Request(session, "me");
 		response = request.executeAndWait();
 
+		// ALTERAR!
+		if (response == null) {
+			Log.d(TAG, "Facebook não respondeu!");
+			return null;
+		}
+
 		JSONObject obj = response.getGraphObject().getInnerJSONObject();
 		fragment.setUserID(obj.optString("id"));
 		fragment.setUserName(obj.optString("name"));
 
-		imgURL = null;
-		imgBmp = null;
-
-		// http://graph.facebook.com/userid/picture?type=large
-		try {
-			imgURL = new URL("http://graph.facebook.com/"
-					+ fragment.getUserID() + "/picture?type=large");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			imgBmp = BitmapFactory.decodeStream(imgURL.openConnection()
-					.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		imgBmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		fragment.setByteArray(stream.toByteArray());
+		imgsURL = null;
+		imgsBmp = null;
 
 		String fqlQuery = "SELECT uid, name, current_location.latitude, current_location.longitude FROM user WHERE uid IN "
-				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 50)";
+				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 5)";
 		Bundle params = new Bundle();
 		params.putString("q", fqlQuery);
 		Request request = new Request(session, "/fql", params, HttpMethod.GET,
@@ -85,7 +70,7 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 						String[] ids = null;
 						String[] latitudes = null;
 						String[] longitudes = null;
-						int nElements = 0;
+						int nFriends = 0;
 
 						try {
 							if (response == null)
@@ -93,13 +78,16 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 							JSONArray data = response.getGraphObject()
 									.getInnerJSONObject().getJSONArray("data");
 
-							nElements = data.length();
+							nFriends = data.length();
 
 							names = new String[data.length() + 1];
 							ids = new String[data.length() + 1];
 							latitudes = new String[data.length() + 1];
 							longitudes = new String[data.length() + 1];
-							for (int i = 0; i < data.length(); i++) {
+							imgsURL = new URL[data.length() + 1];
+							imgsBmp = new Bitmap[data.length() + 1];
+
+							for (int i = 0; i < nFriends; i++) {
 								names[i] = data.getJSONObject(i).getString(
 										"name");
 								ids[i] = data.getJSONObject(i).getString("uid");
@@ -117,16 +105,56 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 								Log.i("USER " + i + 1, names[i] + " - "
 										+ ids[i] + " - " + latitudes[i] + " : "
 										+ longitudes[i]);
+
+								// http://graph.facebook.com/userid/picture?type=large
+								// try {
+								// imgsURL[i] = new URL(
+								// "http://graph.facebook.com/"
+								// + ids[i]
+								// + "/picture?type=small");
+								// } catch (MalformedURLException e) {
+								// e.printStackTrace();
+								// }
+								// try {
+								// imgsBmp[i] = BitmapFactory
+								// .decodeStream(imgsURL[i]
+								// .openConnection()
+								// .getInputStream());
+								// } catch (IOException e) {
+								// e.printStackTrace();
+								// }
+								//
+								// break;
+							}
+
+							Log.d(TAG, "Loaded " + nFriends + ".");
+
+							try {
+								imgsURL[nFriends] = new URL(
+										"http://graph.facebook.com/"
+												+ fragment.getUserID()
+												+ "/picture?type=large");
+							} catch (MalformedURLException e) {
+								e.printStackTrace();
+							}
+							try {
+								imgsBmp[nFriends] = BitmapFactory
+										.decodeStream(imgsURL[nFriends]
+												.openConnection()
+												.getInputStream());
+							} catch (IOException e) {
+								e.printStackTrace();
 							}
 						} catch (JSONException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 
-						saveData(nElements, names, ids, latitudes, longitudes);
+						saveData(nFriends + 1, names, ids, latitudes,
+								longitudes, imgsBmp);
 
 					}
 				});
+
 		// Request.executeBatchAsync(request);
 		Request.executeAndWait(request);
 
@@ -140,13 +168,15 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 	}
 
 	private void saveData(int nElements, String[] names, String[] ids,
-			String[] latitudes, String[] longitudes) {
+			String[] latitudes, String[] longitudes, Bitmap[] imgsBmp) {
 		fragment.setnElements(nElements);
+		// fragment.setnElements(1);
 
 		fragment.setNames(names);
 		fragment.setIds(ids);
 		fragment.setLatitudes(latitudes);
 		fragment.setLongitudes(longitudes);
+		fragment.setByteArray(imgsBmp);
 	}
 
 }

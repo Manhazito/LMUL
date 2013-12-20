@@ -1,9 +1,11 @@
 package org.feup.bondpoint;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +33,8 @@ public class MainFragment extends Fragment {
 	private String userID = "0";
 	private String userLat = "0.0";
 	private String userLong = "0.0";
-	private byte[] byteArray = null;
+	private byte[][] imgsBmpByteArray = null;
+	private ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 	private String[] names = null;
 	private String[] ids = null;
@@ -39,7 +42,6 @@ public class MainFragment extends Fragment {
 	private String[] longitudes = null;
 
 	private int nElements = 0;
-	private static boolean mapStarted = false;
 
 	private Intent mapIntent = null;
 	private ReceiveData receiveData = null;
@@ -131,15 +133,14 @@ public class MainFragment extends Fragment {
 	}
 
 	public void showMap() {
-		if (mapStarted)
-			return;
-
 		Log.i("MAPA", "Iniciando Map Activity...");
 
-		names[nElements] = userName;
-		ids[nElements] = userID;
-		latitudes[nElements] = userLat;
-		longitudes[nElements] = userLong;
+		String label = "";
+
+		names[nElements - 1] = userName;
+		ids[nElements - 1] = userID;
+		latitudes[nElements - 1] = userLat;
+		longitudes[nElements - 1] = userLong;
 
 		mapIntent.putExtra(DEFAULT_LOCATION_NAME, "Porto");
 		mapIntent.putExtra(DEFAULT_LOCATION_LAT, "41.15");
@@ -148,11 +149,16 @@ public class MainFragment extends Fragment {
 		mapIntent.putExtra("ids", ids);
 		mapIntent.putExtra("latitudes", latitudes);
 		mapIntent.putExtra("longitudes", longitudes);
-		mapIntent.putExtra("userPicture", byteArray);
+
+		// for (int i = 0; i < nElements; i++) {
+		// label = "picture" + i;
+		// mapIntent.putExtra(label, imgsBmpByteArray[i]);
+		// }
+		mapIntent.putExtra("picture", imgsBmpByteArray[nElements - 1]);
 
 		startActivity(mapIntent);
 
-		mapStarted = true;
+		// mapStarted = true;
 		progressDialog.dismiss();
 		receiveData = null;
 	}
@@ -195,10 +201,6 @@ public class MainFragment extends Fragment {
 		uiHelper.onSaveInstanceState(outState);
 	}
 
-	public static void setMapStarted(boolean m) {
-		mapStarted = m;
-	}
-
 	public Session getFacebookSession() {
 		return Session.getActiveSession();
 	}
@@ -231,8 +233,13 @@ public class MainFragment extends Fragment {
 		this.longitudes = longitudes;
 	}
 
-	public void setByteArray(byte[] byteArray) {
-		this.byteArray = byteArray;
+	public void setByteArray(Bitmap[] imgsBmp) {
+		// for (int i = 0; i < nElements; i++) {
+		// imgsBmp[i].compress(Bitmap.CompressFormat.PNG, 100, stream);
+		// imgsBmpByteArray[i] = stream.toByteArray();
+		// }
+		imgsBmp[nElements - 1].compress(Bitmap.CompressFormat.PNG, 100, stream);
+		imgsBmpByteArray[nElements - 1] = stream.toByteArray();
 	}
 
 	public void setnElements(int nElements) {
@@ -241,5 +248,6 @@ public class MainFragment extends Fragment {
 		this.ids = new String[nElements];
 		this.longitudes = new String[nElements];
 		this.latitudes = new String[nElements];
+		this.imgsBmpByteArray = new byte[nElements][];
 	}
 }

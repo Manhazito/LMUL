@@ -3,7 +3,9 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="user_marker_size">80dp</dimen>
+    <dimen name="user_marker_photo_size">69dp</dimen>
+    <dimen name="user_marker_width">110dp</dimen>
+    <dimen name="user_marker_height">131dp</dimen>
+    <dimen name="friend_marker_size">50dp</dimen>
     
-
 </resources>

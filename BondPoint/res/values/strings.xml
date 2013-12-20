@@ -11,6 +11,8 @@
     <string name="userPicture">User picture</string>
     <string name="userMarker">User Marker</string>
     <string name="userMarkerBorder">User Marker Border</string>
+    <string name="friendMarker">Friend Marker</string>
+    <string name="friendMarkerBorder">Friend Marker Border</string>
     <string name="logout">Logout</string>
     
 </resources>
