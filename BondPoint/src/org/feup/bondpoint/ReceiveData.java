@@ -33,8 +33,6 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 
 	@Override
 	protected Void doInBackground(MainFragment... fragments) {
-		Log.i(TAG, "Doing in background...");
-
 		fragment = fragments[0];
 		Session session = fragment.getFacebookSession();
 
@@ -52,7 +50,7 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 		fragment.setUserName(obj.optString("name"));
 
 		String fqlQuery = "SELECT uid, name, pic_small, current_location.latitude, current_location.longitude FROM user WHERE uid IN "
-				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 50)";
+				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 10)";
 		Bundle params = new Bundle();
 		params.putString("q", fqlQuery);
 		Request request = new Request(session, "/fql", params, HttpMethod.GET,
@@ -105,11 +103,11 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 									latitudes[i] = "0.0";
 									longitudes[i] = "0.0";
 								}
-								Log.i(TAG, "USER " + i + 1 + ": " + names[i]);
-								Log.i(TAG, "ID: " + ids[i]);
+								Log.i(TAG, "USER " + (i + 1) + ": " + names[i]);
+								// Log.i(TAG, "ID: " + ids[i]);
 								Log.d(TAG, "Coordenadas: " + latitudes[i]
 										+ " : " + longitudes[i]);
-								Log.i(TAG, "Picture URL: " + imgsURL[i]);
+								// Log.i(TAG, "Picture URL: " + imgsURL[i]);
 
 								try {
 									imgsBmp[i] = BitmapFactory

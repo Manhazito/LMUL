@@ -112,7 +112,7 @@ int drawable com_facebook_list_divider 0x7f02001f
 int drawable com_facebook_list_section_header_background 0x7f020020
 int drawable com_facebook_loginbutton_silver 0x7f020021
 int drawable com_facebook_logo 0x7f020022
-int drawable com_facebook_picker_default_separator_color 0x7f020060
+int drawable com_facebook_picker_default_separator_color 0x7f020061
 int drawable com_facebook_picker_item_background 0x7f020023
 int drawable com_facebook_picker_list_focused 0x7f020024
 int drawable com_facebook_picker_list_longpressed 0x7f020025
@@ -171,10 +171,11 @@ int drawable pink_bg 0x7f020059
 int drawable radar 0x7f02005a
 int drawable trash_green 0x7f02005b
 int drawable trash_grey 0x7f02005c
-int drawable user_no_pic 0x7f02005d
-int drawable x_grey 0x7f02005e
-int drawable x_white 0x7f02005f
-int id action_settings 0x7f050024
+int drawable user_marker 0x7f02005d
+int drawable user_no_pic 0x7f02005e
+int drawable x_grey 0x7f02005f
+int drawable x_white 0x7f020060
+int id action_settings 0x7f050025
 int id authButton 0x7f050008
 int id com_facebook_login_activity_progress_bar 0x7f050010
 int id com_facebook_picker_activity_circle 0x7f05000f
@@ -196,6 +197,7 @@ int id com_facebook_search_bar_view 0x7f05001e
 int id com_facebook_usersettingsfragment_login_button 0x7f050022
 int id com_facebook_usersettingsfragment_logo_image 0x7f050020
 int id com_facebook_usersettingsfragment_profile_name 0x7f050021
+int id friendName 0x7f050023
 int id friend_marker_pic 0x7f05000d
 int id hybrid 0x7f050004
 int id large 0x7f050006
@@ -209,7 +211,7 @@ int id picker_subtitle 0x7f05001d
 int id satellite 0x7f050002
 int id small 0x7f050005
 int id terrain 0x7f050003
-int id user_marker_pic 0x7f050023
+int id user_marker_pic 0x7f050024
 int id username 0x7f05000a
 int layout activity_main 0x7f030000
 int layout activity_map 0x7f030001
@@ -228,7 +230,8 @@ int layout com_facebook_placepickerfragment 0x7f03000d
 int layout com_facebook_placepickerfragment_list_row 0x7f03000e
 int layout com_facebook_search_bar_layout 0x7f03000f
 int layout com_facebook_usersettingsfragment 0x7f030010
-int layout user_marker 0x7f030011
+int layout info_window 0x7f030011
+int layout user_marker 0x7f030012
 int menu main 0x7f090000
 int string action_settings 0x7f060035
 int string app_name 0x7f060032
@@ -293,12 +296,13 @@ int string userMarkerBorder 0x7f06003a
 int string userPicture 0x7f060038
 int string username 0x7f060036
 int strings userPicture 0x7f0a0000
-int style AppBaseTheme 0x7f080005
+int style AppBaseTheme 0x7f080006
 int style bond_point 0x7f080002
 int style com_facebook_loginview_default_style 0x7f080000
 int style com_facebook_loginview_silver_style 0x7f080001
 int style textView_green 0x7f080004
 int style textView_normal 0x7f080003
+int style textView_plain 0x7f080005
 int[] styleable MapAttrs { 0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b, 0x7f01000c, 0x7f01000d }
 int styleable MapAttrs_cameraBearing 1
 int styleable MapAttrs_cameraTargetLat 2

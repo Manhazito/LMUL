@@ -363,7 +363,7 @@ containing a value of this type.
         public static final int com_facebook_list_section_header_background=0x7f020020;
         public static final int com_facebook_loginbutton_silver=0x7f020021;
         public static final int com_facebook_logo=0x7f020022;
-        public static final int com_facebook_picker_default_separator_color=0x7f020060;
+        public static final int com_facebook_picker_default_separator_color=0x7f020061;
         public static final int com_facebook_picker_item_background=0x7f020023;
         public static final int com_facebook_picker_list_focused=0x7f020024;
         public static final int com_facebook_picker_list_longpressed=0x7f020025;
@@ -422,12 +422,13 @@ containing a value of this type.
         public static final int radar=0x7f02005a;
         public static final int trash_green=0x7f02005b;
         public static final int trash_grey=0x7f02005c;
-        public static final int user_no_pic=0x7f02005d;
-        public static final int x_grey=0x7f02005e;
-        public static final int x_white=0x7f02005f;
+        public static final int user_marker=0x7f02005d;
+        public static final int user_no_pic=0x7f02005e;
+        public static final int x_grey=0x7f02005f;
+        public static final int x_white=0x7f020060;
     }
     public static final class id {
-        public static final int action_settings=0x7f050024;
+        public static final int action_settings=0x7f050025;
         public static final int authButton=0x7f050008;
         public static final int com_facebook_login_activity_progress_bar=0x7f050010;
         public static final int com_facebook_picker_activity_circle=0x7f05000f;
@@ -449,6 +450,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f050022;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f050020;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f050021;
+        public static final int friendName=0x7f050023;
         public static final int friend_marker_pic=0x7f05000d;
         public static final int hybrid=0x7f050004;
         public static final int large=0x7f050006;
@@ -462,7 +464,7 @@ containing a value of this type.
         public static final int satellite=0x7f050002;
         public static final int small=0x7f050005;
         public static final int terrain=0x7f050003;
-        public static final int user_marker_pic=0x7f050023;
+        public static final int user_marker_pic=0x7f050024;
         public static final int username=0x7f05000a;
     }
     public static final class layout {
@@ -483,7 +485,8 @@ containing a value of this type.
         public static final int com_facebook_placepickerfragment_list_row=0x7f03000e;
         public static final int com_facebook_search_bar_layout=0x7f03000f;
         public static final int com_facebook_usersettingsfragment=0x7f030010;
-        public static final int user_marker=0x7f030011;
+        public static final int info_window=0x7f030011;
+        public static final int user_marker=0x7f030012;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -633,12 +636,13 @@ containing a value of this type.
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080005;
+        public static final int AppBaseTheme=0x7f080006;
         public static final int bond_point=0x7f080002;
         public static final int com_facebook_loginview_default_style=0x7f080000;
         public static final int com_facebook_loginview_silver_style=0x7f080001;
         public static final int textView_green=0x7f080004;
         public static final int textView_normal=0x7f080003;
+        public static final int textView_plain=0x7f080005;
     }
     public static final class styleable {
         /** Attributes that can be used with a MapAttrs.

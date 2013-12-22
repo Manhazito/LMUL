@@ -153,8 +153,6 @@ public class MainFragment extends Fragment {
 		for (int i = 0; i < nElements; i++) {
 			label = "picture" + i;
 			mapIntent.putExtra(label, imgsBmpByteArray[i]);
-			Log.d(TAG, "Enviada a imagem do amigo #" + (i + 1) + ": "
-					+ imgsBmpByteArray[i]);
 		}
 		mapIntent.putExtra("picture", imgsBmpByteArray[nElements - 1]);
 
