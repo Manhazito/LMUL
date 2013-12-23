@@ -41,7 +41,7 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 
 		// ALTERAR!
 		if (response == null) {
-			Log.d(TAG, "Facebook não respondeu!");
+			Log.d(TAG, "Facebook nao respondeu!");
 			return null;
 		}
 

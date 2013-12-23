@@ -428,7 +428,7 @@ containing a value of this type.
         public static final int x_white=0x7f020060;
     }
     public static final class id {
-        public static final int action_settings=0x7f050025;
+        public static final int action_settings=0x7f050026;
         public static final int authButton=0x7f050008;
         public static final int com_facebook_login_activity_progress_bar=0x7f050010;
         public static final int com_facebook_picker_activity_circle=0x7f05000f;
@@ -457,6 +457,7 @@ containing a value of this type.
         public static final int logo=0x7f050007;
         public static final int logout=0x7f05000b;
         public static final int map=0x7f05000c;
+        public static final int mapview=0x7f050024;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int photo=0x7f050009;
@@ -464,7 +465,7 @@ containing a value of this type.
         public static final int satellite=0x7f050002;
         public static final int small=0x7f050005;
         public static final int terrain=0x7f050003;
-        public static final int user_marker_pic=0x7f050024;
+        public static final int user_marker_pic=0x7f050025;
         public static final int username=0x7f05000a;
     }
     public static final class layout {
@@ -486,7 +487,8 @@ containing a value of this type.
         public static final int com_facebook_search_bar_layout=0x7f03000f;
         public static final int com_facebook_usersettingsfragment=0x7f030010;
         public static final int info_window=0x7f030011;
-        public static final int user_marker=0x7f030012;
+        public static final int map=0x7f030012;
+        public static final int user_marker=0x7f030013;
     }
     public static final class menu {
         public static final int main=0x7f090000;

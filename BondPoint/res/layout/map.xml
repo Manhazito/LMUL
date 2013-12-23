@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <com.example.MyCustomMapView android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:apiKey="9C:99:37:12:B7:24:D6:C7:9C:65:86:90:87:66:9F:9F:BE:86:3F:A7"
+        android:clickable="true"/>
+ 
+	<ImageView
+        android:id="@+id/user_marker_pic"
+        android:layout_width="@dimen/user_marker_photo_size"
+        android:layout_height="@dimen/user_marker_photo_size"
+        android:contentDescription="@string/userMarker"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+    />
+    
+	<ImageView
+        android:layout_width="@dimen/user_marker_width"
+        android:layout_height="@dimen/user_marker_height"
+        android:src="@drawable/custom_marker"
+        android:contentDescription="@string/userMarkerBorder"
+    />
+    
+</RelativeLayout>

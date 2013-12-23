@@ -175,7 +175,7 @@ int drawable user_marker 0x7f02005d
 int drawable user_no_pic 0x7f02005e
 int drawable x_grey 0x7f02005f
 int drawable x_white 0x7f020060
-int id action_settings 0x7f050025
+int id action_settings 0x7f050026
 int id authButton 0x7f050008
 int id com_facebook_login_activity_progress_bar 0x7f050010
 int id com_facebook_picker_activity_circle 0x7f05000f
@@ -204,6 +204,7 @@ int id large 0x7f050006
 int id logo 0x7f050007
 int id logout 0x7f05000b
 int id map 0x7f05000c
+int id mapview 0x7f050024
 int id none 0x7f050000
 int id normal 0x7f050001
 int id photo 0x7f050009
@@ -211,7 +212,7 @@ int id picker_subtitle 0x7f05001d
 int id satellite 0x7f050002
 int id small 0x7f050005
 int id terrain 0x7f050003
-int id user_marker_pic 0x7f050024
+int id user_marker_pic 0x7f050025
 int id username 0x7f05000a
 int layout activity_main 0x7f030000
 int layout activity_map 0x7f030001
@@ -231,7 +232,8 @@ int layout com_facebook_placepickerfragment_list_row 0x7f03000e
 int layout com_facebook_search_bar_layout 0x7f03000f
 int layout com_facebook_usersettingsfragment 0x7f030010
 int layout info_window 0x7f030011
-int layout user_marker 0x7f030012
+int layout map 0x7f030012
+int layout user_marker 0x7f030013
 int menu main 0x7f090000
 int string action_settings 0x7f060035
 int string app_name 0x7f060032
