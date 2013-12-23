@@ -21,6 +21,8 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
+//import android.service.textservice.SpellCheckerService.Session;
+
 public class MainFragment extends Fragment {
 
 	private static final String TAG = "MainFragment";
