@@ -14,5 +14,8 @@
     <string name="friendMarker">Friend Marker</string>
     <string name="friendMarkerBorder">Friend Marker Border</string>
     <string name="logout">Logout</string>
+    <string name="name_your_bond_point">Name your Bond Point</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="name_your_boind_point">Name Your Boind Point</string>
     
 </resources>
