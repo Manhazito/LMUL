@@ -31,18 +31,21 @@ import com.facebook.UiLifecycleHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapActivity extends Activity {
+public class MapActivity extends Activity implements OnMapLongClickListener,
+		OnMapClickListener {
 	private static final String TAG = "MapActivity";
 
-	private Resources resources = null;
+	Resources resources = null;
 	private Intent mapIntent = null;
-	private GoogleMap map;
+	GoogleMap map;
 	private View mapView = null;
 
 	private String[] namesStr = null;
@@ -63,6 +66,7 @@ public class MapActivity extends Activity {
 
 	// private Bitmap userMaskBmp = null;
 	private Bitmap friendMaskBmp = null;
+	private Bitmap bp = null;
 	// private Bitmap scaledUserMaskBmp = null;
 	private Bitmap scaledFriendMaskBmp = null;
 	private Bitmap userMarkerBmp = null;
@@ -124,6 +128,9 @@ public class MapActivity extends Activity {
 				finish();
 			}
 		});
+
+		map.setOnMapLongClickListener(this);
+		map.setOnMapClickListener(this);
 
 		mapIntent = getIntent();
 
@@ -303,6 +310,21 @@ public class MapActivity extends Activity {
 	}
 
 	@Override
+	public void onMapLongClick(LatLng point) {
+		Log.d("longclick", "clicou!");
+		map.addMarker(new MarkerOptions().anchor((float) 0.5, (float) 0.5)
+				.position(point).title(namesStr[nFriends])
+				.snippet(idsStr[nFriends])
+				.icon(BitmapDescriptorFactory.fromBitmap(userMarkerBmp)));
+	}
+
+	@Override
+	public void onMapClick(LatLng arg0) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public View onCreateView(String name, Context context, AttributeSet attrs) {
 		return super.onCreateView(name, context, attrs);
 	}
@@ -342,6 +364,7 @@ public class MapActivity extends Activity {
 			startActivity(intent);
 		}
 	}
+
 }
 
 class MyInfoWindowAdapter implements InfoWindowAdapter {
