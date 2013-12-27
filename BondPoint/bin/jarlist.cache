@@ -1,15 +1,5 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-<<<<<<< HEAD
 1386609212000 349252 612846c9857077a039b533718f72db3bc041d389 /Users/andremaia/Downloads/facebook-android-sdk-3.6.0/facebook/libs/android-support-v4.jar
 1388146325000 349252 612846c9857077a039b533718f72db3bc041d389 /Users/andremaia/Documents/WS - Lmul/BondPoint/LMUL/LMUL - BP/BondPoint/libs/android-support-v4.jar
-=======
-<<<<<<< HEAD
-1388064945515 349252 612846c9857077a039b533718f72db3bc041d389 C:\Users\Asus\Documents\GitHub\LMUL\BondPoint\libs\android-support-v4.jar
-1386638011000 349252 612846c9857077a039b533718f72db3bc041d389 C:\Users\Asus\Desktop\developing\facebook-android-sdk-3.6.0\facebook\libs\android-support-v4.jar
-=======
-1380651452000 349252 612846c9857077a039b533718f72db3bc041d389 C:\Users\Rute Louro\Documents\GitHub\LMUL\BondPoint\libs\android-support-v4.jar
-1380626252000 349252 612846c9857077a039b533718f72db3bc041d389 C:\Users\Rute Louro\Desktop\Developing\facebook-android-sdk-3.5.2\facebook\libs\android-support-v4.jar
->>>>>>> 27b10631211efc2992367394da8cef926578b906
->>>>>>> 46df05284f43349eb81f68d64d5a7e325e284706
