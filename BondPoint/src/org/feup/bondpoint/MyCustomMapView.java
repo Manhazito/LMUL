@@ -7,8 +7,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
+import com.google.android.gms.maps.MapView;
 
 // PARA O LONGPRESS!!!
 

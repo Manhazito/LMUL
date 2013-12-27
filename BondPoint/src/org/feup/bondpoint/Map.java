@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapView;
+import com.google.android.gms.maps.MapView;
 
 // PARA O LONGCLICK !!!
 
