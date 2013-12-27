@@ -2,7 +2,6 @@ package org.feup.bondpoint;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
 
 public class MainActivity extends FragmentActivity {
 
@@ -33,10 +32,10 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	// @Override
+	// public boolean onCreateOptionsMenu(Menu menu) {
+	// getMenuInflater().inflate(R.menu., menu);
+	// return true;
+	// }
 
 }
