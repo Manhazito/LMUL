@@ -102,14 +102,34 @@
             android:layout_toRightOf="@+id/DatBP"
             android:text="Select Date" />
 
+        <EditText
+            android:id="@+id/EndBP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/EndBP"
+            android:textColor="@color/bp_light_grey"
+            android:textSize="20sp" />
+
         <Button
-            android:id="@+id/durationbutton"
+            android:id="@+id/Startbutton"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/DurationBP"
-            android:layout_alignBottom="@+id/DurationBP"
-            android:layout_alignLeft="@+id/datebutton"
-            android:text="Select Duration" />
+            android:layout_alignTop="@+id/DurationBP"
+            android:layout_toRightOf="@+id/DurationBP"
+            android:text="Select Start of BP" />
+
+             <Button
+                 android:id="@+id/Endbutton"
+                 style="?android:attr/buttonStyleSmall"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_centerVertical="true"
+                 android:layout_toRightOf="@+id/EndBP"
+                 android:text="Select End of BP" />
    
 </RelativeLayout>
