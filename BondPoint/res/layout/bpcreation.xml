@@ -31,7 +31,7 @@
             android:layout_marginTop="28dp"
             android:ems="10"
             android:inputType="text"
-            android:text="@string/date_of_BP"
+            android:text="@string/Date_of_BP"
             android:textColor="@color/bp_light_grey"
             android:textSize="20sp" >
 
@@ -39,7 +39,7 @@
             </EditText>
 
         <EditText
-            android:id="@+id/DurationBP"
+            android:id="@+id/StartBP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -47,7 +47,7 @@
             android:layout_marginTop="46dp"
             android:ems="10"
             android:inputType="text"
-            android:text="@string/DurationBP"
+            android:text="@string/startBP"
             android:textColor="@color/bp_light_grey"
             android:textSize="20sp">
             <requestFocus />
@@ -97,10 +97,10 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/DurationBP"
+            android:layout_above="@+id/StartBP"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/DatBP"
-            android:text="Select Date" />
+            android:text="Select Date of BP" />
 
         <EditText
             android:id="@+id/EndBP"
@@ -119,8 +119,8 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/DurationBP"
-            android:layout_toRightOf="@+id/DurationBP"
+            android:layout_alignTop="@+id/StartBP"
+            android:layout_toRightOf="@+id/StartBP"
             android:text="Select Start of BP" />
 
              <Button

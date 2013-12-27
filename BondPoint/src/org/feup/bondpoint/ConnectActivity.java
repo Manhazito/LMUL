@@ -13,8 +13,13 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 public class ConnectActivity extends Activity {
+	// criacao das variaveis para depois referenciar
 
 	Button btnSelectDate, btnSelectTime, btnSelectTime2;
+
+	// criacao das variaveis de text para depois referenciar
+
+	// ?? textDate, textStart, testEnd;
 
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
@@ -48,6 +53,12 @@ public class ConnectActivity extends Activity {
 		btnSelectTime = (Button) findViewById(R.id.Startbutton);
 		btnSelectTime2 = (Button) findViewById(R.id.Endbutton);
 
+		// teste para ver se o texto da data vai para as caixas devidas
+
+		// textDate = (?) findViewById(R.id.DatBP);
+		// textStart = (?) findViewById(R.id.StartBP);
+		// textDate = (?) findViewById(R.id.EndBP);
+
 		// Set ClickListener on btnSelectDate
 		btnSelectDate.setOnClickListener(new View.OnClickListener() {
 
@@ -74,7 +85,7 @@ public class ConnectActivity extends Activity {
 			@SuppressWarnings("deprecation")
 			public void onClick(View v) {
 				// Show the TimePickerDialog
-				showDialog(TIME_DIALOG_ID);
+				showDialog(TIME_DIALOG_ID2);
 			}
 		});
 
@@ -92,6 +103,8 @@ public class ConnectActivity extends Activity {
 			// Set the Selected Date in Select date Button
 			btnSelectDate.setText("Date selected : " + day + "-" + month + "-"
 					+ year);
+			// textDate.setText("Date selected : " + day + "-" + month + "-"+
+			// year);
 		}
 	};
 
@@ -103,7 +116,8 @@ public class ConnectActivity extends Activity {
 			hour = hourOfDay;
 			minute = min;
 			// Set the Selected Date in Select date Button
-			btnSelectTime.setText("Duration :" + hour + "-" + minute);
+			btnSelectTime.setText("START :" + hour + "-" + minute);
+			// textStart.setText("START :" + hour + "-" + minute);
 		}
 	};
 
@@ -115,7 +129,8 @@ public class ConnectActivity extends Activity {
 			hour = hourOfDay;
 			minute = min;
 			// Set the Selected Date in Select date Button
-			btnSelectTime2.setText("Duration :" + hour + "-" + minute);
+			btnSelectTime2.setText("END :" + hour + "-" + minute);
+			// textEnd.setText("START :" + hour + "-" + minute);
 		}
 	};
 

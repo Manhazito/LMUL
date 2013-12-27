@@ -14,19 +14,17 @@
     <string name="friendMarker">Friend Marker</string>
     <string name="friendMarkerBorder">Friend Marker Border</string>
     <string name="logout">Logout</string>
-    <string name="name_your_bond_point">Name your Bond Point</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="name_your_boind_point">Name Your Boind Point</string>
-    <string name="date_of_BP">Date of BP</string>
-    <string name="DurationBP">Start of BP</string>
     <string name="type_of_your_bp">Type of your BP</string>
+    <string name="Date_of_BP">Date of BP</string>
+	<string name="startBP">Start of BP</string>
+	<string name="EndBP">End of BP</string>
     <string name="DescribeBP">Description of BP</string>
-    <string name="EndBP">End of BP</string>
-    <string name="date_of_BP">Date of BondPoint</string>
-   	<string name="DurationBP">Duration of BondPoint</string>
-   	<string name="type_of_your_bp">Type of BondPoint</string>
-   	<string name="DescribeBP">Description of BondPoint</string>
+
     <string name="error_dialog_title">Error</string>
 	<string name="error_dialog_button_text">OK</string>
+	<string name="select_date_of_bp">Select Date of BP</string>
+
 
 </resources>
