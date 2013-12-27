@@ -14,10 +14,11 @@ import android.widget.TimePicker;
 
 public class ConnectActivity extends Activity {
 
-	Button btnSelectDate, btnSelectTime;
+	Button btnSelectDate, btnSelectTime, btnSelectTime2;
 
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
+	static final int TIME_DIALOG_ID2 = 2;
 
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
@@ -44,7 +45,8 @@ public class ConnectActivity extends Activity {
 
 		// get the references of buttons
 		btnSelectDate = (Button) findViewById(R.id.datebutton);
-		btnSelectTime = (Button) findViewById(R.id.durationbutton);
+		btnSelectTime = (Button) findViewById(R.id.Startbutton);
+		btnSelectTime2 = (Button) findViewById(R.id.Endbutton);
 
 		// Set ClickListener on btnSelectDate
 		btnSelectDate.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +60,16 @@ public class ConnectActivity extends Activity {
 
 		// Set ClickListener on btnSelectTime
 		btnSelectTime.setOnClickListener(new View.OnClickListener() {
+
+			@SuppressWarnings("deprecation")
+			public void onClick(View v) {
+				// Show the TimePickerDialog
+				showDialog(TIME_DIALOG_ID);
+			}
+		});
+
+		// Set ClickListener on btnSelectTime
+		btnSelectTime2.setOnClickListener(new View.OnClickListener() {
 
 			@SuppressWarnings("deprecation")
 			public void onClick(View v) {
@@ -95,6 +107,18 @@ public class ConnectActivity extends Activity {
 		}
 	};
 
+	// Register TimePickerDialog listener
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener2 = new TimePickerDialog.OnTimeSetListener() {
+		// the callback received when the user "sets" the TimePickerDialog in
+		// the dialog
+		public void onTimeSet(TimePicker view, int hourOfDay, int min) {
+			hour = hourOfDay;
+			minute = min;
+			// Set the Selected Date in Select date Button
+			btnSelectTime2.setText("Duration :" + hour + "-" + minute);
+		}
+	};
+
 	// Method automatically gets Called when you call showDialog() method
 	@Override
 	protected Dialog onCreateDialog(int id) {
@@ -107,6 +131,9 @@ public class ConnectActivity extends Activity {
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
 					false);
+		case TIME_DIALOG_ID2:
+			return new TimePickerDialog(this, mTimeSetListener2, mHour,
+					mMinute, false);
 
 		}
 		return null;
