@@ -428,7 +428,11 @@ containing a value of this type.
         public static final int x_white=0x7f020060;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int action_settings=0x7f050027;
+=======
+        public static final int action_settings=0x7f050028;
+>>>>>>> 40241b96049e894129db7e1de04d50abcd7421e3
         public static final int authButton=0x7f050008;
         public static final int com_facebook_login_activity_progress_bar=0x7f050012;
         public static final int com_facebook_picker_activity_circle=0x7f050011;
@@ -466,7 +470,11 @@ containing a value of this type.
         public static final int satellite=0x7f050002;
         public static final int small=0x7f050005;
         public static final int terrain=0x7f050003;
+<<<<<<< HEAD
         public static final int user_marker_pic=0x7f050026;
+=======
+        public static final int user_marker_pic=0x7f050027;
+>>>>>>> 40241b96049e894129db7e1de04d50abcd7421e3
         public static final int username=0x7f05000a;
     }
     public static final class layout {
@@ -489,7 +497,12 @@ containing a value of this type.
         public static final int com_facebook_search_bar_layout=0x7f030010;
         public static final int com_facebook_usersettingsfragment=0x7f030011;
         public static final int info_window=0x7f030012;
+<<<<<<< HEAD
         public static final int user_marker=0x7f030013;
+=======
+        public static final int map=0x7f030013;
+        public static final int user_marker=0x7f030014;
+>>>>>>> 40241b96049e894129db7e1de04d50abcd7421e3
     }
     public static final class menu {
         public static final int main=0x7f090000;

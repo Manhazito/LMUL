@@ -175,7 +175,11 @@ int drawable user_marker 0x7f02005d
 int drawable user_no_pic 0x7f02005e
 int drawable x_grey 0x7f02005f
 int drawable x_white 0x7f020060
+<<<<<<< HEAD
 int id action_settings 0x7f050027
+=======
+int id action_settings 0x7f050028
+>>>>>>> 40241b96049e894129db7e1de04d50abcd7421e3
 int id authButton 0x7f050008
 int id com_facebook_login_activity_progress_bar 0x7f050012
 int id com_facebook_picker_activity_circle 0x7f050011
@@ -213,7 +217,11 @@ int id picker_subtitle 0x7f05001f
 int id satellite 0x7f050002
 int id small 0x7f050005
 int id terrain 0x7f050003
+<<<<<<< HEAD
 int id user_marker_pic 0x7f050026
+=======
+int id user_marker_pic 0x7f050027
+>>>>>>> 40241b96049e894129db7e1de04d50abcd7421e3
 int id username 0x7f05000a
 int layout activity_main 0x7f030000
 int layout activity_map 0x7f030001
@@ -234,7 +242,12 @@ int layout com_facebook_placepickerfragment_list_row 0x7f03000f
 int layout com_facebook_search_bar_layout 0x7f030010
 int layout com_facebook_usersettingsfragment 0x7f030011
 int layout info_window 0x7f030012
+<<<<<<< HEAD
 int layout user_marker 0x7f030013
+=======
+int layout map 0x7f030013
+int layout user_marker 0x7f030014
+>>>>>>> 40241b96049e894129db7e1de04d50abcd7421e3
 int menu main 0x7f090000
 int string action_settings 0x7f060035
 int string app_name 0x7f060032

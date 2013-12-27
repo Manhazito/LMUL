@@ -5,31 +5,104 @@
     android:background="@color/bp_dark_grey"
     android:orientation="vertical" >
 
-	<Button
-	    android:id="@+id/invbutton"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentBottom="true"
-	    android:layout_centerHorizontal="true"
-	    android:layout_marginBottom="30dp"
-	    android:text="@string/com_facebook_choose_friends"
-	    android:textColor="@color/bp_white" />
+    <Button
+        android:id="@+id/invbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/com_facebook_choose_friends"
+        android:textColor="@color/bp_white" />
 
-	<EditText
-	    android:id="@+id/editText1"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentTop="true"
-	    android:layout_marginLeft="19dp"
-	    android:layout_marginTop="66dp"
-	    android:ems="10"
-	    android:inputType="text"
-	    android:text="@string/name_your_boind_point"
-	    android:textColor="@color/bp_light_grey"
-	    android:textSize="20sp" >
+        <EditText
+            android:id="@+id/DatBP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/TypeBP"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/date_of_BP"
+            android:textColor="@color/bp_light_grey"
+            android:textSize="20sp" >
 
-	    <requestFocus />
-	</EditText>
+            <requestFocus />
+            </EditText>
 
+        <EditText
+            android:id="@+id/DurationBP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/DatBP"
+            android:layout_marginTop="46dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/DurationBP"
+            android:textColor="@color/bp_light_grey"
+            android:textSize="20sp">
+            <requestFocus />
+            </EditText>
+
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="68dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/name_your_boind_point"
+            android:textColor="@color/bp_light_grey"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/TypeBP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/editText1"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/type_of_your_bp"
+            android:textColor="@color/bp_light_grey"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/descriptionBP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/invbutton"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="98dp"
+            android:ems="10"
+            android:inputType="text"
+            android:singleLine="false"
+            android:text="@string/DescribeBP"
+            android:textColor="@color/bp_light_grey"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/datebutton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/DurationBP"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/DatBP"
+            android:text="Select Date" />
+
+        <Button
+            android:id="@+id/durationbutton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/DurationBP"
+            android:layout_alignBottom="@+id/DurationBP"
+            android:layout_alignLeft="@+id/datebutton"
+            android:text="Select Duration" />
+   
 </RelativeLayout>
