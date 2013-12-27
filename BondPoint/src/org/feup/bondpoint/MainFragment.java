@@ -20,6 +20,7 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
+//import android.R;
 
 //import android.service.textservice.SpellCheckerService.Session;
 

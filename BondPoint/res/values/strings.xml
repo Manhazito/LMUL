@@ -17,5 +17,9 @@
     <string name="name_your_bond_point">Name your Bond Point</string>
     <string name="invite_friends">Invite Friends</string>
     <string name="name_your_boind_point">Name Your Boind Point</string>
+    <string name="date_of_BP">Date of BondPoint</string>
+   	<string name="DurationBP">Duration of BondPoint</string>
+   	<string name="type_of_your_bp">Type of BondPoint</string>
+   	<string name="DescribeBP">Description of BondPoint</string>
     
 </resources>
