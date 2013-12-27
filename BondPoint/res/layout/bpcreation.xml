@@ -14,6 +14,13 @@
         android:layout_marginBottom="30dp"
         android:text="@string/com_facebook_choose_friends"
         android:textColor="@color/bp_white" />
+    
+     <TextView
+            android:id="@+id/resultsTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            />
 
         <EditText
             android:id="@+id/DatBP"

@@ -21,5 +21,7 @@
    	<string name="DurationBP">Duration of BondPoint</string>
    	<string name="type_of_your_bp">Type of BondPoint</string>
    	<string name="DescribeBP">Description of BondPoint</string>
-    
+    <string name="error_dialog_title">Error</string>
+	<string name="error_dialog_button_text">OK</string>
+	
 </resources>
