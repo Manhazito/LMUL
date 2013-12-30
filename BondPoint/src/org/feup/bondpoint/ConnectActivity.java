@@ -13,11 +13,17 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 public class ConnectActivity extends Activity {
+	// criacao das variaveis para depois referenciar
 
-	Button btnSelectDate, btnSelectTime;
+	Button btnSelectDate, btnSelectTime, btnSelectTime2;
+
+	// criacao das variaveis de text para depois referenciar
+
+	// ?? textDate, textStart, testEnd;
 
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
+	static final int TIME_DIALOG_ID2 = 2;
 
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
@@ -44,7 +50,14 @@ public class ConnectActivity extends Activity {
 
 		// get the references of buttons
 		btnSelectDate = (Button) findViewById(R.id.datebutton);
-		btnSelectTime = (Button) findViewById(R.id.durationbutton);
+		btnSelectTime = (Button) findViewById(R.id.Startbutton);
+		btnSelectTime2 = (Button) findViewById(R.id.Endbutton);
+
+		// teste para ver se o texto da data vai para as caixas devidas
+
+		// textDate = (?) findViewById(R.id.DatBP);
+		// textStart = (?) findViewById(R.id.StartBP);
+		// textDate = (?) findViewById(R.id.EndBP);
 
 		// Set ClickListener on btnSelectDate
 		btnSelectDate.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +79,16 @@ public class ConnectActivity extends Activity {
 			}
 		});
 
+		// Set ClickListener on btnSelectTime
+		btnSelectTime2.setOnClickListener(new View.OnClickListener() {
+
+			@SuppressWarnings("deprecation")
+			public void onClick(View v) {
+				// Show the TimePickerDialog
+				showDialog(TIME_DIALOG_ID2);
+			}
+		});
+
 	}
 
 	// Register DatePickerDialog listener
@@ -80,6 +103,8 @@ public class ConnectActivity extends Activity {
 			// Set the Selected Date in Select date Button
 			btnSelectDate.setText("Date selected : " + day + "-" + month + "-"
 					+ year);
+			// textDate.setText("Date selected : " + day + "-" + month + "-"+
+			// year);
 		}
 	};
 
@@ -91,7 +116,21 @@ public class ConnectActivity extends Activity {
 			hour = hourOfDay;
 			minute = min;
 			// Set the Selected Date in Select date Button
-			btnSelectTime.setText("Duration :" + hour + "-" + minute);
+			btnSelectTime.setText("START :" + hour + "-" + minute);
+			// textStart.setText("START :" + hour + "-" + minute);
+		}
+	};
+
+	// Register TimePickerDialog listener
+	private TimePickerDialog.OnTimeSetListener mTimeSetListener2 = new TimePickerDialog.OnTimeSetListener() {
+		// the callback received when the user "sets" the TimePickerDialog in
+		// the dialog
+		public void onTimeSet(TimePicker view, int hourOfDay, int min) {
+			hour = hourOfDay;
+			minute = min;
+			// Set the Selected Date in Select date Button
+			btnSelectTime2.setText("END :" + hour + "-" + minute);
+			// textEnd.setText("START :" + hour + "-" + minute);
 		}
 	};
 
@@ -107,6 +146,9 @@ public class ConnectActivity extends Activity {
 		case TIME_DIALOG_ID:
 			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
 					false);
+		case TIME_DIALOG_ID2:
+			return new TimePickerDialog(this, mTimeSetListener2, mHour,
+					mMinute, false);
 
 		}
 		return null;
