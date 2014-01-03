@@ -245,32 +245,9 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		// ----------------------
 		// User marker with mask
 		// ----------------------
-		// userMarkerPic = (ImageView) userMarkerLayout
-		// .findViewById(R.id.user_marker_pic);
+
 		squaredUserBmp = createCenteredSquaredImage(imgsBmp[nFriends]);
 
-		// userMaskBmp = BitmapFactory.decodeResource(resources,
-		// R.drawable.custom_marker_mask);
-		// scaledUserMaskBmp = Bitmap.createScaledBitmap(userMaskBmp,
-		// squaredUserBmp.getWidth(), squaredUserBmp.getHeight(), true);
-		//
-		// userResultBmp = Bitmap.createBitmap(squaredUserBmp.getHeight(),
-		// squaredUserBmp.getWidth(), Config.ARGB_8888);
-		//
-		// userCanvas = new Canvas(userResultBmp);
-		// userPaint = new Paint();
-		// // Set Transfer Mode (cookie cutter style)
-		// userPaint.setXfermode(new
-		// PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-		// userCanvas.drawBitmap(squaredUserBmp, 0, 0, null);
-		// userCanvas.drawBitmap(scaledUserMaskBmp, 0, 0, userPaint);
-		// // Reset Transfer Mode
-		// userPaint.setXfermode(null);
-		//
-		// userMarkerPic.setImageBitmap(userResultBmp);
-		// ----------------
-
-		// userMarkerBmp = createDrawableFromView(this, userMarkerLayout);
 		userMarkerBmp = Bitmap
 				.createScaledBitmap(BitmapFactory.decodeResource(resources,
 						R.drawable.user_marker), 35, 50, true);
