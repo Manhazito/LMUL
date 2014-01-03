@@ -7,9 +7,8 @@ public class BondPoint {
 	private String id;
 	private String name;
 	private String type;
-	private String date;
-	private String startTime;
-	private String endTime;
+	private String initDateTime;
+	private String endDimeTime;
 	private String description;
 	private Marker marker;
 
@@ -47,28 +46,20 @@ public class BondPoint {
 		this.type = bptype;
 	}
 
-	public String getDate() {
-		return date;
+	public String getInitDateTime() {
+		return initDateTime;
 	}
 
-	public void setDate(String bpdate) {
-		this.date = bpdate;
+	public void setInitDateTime(String bpdate) {
+		this.initDateTime = bpdate;
 	}
 
-	public String getStartTime() {
-		return startTime;
+	public String getEndDateTime() {
+		return endDimeTime;
 	}
 
-	public void setStartTime(String starttime) {
-		this.startTime = starttime;
-	}
-
-	public String getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(String endtime) {
-		this.endTime = endtime;
+	public void setEndDateTime(String endtime) {
+		this.endDimeTime = endtime;
 	}
 
 	public String getDescription() {

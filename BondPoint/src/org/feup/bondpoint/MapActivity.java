@@ -53,7 +53,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
 
-	private boolean marker = false;
+	private boolean creatingMarker = false;
 
 	Resources resources = null;
 	private Intent mapIntent = null;
@@ -306,8 +306,16 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	@Override
 	public void onMapLongClick(LatLng point) {
 		Log.d("longclick", "criou um bondpoint!");
-		if (marker == false) {
+		if (creatingMarker == false) {
 			newBondPoint = new BondPoint();
+
+			SharedPreferences sharedPreferences = PreferenceManager
+					.getDefaultSharedPreferences(this);
+			sharedPreferences.edit().remove("NameBP").commit();
+			sharedPreferences.edit().remove("TypeBP").commit();
+			sharedPreferences.edit().remove("DescriptionBP").commit();
+			sharedPreferences.edit().remove("InitDateTimeBP").commit();
+			sharedPreferences.edit().remove("EndDateTimeBP").commit();
 
 			bp = Bitmap.createScaledBitmap(
 					BitmapFactory.decodeResource(resources, R.drawable.add_bp),
@@ -320,7 +328,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 			newBondPointMarker.setDraggable(true);
 			newBondPoint.setMarker(newBondPointMarker);
 
-			marker = true;
+			creatingMarker = true;
 		}
 	}
 
@@ -399,27 +407,29 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				sharedPreferences.edit().remove("TypeBP").commit();
 
 				newBondPoint.setDescription(sharedPreferences.getString(
-						"BPDescr", "Description of BP"));
-				sharedPreferences.edit().remove("BPDescr").commit();
+						"DescriptionBP", "Description of BP"));
+				sharedPreferences.edit().remove("DescriptionBP").commit();
 
-				newBondPoint.setDate(sharedPreferences.getString("DateBP",
-						"Date of your BP"));
-				sharedPreferences.edit().remove("DateBP").commit();
+				newBondPoint.setInitDateTime(sharedPreferences.getString(
+						"InitDateTimeBP", "Initial Date and Time of your BP"));
+				sharedPreferences.edit().remove("InitDateTimeBP").commit();
 
-				newBondPoint.setStartTime(sharedPreferences.getString(
-						"StartBP", "Start Time"));
-				sharedPreferences.edit().remove("StartBP").commit();
+				newBondPoint.setEndDateTime(sharedPreferences.getString(
+						"EndDateTimeBP", "End Date and Time of BP"));
+				sharedPreferences.edit().remove("EndDateTimeBP").commit();
 
-				newBondPoint.setEndTime(sharedPreferences.getString("EndBP",
-						"End Time"));
-				sharedPreferences.edit().remove("EndBP").commit();
-
-				// Actualiza o nome na InfoWindow
+				// Obriga a actualizar o nome na InfoWindow
 				newBondPoint.getMarker().hideInfoWindow();
 				newBondPoint.getMarker().showInfoWindow();
 
-				marker = false;
+				// Disable Draggable
+				newBondPoint.getMarker().setDraggable(false);
+			} else if (resultCode == Activity.RESULT_CANCELED) {
+				newBondPoint.getMarker().remove();
+				newBondPoint = null;
 			}
+
+			creatingMarker = false;
 			break;
 		}
 		}

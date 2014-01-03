@@ -3,156 +3,152 @@ package org.feup.bondpoint;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.format.DateFormat;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
 
 public class ConnectActivity extends Activity {
 
 	// criacao das variaveis para depois referenciar
-
-	Button btnSelectDate, btnSelectTime, btnSelectTime2, btnSave;
+	Button btnInitDateTime, btnEndDateTime, btnSave, btnCancel, btnInvite;
 
 	// criacao das variaveis de text para depois referenciar
+	EditText textInitDateTime, textEndDateTime, textBPName, textBPType,
+			textBPDescription;
 
-	EditText textDate, textStart, textEnd, textName, textType, textDescr;
+	// criacao da variavel spinner para depois referenciar
+	Spinner spinnerBPType;
 
-	static final int DATE_DIALOG_ID = 0;
-	static final int TIME_DIALOG_ID = 1;
-	static final int TIME_DIALOG_ID2 = 2;
+	static final int INIT_DATE_TIME_ID = 100;
+	static final int END_DATE_TIME_ID = 200;
+
+	private int buttonClicked = -1;
 
 	// variables to save user selected date and time
-	public int year, month, day, hour, minute, hour2, minute2;
-	// declare the variables to Show/Set the date and time when Time and Date
+	public int year, month, day, hour, minute;
+
 	// Picker Dialog first appears
-	private int mYear, mMonth, mDay, mHour, mMinute;
+	// private int mYear, mMonth, mDay, mHour, mMinute;
 
 	// constructor
-
 	public ConnectActivity() {
 		// Assign current Date and Time Values to Variables
-		final Calendar c = Calendar.getInstance();
-		mYear = c.get(Calendar.YEAR);
-		mMonth = c.get(Calendar.MONTH);
-		mDay = c.get(Calendar.DAY_OF_MONTH);
-		mHour = c.get(Calendar.HOUR_OF_DAY);
-		mMinute = c.get(Calendar.MINUTE);
+		// final Calendar calendar = Calendar.getInstance();
+		// mYear = calendar.get(Calendar.YEAR);
+		// mMonth = calendar.get(Calendar.MONTH);
+		// mDay = calendar.get(Calendar.DAY_OF_MONTH);
+		// mHour = calendar.get(Calendar.HOUR_OF_DAY);
+		// mMinute = calendar.get(Calendar.MINUTE);
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
-		// receber o objecto bondpoint
-		BondPoint bondP = (BondPoint) getIntent().getSerializableExtra(
-				"object bp");
 
 		// get the references of buttons
-		btnSelectDate = (Button) findViewById(R.id.datebutton);
-		btnSelectTime = (Button) findViewById(R.id.Startbutton);
-		btnSelectTime2 = (Button) findViewById(R.id.Endbutton);
-		btnSave = (Button) findViewById(R.id.savebutton);
+		btnInitDateTime = (Button) findViewById(R.id.bpIniDateTimeButton);
+		btnEndDateTime = (Button) findViewById(R.id.bpEndDateTimeButton);
+		btnSave = (Button) findViewById(R.id.bpSaveButton);
+		btnCancel = (Button) findViewById(R.id.bpCancelButton);
+		btnInvite = (Button) findViewById(R.id.bpInviteButton);
 
-		// teste para ver se o texto da data vai para as caixas devidas
+		// get the references of texts
+		textInitDateTime = (EditText) findViewById(R.id.bpInitDateTimeText);
+		textEndDateTime = (EditText) findViewById(R.id.bpEndDateTimeText);
+		textBPName = (EditText) findViewById(R.id.bpNameText);
+		textBPType = (EditText) findViewById(R.id.bpType);
+		textBPDescription = (EditText) findViewById(R.id.bpDescriptionText);
 
-		textDate = (EditText) findViewById(R.id.DatBP);
-		textStart = (EditText) findViewById(R.id.StartBP);
-		textEnd = (EditText) findViewById(R.id.EndBP);
-
-		textName = (EditText) findViewById(R.id.editText1);
-		textType = (EditText) findViewById(R.id.TypeBP);
-		textDescr = (EditText) findViewById(R.id.descriptionBP);
+		// get the references of spinner
+		spinnerBPType = (Spinner) findViewById(R.id.bpTypeSpinner);
 
 		// chamada do load
 		loadSavedPreferences();
 
-		// Set ClickListener on btnSelectDate
-		btnSelectDate.setOnClickListener(new View.OnClickListener() {
-
-			@SuppressWarnings("deprecation")
+		// Set ClickListener on btnInitDateTime
+		btnInitDateTime.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// Show the DatePickerDialog
-				showDialog(DATE_DIALOG_ID);
+				buttonClicked = INIT_DATE_TIME_ID;
+				showDateTimeDialog();
 			}
 		});
 
-		// Set ClickListener on btnSelectTime
-		btnSelectTime.setOnClickListener(new View.OnClickListener() {
-
-			@SuppressWarnings("deprecation")
+		// Set ClickListener on btnEndDateTime
+		btnEndDateTime.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// Show the TimePickerDialog
-				showDialog(TIME_DIALOG_ID);
+				buttonClicked = END_DATE_TIME_ID;
+				showDateTimeDialog();
 			}
 		});
 
-		// Set ClickListener on btnSelectTime2
-		btnSelectTime2.setOnClickListener(new View.OnClickListener() {
-
-			@SuppressWarnings("deprecation")
-			public void onClick(View v) {
-				// Show the TimePickerDialog
-				showDialog(TIME_DIALOG_ID2);
-			}
-		});
-
-		// para guardar a informa�ao
+		// Set ClickListener on btnSave
 		btnSave.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// ir pa outro sitio
+				savePreferences("NameBP", textBPName.getText().toString());
+				savePreferences("TypeBP", textBPType.getText().toString());
+				savePreferences("DescriptionBP", textBPDescription.getText()
+						.toString());
+				savePreferences("InitDateTimeBP", textInitDateTime.getText()
+						.toString());
+				savePreferences("EndDateTimeBP", textEndDateTime.getText()
+						.toString());
 
-				savePreferences("NameBP", textName.getText().toString());
-				savePreferences("TypeBP", textType.getText().toString());
-				savePreferences("BPDescr", textDescr.getText().toString());
-				savePreferences("DateBP", textDate.getText().toString());
-				savePreferences("StartBP", textStart.getText().toString());
-				savePreferences("EndBP", textEnd.getText().toString());
-
-				// NÃO FUNCIONA!!! :-(
-				// sets destas variaveis no objecto bondP
-				// set marker = nome bondpoint
-
-				// tentar assim...
 				setResult(Activity.RESULT_OK);
 				finish();
 			}
 		});
 
+		// Set ClickListener on btnCancel
+		btnCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setResult(Activity.RESULT_CANCELED);
+				finish();
+			}
+		});
+
+		// Set ClickListener on btnSave
+		btnInvite.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// Fazer coisas???
+			}
+		});
+
 	}
 
-	// funcoes fixes
-
+	// funções fixes
 	private void loadSavedPreferences() {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		String BPname = sharedPreferences.getString("NameBP",
-				"Name of Your Bond Point");
+				"Name of your Bond Point");
 		String BPtype = sharedPreferences.getString("TypeBP",
-				"Type of Your Bond Point");
-		String DescrBP = sharedPreferences.getString("BPDescr",
-				"Description of BP");
-		String BPdate = sharedPreferences
-				.getString("DateBP", "Date of your BP");
-		String BPstart = sharedPreferences.getString("StartBP", "Start Time");
-		String BPend = sharedPreferences.getString("EndBP", "End Time");
-		textName.setText(BPname);
-		textType.setText(BPtype);
-		textDescr.setText(DescrBP);
-		textDate.setText(BPdate);
-		textStart.setText(BPstart);
-		textEnd.setText(BPend);
+				"Type of your Bond Point");
+		String BPDescription = sharedPreferences.getString("DescriptionBP",
+				"Description of your Bond Point");
+		String BPInitDateTime = sharedPreferences.getString("InitDateTimeBP",
+				"Initial date of your Bond Point");
+		String BPEndDateTime = sharedPreferences.getString("EndDateTimeBP",
+				"End date of your Bond Point");
 
+		textBPName.setHint(BPname);
+		textBPType.setHint(BPtype);
+		textBPDescription.setHint(BPDescription);
+		textInitDateTime.setHint(BPInitDateTime);
+		textEndDateTime.setHint(BPEndDateTime);
 	}
 
 	private void savePreferences(String key, String value) {
@@ -163,70 +159,81 @@ public class ConnectActivity extends Activity {
 		editor.commit();
 	}
 
-	// acabam as funcoes fixes
+	// acabam as funções fixes
 
-	// Register DatePickerDialog listener
-	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
-		// the callback received when the user "sets" the Date in the
-		// DatePickerDialog
-		public void onDateSet(DatePicker view, int yearSelected,
-				int monthOfYear, int dayOfMonth) {
-			year = yearSelected;
-			month = monthOfYear;
-			day = dayOfMonth;
-			// Set the Selected Date in Select date Button
-			// btnSelectDate.setText("Date selected : " + day + "-" + month +
-			// "-"
-			// + year);
-			textDate.setText("Date selected : " + day + "-" + month + "-"
-					+ year);
-		}
-	};
+	private void showDateTimeDialog() {
+		// Create the dialog
+		final Dialog mDateTimeDialog = new Dialog(this);
+		// Inflate the root layout
+		final RelativeLayout mDateTimeDialogView = (RelativeLayout) getLayoutInflater()
+				.inflate(R.layout.date_time_dialog, null);
+		// Grab widget instance
+		final DateTimePicker mDateTimePicker = (DateTimePicker) mDateTimeDialogView
+				.findViewById(R.id.DateTimePicker);
+		// Check if system is set to use 24h time
+		final boolean is24h = DateFormat.is24HourFormat(this);
 
-	// Register TimePickerDialog listener
-	private TimePickerDialog.OnTimeSetListener mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-		// the callback received when the user "sets" the TimePickerDialog in
-		// the dialog
-		public void onTimeSet(TimePicker view, int hourOfDay, int min) {
-			hour = hourOfDay;
-			minute = min;
-			// Set the Selected Date in Select date Button
-			// btnSelectTime.setText("START :" + hour + "-" + minute);
-			textStart.setText("START : " + hour + ":" + minute);
-		}
-	};
+		// Do updates when the "OK" button is clicked
+		((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime))
+				.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						mDateTimePicker.clearFocus();
 
-	// Register TimePickerDialog listener
-	private TimePickerDialog.OnTimeSetListener mTimeSetListener2 = new TimePickerDialog.OnTimeSetListener() {
-		// the callback received when the user "sets" the TimePickerDialog in
-		// the dialog
-		public void onTimeSet(TimePicker view, int hourOfDay, int min) {
-			hour2 = hourOfDay;
-			minute2 = min;
-			// Set the Selected Date in Select date Button
-			// btnSelectTime2.setText("END :" + hour + "-" + minute);
-			textEnd.setText("END : " + hour2 + ":" + minute2);
-		}
-	};
+						String ampmStr = "";
 
-	// Method automatically gets Called when you call showDialog() method
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case DATE_DIALOG_ID:
-			// create a new DatePickerDialog with values you want to show
-			return new DatePickerDialog(this, mDateSetListener, mYear, mMonth,
-					mDay);
-			// create a new TimePickerDialog with values you want to show
-		case TIME_DIALOG_ID:
-			return new TimePickerDialog(this, mTimeSetListener, mHour, mMinute,
-					false);
-		case TIME_DIALOG_ID2:
-			return new TimePickerDialog(this, mTimeSetListener2, mHour,
-					mMinute, false);
+						year = mDateTimePicker.get(Calendar.YEAR);
+						month = mDateTimePicker.get(Calendar.MONTH) + 1;
+						day = mDateTimePicker.get(Calendar.DAY_OF_MONTH);
+						if (mDateTimePicker.is24HourView()) {
+							hour = mDateTimePicker.get(Calendar.HOUR_OF_DAY);
+							minute = mDateTimePicker.get(Calendar.MINUTE);
+						} else {
+							hour = mDateTimePicker.get(Calendar.HOUR);
+							minute = mDateTimePicker.get(Calendar.MINUTE);
+							ampmStr = (mDateTimePicker.get(Calendar.AM_PM) == Calendar.AM) ? " AM"
+									: " PM";
+						}
 
-		}
-		return null;
+						if (buttonClicked == INIT_DATE_TIME_ID) {
+							// Set the Selected Date in Select date Button
+							textInitDateTime.setText("Initial date: " + day
+									+ "/" + month + "/" + year + " at " + hour
+									+ ":" + minute + ampmStr);
+						} else if (buttonClicked == END_DATE_TIME_ID) {
+							// Set the Selected Date in Select date Button
+							textEndDateTime.setText("Initial date: " + day
+									+ "/" + month + "/" + year + " at " + hour
+									+ ":" + minute + ampmStr);
+						}
+
+						buttonClicked = -1;
+						mDateTimeDialog.dismiss();
+					}
+				});
+
+		// Cancel the dialog when the "Cancel" button is clicked
+		((Button) mDateTimeDialogView.findViewById(R.id.CancelDialog))
+				.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						mDateTimeDialog.cancel();
+					}
+				});
+
+		// Reset Date and Time pickers when the "Reset" button is clicked
+		((Button) mDateTimeDialogView.findViewById(R.id.ResetDateTime))
+				.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						mDateTimePicker.reset();
+					}
+				});
+
+		// Setup TimePicker
+		mDateTimePicker.setIs24HourView(is24h);
+		// No title on the dialog window
+		mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		// Set the dialog content view
+		mDateTimeDialog.setContentView(mDateTimeDialogView);
+		// Display the dialog
+		mDateTimeDialog.show();
 	}
-
 }

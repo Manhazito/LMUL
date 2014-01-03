@@ -7,7 +7,9 @@
     <TimePicker 
         android:id="@+id/timePicker1" 
         android:layout_width="wrap_content" 
-        android:layout_height="wrap_content"></TimePicker>
+        android:layout_height="wrap_content"
+		android:background="@color/bp_dark_grey"
+    ></TimePicker>
     
     
 
