@@ -48,7 +48,11 @@
         </activity>
         
         <activity android:name="org.feup.bondpoint.ConnectActivity"
+<<<<<<< HEAD
+                  android:label="@string/app_name" >
+=======
             	  android:label="@string/app_name">
+>>>>>>> 4c2b3fc80c9a9039e34c925db9e4e8141835ed6c
         </activity>
         
         <meta-data
