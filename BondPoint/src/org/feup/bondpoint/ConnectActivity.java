@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 public class ConnectActivity extends Activity {
@@ -19,14 +20,14 @@ public class ConnectActivity extends Activity {
 
 	// criacao das variaveis de text para depois referenciar
 
-	// ?? textDate, textStart, testEnd;
+	EditText textDate, textStart, textEnd;
 
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
 	static final int TIME_DIALOG_ID2 = 2;
 
 	// variables to save user selected date and time
-	public int year, month, day, hour, minute;
+	public int year, month, day, hour, minute, hour2, minute2;
 	// declare the variables to Show/Set the date and time when Time and Date
 	// Picker Dialog first appears
 	private int mYear, mMonth, mDay, mHour, mMinute;
@@ -55,9 +56,9 @@ public class ConnectActivity extends Activity {
 
 		// teste para ver se o texto da data vai para as caixas devidas
 
-		// textDate = (?) findViewById(R.id.DatBP);
-		// textStart = (?) findViewById(R.id.StartBP);
-		// textDate = (?) findViewById(R.id.EndBP);
+		textDate = (EditText) findViewById(R.id.DatBP);
+		textStart = (EditText) findViewById(R.id.StartBP);
+		textEnd = (EditText) findViewById(R.id.EndBP);
 
 		// Set ClickListener on btnSelectDate
 		btnSelectDate.setOnClickListener(new View.OnClickListener() {
@@ -101,10 +102,11 @@ public class ConnectActivity extends Activity {
 			month = monthOfYear;
 			day = dayOfMonth;
 			// Set the Selected Date in Select date Button
-			btnSelectDate.setText("Date selected : " + day + "-" + month + "-"
+			// btnSelectDate.setText("Date selected : " + day + "-" + month +
+			// "-"
+			// + year);
+			textDate.setText("Date selected : " + day + "-" + month + "-"
 					+ year);
-			// textDate.setText("Date selected : " + day + "-" + month + "-"+
-			// year);
 		}
 	};
 
@@ -116,8 +118,8 @@ public class ConnectActivity extends Activity {
 			hour = hourOfDay;
 			minute = min;
 			// Set the Selected Date in Select date Button
-			btnSelectTime.setText("START :" + hour + "-" + minute);
-			// textStart.setText("START :" + hour + "-" + minute);
+			// btnSelectTime.setText("START :" + hour + "-" + minute);
+			textStart.setText("START :" + hour + "-" + minute);
 		}
 	};
 
@@ -126,11 +128,11 @@ public class ConnectActivity extends Activity {
 		// the callback received when the user "sets" the TimePickerDialog in
 		// the dialog
 		public void onTimeSet(TimePicker view, int hourOfDay, int min) {
-			hour = hourOfDay;
-			minute = min;
+			hour2 = hourOfDay;
+			minute2 = min;
 			// Set the Selected Date in Select date Button
-			btnSelectTime2.setText("END :" + hour + "-" + minute);
-			// textEnd.setText("START :" + hour + "-" + minute);
+			// btnSelectTime2.setText("END :" + hour + "-" + minute);
+			textEnd.setText("END :" + hour2 + "-" + minute2);
 		}
 	};
 
