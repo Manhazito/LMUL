@@ -6,7 +6,10 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -16,11 +19,11 @@ import android.widget.TimePicker;
 public class ConnectActivity extends Activity {
 	// criacao das variaveis para depois referenciar
 
-	Button btnSelectDate, btnSelectTime, btnSelectTime2;
+	Button btnSelectDate, btnSelectTime, btnSelectTime2, btnSave;
 
 	// criacao das variaveis de text para depois referenciar
 
-	EditText textDate, textStart, textEnd;
+	EditText textDate, textStart, textEnd, textName, textType, textDescr;
 
 	static final int DATE_DIALOG_ID = 0;
 	static final int TIME_DIALOG_ID = 1;
@@ -53,12 +56,20 @@ public class ConnectActivity extends Activity {
 		btnSelectDate = (Button) findViewById(R.id.datebutton);
 		btnSelectTime = (Button) findViewById(R.id.Startbutton);
 		btnSelectTime2 = (Button) findViewById(R.id.Endbutton);
+		btnSave = (Button) findViewById(R.id.savebutton);
 
 		// teste para ver se o texto da data vai para as caixas devidas
 
 		textDate = (EditText) findViewById(R.id.DatBP);
 		textStart = (EditText) findViewById(R.id.StartBP);
 		textEnd = (EditText) findViewById(R.id.EndBP);
+
+		textName = (EditText) findViewById(R.id.editText1);
+		textType = (EditText) findViewById(R.id.TypeBP);
+		textDescr = (EditText) findViewById(R.id.descriptionBP);
+
+		// chamada do load
+		loadSavedPreferences();
 
 		// Set ClickListener on btnSelectDate
 		btnSelectDate.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +91,7 @@ public class ConnectActivity extends Activity {
 			}
 		});
 
-		// Set ClickListener on btnSelectTime
+		// Set ClickListener on btnSelectTime2
 		btnSelectTime2.setOnClickListener(new View.OnClickListener() {
 
 			@SuppressWarnings("deprecation")
@@ -90,7 +101,60 @@ public class ConnectActivity extends Activity {
 			}
 		});
 
+		// para guardar a informaçao
+		btnSave.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// ir pa outro sitio
+
+				savePreferences("NameBP", textName.getText().toString());
+				savePreferences("TypeBP", textType.getText().toString());
+				savePreferences("BPDescr", textDescr.getText().toString());
+				savePreferences("DateBP", textDate.getText().toString());
+				savePreferences("StartBP", textStart.getText().toString());
+				savePreferences("EndBP", textEnd.getText().toString());
+
+				finish();
+
+			}
+		});
+
 	}
+
+	// funcoes fixes
+
+	private void loadSavedPreferences() {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		String BPname = sharedPreferences.getString("NameBP",
+				"Name of Your Bonde Point");
+		String BPtype = sharedPreferences.getString("TypeBP",
+				"Type of Your Bond Point");
+		String DescrBP = sharedPreferences.getString("BPDescr",
+				"Description of BP");
+		String BPdate = sharedPreferences
+				.getString("DateBP", "Date of your BP");
+		String BPstart = sharedPreferences.getString("StartBP", "Start Time");
+		String BPend = sharedPreferences.getString("EndBP", "End Time");
+		textName.setText(BPname);
+		textType.setText(BPtype);
+		textDescr.setText(DescrBP);
+		textDate.setText(BPdate);
+		textStart.setText(BPstart);
+		textEnd.setText(BPend);
+
+	}
+
+	private void savePreferences(String key, String value) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(key, value);
+		editor.commit();
+	}
+
+	// acabam as funcoes fixes
 
 	// Register DatePickerDialog listener
 	private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -119,7 +183,7 @@ public class ConnectActivity extends Activity {
 			minute = min;
 			// Set the Selected Date in Select date Button
 			// btnSelectTime.setText("START :" + hour + "-" + minute);
-			textStart.setText("START :" + hour + "-" + minute);
+			textStart.setText("START : " + hour + ":" + minute);
 		}
 	};
 
@@ -132,7 +196,7 @@ public class ConnectActivity extends Activity {
 			minute2 = min;
 			// Set the Selected Date in Select date Button
 			// btnSelectTime2.setText("END :" + hour + "-" + minute);
-			textEnd.setText("END :" + hour2 + "-" + minute2);
+			textEnd.setText("END : " + hour2 + ":" + minute2);
 		}
 	};
 

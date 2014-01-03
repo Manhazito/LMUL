@@ -18,7 +18,7 @@
         android:inputType="text"
         android:text="@string/name_your_boind_point"
         android:textColor="@color/bp_light_grey"
-        android:textSize="20sp" />
+        android:textSize="40sp" />
     
         <EditText
             android:id="@+id/TypeBP"
@@ -128,7 +128,17 @@
 	    android:text="@string/DescribeBP"
 	    android:textColor="@color/bp_light_grey"
 	    android:textSize="20sp" />
-
+	    
+	    <Button
+	        android:id="@+id/savebutton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginBottom="30dp"
+	        android:text="@string/savebutton"
+	        android:textColor="@color/bp_white" />
+	
+	
 	    <Button
 	        android:id="@+id/invbutton"
 	        android:layout_width="wrap_content"
