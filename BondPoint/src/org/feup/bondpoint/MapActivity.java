@@ -46,6 +46,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	private static String bp_title = "New BondPoint";
 
+	private Bondpoint bondP;
+	private Marker mk = null;
 	private Intent bpIntent = null;
 
 	private boolean marker = false;
@@ -302,16 +304,21 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	public void onMapLongClick(LatLng point) {
 		Log.d("longclick", "criou um bondpoint!");
 		if (marker == false) {
+			bondP = new Bondpoint();
+
 			bp = Bitmap.createScaledBitmap(
 					BitmapFactory.decodeResource(resources, R.drawable.add_bp),
 					100, 100, true);
 
-			map.addMarker(
-					new MarkerOptions().anchor((float) 0.5, (float) 0.5)
-							.position(point).title(bp_title)
-							.icon(BitmapDescriptorFactory.fromBitmap(bp)))
-					.setDraggable(true);
+			mk = map.addMarker(new MarkerOptions()
+					.anchor((float) 0.5, (float) 0.5).position(point)
+					.title(bp_title)
+					.icon(BitmapDescriptorFactory.fromBitmap(bp)));
+			mk.setDraggable(true);
 			marker = true;
+
+			bondP.setMarker(mk);
+
 		}
 	}
 
@@ -367,12 +374,12 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		String title = marker.getTitle();
 		if (title.equals(bp_title)) {
 			// abre atividade
+			bpIntent.putExtra("object bp", bondP);
 			startActivity(bpIntent);
 		}
 
 		return false;
 	}
-
 }
 
 class MyInfoWindowAdapter implements InfoWindowAdapter {

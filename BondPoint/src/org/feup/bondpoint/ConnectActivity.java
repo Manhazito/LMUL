@@ -51,6 +51,9 @@ public class ConnectActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
+		// receber o objecto bondpoint
+		Bondpoint bondP = (Bondpoint) getIntent().getSerializableExtra(
+				"object bp");
 
 		// get the references of buttons
 		btnSelectDate = (Button) findViewById(R.id.datebutton);
@@ -115,6 +118,9 @@ public class ConnectActivity extends Activity {
 				savePreferences("StartBP", textStart.getText().toString());
 				savePreferences("EndBP", textEnd.getText().toString());
 
+				// sets destas variaveis no objecto bondP
+				// set marker = nome bondpoint
+
 				finish();
 
 			}
@@ -128,7 +134,7 @@ public class ConnectActivity extends Activity {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		String BPname = sharedPreferences.getString("NameBP",
-				"Name of Your Bonde Point");
+				"Name of Your Bond Point");
 		String BPtype = sharedPreferences.getString("TypeBP",
 				"Type of Your Bond Point");
 		String DescrBP = sharedPreferences.getString("BPDescr",
