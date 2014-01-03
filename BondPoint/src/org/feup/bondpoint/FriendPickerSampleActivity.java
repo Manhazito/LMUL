@@ -29,7 +29,6 @@ public class FriendPickerSampleActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
 
-		resultsTextView = (TextView) findViewById(R.id.resultsTextView);
 		pickFriendsButton = (Button) findViewById(R.id.invbutton);
 		pickFriendsButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
