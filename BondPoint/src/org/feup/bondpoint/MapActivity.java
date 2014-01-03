@@ -3,6 +3,7 @@ package org.feup.bondpoint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -12,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -43,11 +45,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends Activity implements OnMapLongClickListener,
 		OnMapClickListener, OnMarkerClickListener {
 	private static final String TAG = "MapActivity";
+	private static final int BP_RESPONSE = 300;
 
 	private static String bp_title = "New BondPoint";
 
-	private Bondpoint bondP;
-	private Marker mk = null;
+	private BondPoint newBondPoint = null;
+	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
 
 	private boolean marker = false;
@@ -304,27 +307,25 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	public void onMapLongClick(LatLng point) {
 		Log.d("longclick", "criou um bondpoint!");
 		if (marker == false) {
-			bondP = new Bondpoint();
+			newBondPoint = new BondPoint();
 
 			bp = Bitmap.createScaledBitmap(
 					BitmapFactory.decodeResource(resources, R.drawable.add_bp),
 					100, 100, true);
 
-			mk = map.addMarker(new MarkerOptions()
+			newBondPointMarker = map.addMarker(new MarkerOptions()
 					.anchor((float) 0.5, (float) 0.5).position(point)
 					.title(bp_title)
 					.icon(BitmapDescriptorFactory.fromBitmap(bp)));
-			mk.setDraggable(true);
+			newBondPointMarker.setDraggable(true);
+			newBondPoint.setMarker(newBondPointMarker);
+
 			marker = true;
-
-			bondP.setMarker(mk);
-
 		}
 	}
 
 	@Override
 	public void onMapClick(LatLng arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -374,11 +375,54 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		String title = marker.getTitle();
 		if (title.equals(bp_title)) {
 			// abre atividade
-			bpIntent.putExtra("object bp", bondP);
-			startActivity(bpIntent);
+			startActivityForResult(bpIntent, BP_RESPONSE);
 		}
 
 		return false;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case (BP_RESPONSE): {
+			if (resultCode == Activity.RESULT_OK) {
+				SharedPreferences sharedPreferences = PreferenceManager
+						.getDefaultSharedPreferences(this);
+
+				newBondPoint.setName(sharedPreferences.getString("NameBP",
+						"Name of Your Bond Point"));
+				sharedPreferences.edit().remove("NameBP").commit();
+
+				newBondPoint.setType(sharedPreferences.getString("TypeBP",
+						"Type of Your Bond Point"));
+				sharedPreferences.edit().remove("TypeBP").commit();
+
+				newBondPoint.setDescription(sharedPreferences.getString(
+						"BPDescr", "Description of BP"));
+				sharedPreferences.edit().remove("BPDescr").commit();
+
+				newBondPoint.setDate(sharedPreferences.getString("DateBP",
+						"Date of your BP"));
+				sharedPreferences.edit().remove("DateBP").commit();
+
+				newBondPoint.setStartTime(sharedPreferences.getString(
+						"StartBP", "Start Time"));
+				sharedPreferences.edit().remove("StartBP").commit();
+
+				newBondPoint.setEndTime(sharedPreferences.getString("EndBP",
+						"End Time"));
+				sharedPreferences.edit().remove("EndBP").commit();
+
+				// Actualiza o nome na InfoWindow
+				newBondPoint.getMarker().hideInfoWindow();
+				newBondPoint.getMarker().showInfoWindow();
+
+				marker = false;
+			}
+			break;
+		}
+		}
 	}
 }
 
@@ -408,5 +452,4 @@ class MyInfoWindowAdapter implements InfoWindowAdapter {
 	public View getInfoWindow(Marker marker) {
 		return null;
 	}
-
 }

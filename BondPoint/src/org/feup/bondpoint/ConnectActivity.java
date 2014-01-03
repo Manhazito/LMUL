@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 public class ConnectActivity extends Activity {
+
 	// criacao das variaveis para depois referenciar
 
 	Button btnSelectDate, btnSelectTime, btnSelectTime2, btnSave;
@@ -52,7 +53,7 @@ public class ConnectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
 		// receber o objecto bondpoint
-		Bondpoint bondP = (Bondpoint) getIntent().getSerializableExtra(
+		BondPoint bondP = (BondPoint) getIntent().getSerializableExtra(
 				"object bp");
 
 		// get the references of buttons
@@ -104,7 +105,7 @@ public class ConnectActivity extends Activity {
 			}
 		});
 
-		// para guardar a informaçao
+		// para guardar a informaï¿½ao
 		btnSave.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -118,11 +119,13 @@ public class ConnectActivity extends Activity {
 				savePreferences("StartBP", textStart.getText().toString());
 				savePreferences("EndBP", textEnd.getText().toString());
 
+				// NÃƒO FUNCIONA!!! :-(
 				// sets destas variaveis no objecto bondP
 				// set marker = nome bondpoint
 
+				// tentar assim...
+				setResult(Activity.RESULT_OK);
 				finish();
-
 			}
 		});
 
