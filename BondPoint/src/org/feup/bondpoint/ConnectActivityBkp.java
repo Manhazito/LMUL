@@ -53,7 +53,7 @@ public class ConnectActivityBkp extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
 		// receber o objecto bondpoint
-		BondPoint bondP = (BondPoint) getIntent().getSerializableExtra(
+		Bondpoint bondP = (Bondpoint) getIntent().getSerializableExtra(
 				"object bp");
 
 		// get the references of buttons

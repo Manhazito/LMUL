@@ -56,12 +56,10 @@ public class ConnectActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
-<<<<<<< HEAD
+
 		// receber o objecto bondpoint
 
 		bondP = (Bondpoint) getIntent().getSerializableExtra("object bp");
-=======
->>>>>>> aa41eb4f6395f32ff55ccfa5e1a603c0ad62f064
 
 		// get the references of buttons
 		btnInitDateTime = (Button) findViewById(R.id.bpIniDateTimeButton);
@@ -103,14 +101,24 @@ public class ConnectActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				savePreferences("NameBP", textBPName.getText().toString());
-				savePreferences("TypeBP", textBPType.getText().toString());
-				savePreferences("DescriptionBP", textBPDescription.getText()
-						.toString());
-				savePreferences("InitDateTimeBP", textInitDateTime.getText()
-						.toString());
-				savePreferences("EndDateTimeBP", textEndDateTime.getText()
-						.toString());
+				// savePreferences("NameBP", textBPName.getText().toString());
+				// savePreferences("TypeBP", textBPType.getText().toString());
+				// savePreferences("DescriptionBP", textBPDescription.getText()
+				// .toString());
+				// savePreferences("InitDateTimeBP", textInitDateTime.getText()
+				// .toString());
+				// savePreferences("EndDateTimeBP", textEndDateTime.getText()
+				// .toString());
+
+				// sets destas variaveis no objecto bondP
+				bondP.setBpname(textBPName.getText().toString());
+				// bondP.setBpdate(textDate.getText().toString());
+				bondP.setBptype(textBPType.getText().toString());
+				// bondP.setDescription(textDescr.getText().toString());
+				bondP.setEndtime(textEndDateTime.getText().toString());
+				bondP.setStarttime(textInitDateTime.getText().toString());
+
+				// marcador = nome do BondPoint
 
 				setResult(Activity.RESULT_OK);
 				finish();
@@ -121,7 +129,7 @@ public class ConnectActivity extends Activity {
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-<<<<<<< HEAD
+
 				// ir pa outro sitio
 
 				// savePreferences("NameBP", textName.getText().toString());
@@ -131,19 +139,6 @@ public class ConnectActivity extends Activity {
 				// savePreferences("StartBP", textStart.getText().toString());
 				// savePreferences("EndBP", textEnd.getText().toString());
 
-				// sets destas variaveis no objecto bondP
-				// bondP.setBpname(textName.getText().toString());
-				// bondP.setBpdate(textDate.getText().toString());
-				// bondP.setBptype(textType.getText().toString());
-				// bondP.setDescription(textDescr.getText().toString());
-				// bondP.setEndtime(textEnd.getText().toString());
-				// bondP.setStarttime(textStart.getText().toString());
-
-				// marcador = nome do BondPoint
-
-=======
-				setResult(Activity.RESULT_CANCELED);
->>>>>>> aa41eb4f6395f32ff55ccfa5e1a603c0ad62f064
 				finish();
 			}
 		});

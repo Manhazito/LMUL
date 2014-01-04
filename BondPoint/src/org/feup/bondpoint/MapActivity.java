@@ -57,7 +57,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	private static String bp_title = "New BondPoint";
 
-	private BondPoint newBondPoint = null;
+	private Bondpoint newBondPoint = null;
 	private int nBP = 0;
 	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
@@ -318,7 +318,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	public void onMapLongClick(LatLng point) {
 		Log.d("longclick", "criou um bondpoint!");
 		if (creatingMarker == false) {
-			newBondPoint = new BondPoint();
+			newBondPoint = new Bondpoint();
 
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(this);
@@ -410,12 +410,12 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				SharedPreferences sharedPreferences = PreferenceManager
 						.getDefaultSharedPreferences(this);
 
-				newBondPoint.setName(sharedPreferences.getString("NameBP",
+				newBondPoint.setBpname(sharedPreferences.getString("NameBP",
 						"Name of Your Bond Point"));
 				sharedPreferences.edit().remove("NameBP").commit();
 				// Log.d(TAG, "NameBP: " + newBondPoint.getName());
 
-				newBondPoint.setType(sharedPreferences.getString("TypeBP",
+				newBondPoint.setBptype(sharedPreferences.getString("TypeBP",
 						"Type of Your Bond Point"));
 				sharedPreferences.edit().remove("TypeBP").commit();
 				// Log.d(TAG, "TypeBP: " + newBondPoint.getType());
@@ -426,13 +426,13 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				// Log.d(TAG, "DescriptionBP: " +
 				// newBondPoint.getDescription());
 
-				newBondPoint.setInitDateTime(sharedPreferences.getString(
+				newBondPoint.setStarttime(sharedPreferences.getString(
 						"InitDateTimeBP", "Initial Date and Time of your BP"));
 				sharedPreferences.edit().remove("InitDateTimeBP").commit();
 				// Log.d(TAG, "InitDateTimeBP: " +
 				// newBondPoint.getInitDateTime());
 
-				newBondPoint.setEndDateTime(sharedPreferences.getString(
+				newBondPoint.setEndtime(sharedPreferences.getString(
 						"EndDateTimeBP", "End Date and Time of BP"));
 				sharedPreferences.edit().remove("EndDateTimeBP").commit();
 				// Log.d(TAG, "EndDateTimeBP: " +
@@ -471,17 +471,17 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 						BufferedWriter bw = new BufferedWriter(new FileWriter(
 								file, true));
 
-						bw.write(newBondPoint.getName());
+						bw.write(newBondPoint.getBpname());
 						bw.newLine();
-						bw.write(newBondPoint.getType());
+						bw.write(newBondPoint.getBptype());
 						bw.newLine();
 						bw.write(newBondPoint.getDescription());
 						bw.newLine();
-						bw.write(newBondPoint.getId());
+						bw.write(newBondPoint.getBpid());
 						bw.newLine();
-						bw.write(newBondPoint.getInitDateTime());
+						bw.write(newBondPoint.getStarttime());
 						bw.newLine();
-						bw.write(newBondPoint.getEndDateTime());
+						bw.write(newBondPoint.getEndtime());
 						bw.newLine();
 						bw.write(newBondPoint.getMarker().getTitle());
 						bw.newLine();
