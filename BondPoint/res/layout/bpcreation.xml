@@ -9,144 +9,133 @@
     android:orientation="vertical" >
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/bpNameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="45dp"
         android:inputType="text"
-        android:text="@string/name_your_boind_point"
+        android:hint="@string/name_your_boind_point"
         android:textColor="@color/bp_light_grey"
         android:textSize="40sp" />
     
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp" >
+
+		<EditText
+		    android:id="@+id/bpType"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:layout_marginBottom="45dp"
+		    android:inputType="text"
+		    android:hint="@string/type_of_your_bp"
+		    android:textColor="@color/bp_light_grey"
+		    android:textSize="20sp" />
+      
+		<Spinner
+		    android:id="@+id/bpTypeSpinner"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBaseline="@+id/bpType"
+		    android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+        
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="45dp" >
+
         <EditText
-            android:id="@+id/TypeBP"
-            android:layout_width="match_parent"
+            android:id="@+id/bpInitDateTimeText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="45dp"
-            android:inputType="text"
-            android:text="@string/type_of_your_bp"
+            android:layout_alignParentLeft="true"
+            android:inputType="datetime"
+            android:hint="@string/initial_date_of_BP"
             android:textColor="@color/bp_light_grey"
             android:textSize="20sp" />
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
+        <Button
+            android:id="@+id/bpIniDateTimeButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="45dp" >
+            android:layout_alignBaseline="@+id/bpInitDateTimeText"
+            android:layout_alignParentRight="true"
+            android:text="@string/initial_date" />
 
-            <EditText
-                android:id="@+id/DatBP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:inputType="text"
-                android:text="@string/Date_of_BP"
-                android:textColor="@color/bp_light_grey"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/datebutton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/DatBP"
-                android:layout_alignBottom="@+id/DatBP"
-                android:layout_alignParentRight="true"
-                android:text="Select Date of BP" />
-
-        </RelativeLayout>
+    </RelativeLayout>
         
 	<RelativeLayout 
 	   android:layout_gravity="left"
 	   android:layout_width="fill_parent"
        android:layout_height="wrap_content"
-       android:layout_marginBottom="45dp"
-	   >
+       android:layout_marginBottom="45dp" >
 
 	    <EditText
-	        android:id="@+id/StartBP"
+	        android:id="@+id/bpEndDateTimeText"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:inputType="text"
-	        android:text="@string/startBP"
+	        android:inputType="datetime"
+	        android:hint="@string/end_date_of_BP"
 	        android:textColor="@color/bp_light_grey"
 	        android:textSize="20sp" >
-
-            <requestFocus />
-            </EditText>
+        </EditText>
 
 	    <Button
-	        android:id="@+id/Startbutton"
-	        style="?android:attr/buttonStyleSmall"
+	        android:id="@+id/bpEndDateTimeButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_alignBaseline="@+id/StartBP"
-	        android:layout_alignBottom="@+id/StartBP"
+	        android:layout_alignBaseline="@+id/bpEndDateTimeText"
 	        android:layout_alignParentRight="true"
-	        android:text="Select Start of BP" />
+	        android:text="@string/end_date"
+       	/>
 
 	</RelativeLayout>
         
-	<RelativeLayout
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="left"
-	    android:layout_marginBottom="45dp">
-
-	    <EditText
-            android:id="@+id/EndBP"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:inputType="text"
-            android:text="@string/EndBP"
-            android:textColor="@color/bp_light_grey"
-            android:textSize="20sp" />
-
-	    <Button
-	        android:id="@+id/Endbutton"
-	        style="?android:attr/buttonStyleSmall"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignBaseline="@+id/EndBP"
-	        android:layout_alignBottom="@+id/EndBP"
-	        android:layout_alignParentRight="true"
-	        android:text="Select End of BP" />
-
-	</RelativeLayout>
 
 	<EditText
-	    android:id="@+id/descriptionBP"
+	    android:id="@+id/bpDescriptionText"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_marginBottom="98dp"
 	    android:inputType="text"
 	    android:singleLine="false"
-	    android:text="@string/DescribeBP"
+	    android:hint="@string/DescribeBP"
 	    android:textColor="@color/bp_light_grey"
 	    android:textSize="20sp" />
 	    
-	    <Button
-	        android:id="@+id/savebutton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:layout_marginBottom="30dp"
-	        android:text="@string/savebutton"
-	        android:textColor="@color/bp_white" />
-	
-	
-	    <Button
-	        android:id="@+id/invbutton"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="center_horizontal"
-	        android:layout_marginBottom="30dp"
-	        android:text="@string/com_facebook_choose_friends"
-	        android:textColor="@color/bp_white" />
+    <Button
+        android:id="@+id/bpSaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:text="@string/save"
+        android:textColor="@color/bp_white" />
+
+    <Button
+        android:id="@+id/bpCancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:text="@string/cancel"
+        android:textColor="@color/bp_white" />
+
+    
+    <Button
+        android:id="@+id/bpInviteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="30dp"
+        android:text="@string/invite_friends"
+        android:textColor="@color/bp_white" />
    
 </LinearLayout>
 </ScrollView>
