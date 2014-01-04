@@ -1,5 +1,13 @@
 package org.feup.bondpoint;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -50,6 +58,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private static String bp_title = "New BondPoint";
 
 	private BondPoint newBondPoint = null;
+	private int nBP = 0;
 	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
 
@@ -150,6 +159,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		map.setOnMarkerClickListener(this);
 
 		mapIntent = getIntent();
+
+		loadBondPoints();
 
 		namesStr = mapIntent.getStringArrayExtra("names");
 		idsStr = mapIntent.getStringArrayExtra("ids");
@@ -325,6 +336,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					.anchor((float) 0.5, (float) 0.5).position(point)
 					.title(bp_title)
 					.icon(BitmapDescriptorFactory.fromBitmap(bp)));
+			newBondPointMarker.setSnippet("");
 			newBondPointMarker.setDraggable(true);
 			newBondPoint.setMarker(newBondPointMarker);
 
@@ -401,22 +413,41 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				newBondPoint.setName(sharedPreferences.getString("NameBP",
 						"Name of Your Bond Point"));
 				sharedPreferences.edit().remove("NameBP").commit();
+				// Log.d(TAG, "NameBP: " + newBondPoint.getName());
 
 				newBondPoint.setType(sharedPreferences.getString("TypeBP",
 						"Type of Your Bond Point"));
 				sharedPreferences.edit().remove("TypeBP").commit();
+				// Log.d(TAG, "TypeBP: " + newBondPoint.getType());
 
 				newBondPoint.setDescription(sharedPreferences.getString(
 						"DescriptionBP", "Description of BP"));
 				sharedPreferences.edit().remove("DescriptionBP").commit();
+				// Log.d(TAG, "DescriptionBP: " +
+				// newBondPoint.getDescription());
 
 				newBondPoint.setInitDateTime(sharedPreferences.getString(
 						"InitDateTimeBP", "Initial Date and Time of your BP"));
 				sharedPreferences.edit().remove("InitDateTimeBP").commit();
+				// Log.d(TAG, "InitDateTimeBP: " +
+				// newBondPoint.getInitDateTime());
 
 				newBondPoint.setEndDateTime(sharedPreferences.getString(
 						"EndDateTimeBP", "End Date and Time of BP"));
 				sharedPreferences.edit().remove("EndDateTimeBP").commit();
+				// Log.d(TAG, "EndDateTimeBP: " +
+				// newBondPoint.getEndDateTime());
+
+				// Log.d(TAG, "Marker Title: "
+				// + newBondPoint.getMarker().getTitle());
+				// Log.d(TAG, "Marker Snippet: "
+				// + newBondPoint.getMarker().getSnippet());
+				// Log.d(TAG, "Marker Latitude: "
+				// + newBondPoint.getMarker().getPosition().latitude);
+				// Log.d(TAG, "Marker Longitude: "
+				// + newBondPoint.getMarker().getPosition().longitude);
+
+				// Muda Imagem do Marker!
 
 				// Obriga a actualizar o nome na InfoWindow
 				newBondPoint.getMarker().hideInfoWindow();
@@ -424,15 +455,191 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 				// Disable Draggable
 				newBondPoint.getMarker().setDraggable(false);
+
+				// Save BondPoint to System File
+				String folderName = "BondPoints";
+				String fileName = "BondPoint_" + nBP + ".data";
+
+				File path = new File(getFilesDir(), folderName);
+				if (!path.exists())
+					path.mkdir();
+
+				File file = new File(path, fileName);
+				if (!file.exists()) {
+					Log.d(TAG, "File doesn't exist.");
+					try {
+						BufferedWriter bw = new BufferedWriter(new FileWriter(
+								file, true));
+
+						bw.write(newBondPoint.getName());
+						bw.newLine();
+						bw.write(newBondPoint.getType());
+						bw.newLine();
+						bw.write(newBondPoint.getDescription());
+						bw.newLine();
+						bw.write(newBondPoint.getId());
+						bw.newLine();
+						bw.write(newBondPoint.getInitDateTime());
+						bw.newLine();
+						bw.write(newBondPoint.getEndDateTime());
+						bw.newLine();
+						bw.write(newBondPoint.getMarker().getTitle());
+						bw.newLine();
+						bw.write(newBondPoint.getMarker().getSnippet());
+						bw.newLine();
+						bw.write(Double.toString(newBondPoint.getMarker()
+								.getPosition().latitude));
+						bw.newLine();
+						bw.write(Double.toString(newBondPoint.getMarker()
+								.getPosition().longitude));
+						bw.flush();
+						bw.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} else {
+					Log.d(TAG, "File already exists: ");
+					BufferedReader br;
+					try {
+						br = new BufferedReader(new FileReader(file));
+
+						String line = br.readLine();
+						Log.d(TAG, "Nome: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Tipo: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Descrição: " + line);
+						line = br.readLine();
+						Log.d(TAG, "ID: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Data início: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Data fim: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Título: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Snippet: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Latitude: " + line);
+						line = br.readLine();
+						Log.d(TAG, "Longitude: " + line);
+						br.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					// file.delete();
+				}
+
+				nBP++;
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				newBondPoint.getMarker().remove();
-				newBondPoint = null;
 			}
 
 			creatingMarker = false;
 			break;
 		}
 		}
+	}
+
+	private void loadBondPoints() {
+		String folderName = "BondPoints";
+		File path = new File(getFilesDir(), folderName);
+		if (!path.exists()) {
+			Log.d(TAG, "Pasta " + path + " não existe...");
+			return; // Não há BondPoints guardados!
+		}
+
+		int nFiles = path.listFiles().length;
+		int filesLoaded = 0;
+		Log.d(TAG, "Existem " + nFiles + " ficheiros guardados.");
+		while (filesLoaded < nFiles) {
+			String fileName = "BondPoint_" + filesLoaded + ".data";
+
+			File file = new File(path, fileName);
+			if (!file.exists()) {
+				Log.d(TAG, "File do not exists");
+				continue;
+			} else {
+				Log.d(TAG, "File already exists: ");
+				BufferedReader br;
+				try {
+					br = new BufferedReader(new FileReader(file));
+
+					String nome = br.readLine();
+					// if (nome == null)
+					// nome = "";
+					Log.d(TAG, "Nome: " + nome);
+					String tipo = br.readLine();
+					// if (tipo == null)
+					// tipo = "";
+					Log.d(TAG, "Tipo: " + tipo);
+					String desc = br.readLine();
+					// if (desc == null)
+					// desc = "";
+					Log.d(TAG, "Descrição: " + desc);
+					String id = br.readLine();
+					// if (id == null)
+					// id = "";
+					Log.d(TAG, "ID: " + id);
+					String ini = br.readLine();
+					// if (ini == null)
+					// ini = "";
+					Log.d(TAG, "Data início: " + ini);
+					String end = br.readLine();
+					// if (end == null)
+					// end = "";
+					Log.d(TAG, "Data fim: " + end);
+					String title = br.readLine();
+					// if (title == null)
+					// title = "";
+					Log.d(TAG, "Título: " + title);
+					String snip = br.readLine();
+					// if (snip == null)
+					// snip = "";
+					Log.d(TAG, "Snippet: " + snip);
+					String latitude = br.readLine();
+					// if (latitude == null)
+					// latitude = "0.0";
+					Double lat = Double.parseDouble(latitude);
+					Log.d(TAG, "Latitude: " + lat);
+					String longitude = br.readLine();
+					// if (longitude == null)
+					// longitude = "0.0";
+					Double lon = Double.parseDouble(longitude);
+					Log.d(TAG, "Longitude: " + lon);
+					br.close();
+
+					LatLng location = new LatLng(lat, lon);
+
+					// criar Marker
+					bp = Bitmap.createScaledBitmap(BitmapFactory
+							.decodeResource(resources, R.drawable.add_bp), 100,
+							100, true);
+
+					map.addMarker(
+							new MarkerOptions()
+									.anchor((float) 0.5, (float) 0.5)
+									.position(location)
+									.title(title)
+									.snippet(snip)
+									.icon(BitmapDescriptorFactory
+											.fromBitmap(bp))).setDraggable(
+							false);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				filesLoaded++;
+				// file.delete(); // Para fazer RESET
+			}
+		}
+		nBP = filesLoaded;
+
 	}
 }
 

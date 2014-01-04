@@ -4,12 +4,12 @@ import com.google.android.gms.maps.model.Marker;
 
 public class BondPoint {
 
-	private String id;
-	private String name;
-	private String type;
-	private String initDateTime;
-	private String endDimeTime;
-	private String description;
+	private String id = "";
+	private String name = "";
+	private String type = "";
+	private String initDateTime = "";
+	private String endDimeTime = "";
+	private String description = "";
 	private Marker marker;
 
 	public Marker getMarker() {
