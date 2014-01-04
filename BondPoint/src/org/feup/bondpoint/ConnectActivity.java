@@ -7,7 +7,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -35,6 +34,8 @@ public class ConnectActivity extends Activity {
 	// Picker Dialog first appears
 	private int mYear, mMonth, mDay, mHour, mMinute;
 
+	private Bondpoint bondP;
+
 	// constructor
 
 	public ConnectActivity() {
@@ -52,8 +53,8 @@ public class ConnectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
 		// receber o objecto bondpoint
-		Bondpoint bondP = (Bondpoint) getIntent().getSerializableExtra(
-				"object bp");
+
+		bondP = (Bondpoint) getIntent().getSerializableExtra("object bp");
 
 		// get the references of buttons
 		btnSelectDate = (Button) findViewById(R.id.datebutton);
@@ -111,15 +112,22 @@ public class ConnectActivity extends Activity {
 			public void onClick(View v) {
 				// ir pa outro sitio
 
-				savePreferences("NameBP", textName.getText().toString());
-				savePreferences("TypeBP", textType.getText().toString());
-				savePreferences("BPDescr", textDescr.getText().toString());
-				savePreferences("DateBP", textDate.getText().toString());
-				savePreferences("StartBP", textStart.getText().toString());
-				savePreferences("EndBP", textEnd.getText().toString());
+				// savePreferences("NameBP", textName.getText().toString());
+				// savePreferences("TypeBP", textType.getText().toString());
+				// savePreferences("BPDescr", textDescr.getText().toString());
+				// savePreferences("DateBP", textDate.getText().toString());
+				// savePreferences("StartBP", textStart.getText().toString());
+				// savePreferences("EndBP", textEnd.getText().toString());
 
 				// sets destas variaveis no objecto bondP
-				// set marker = nome bondpoint
+				// bondP.setBpname(textName.getText().toString());
+				// bondP.setBpdate(textDate.getText().toString());
+				// bondP.setBptype(textType.getText().toString());
+				// bondP.setDescription(textDescr.getText().toString());
+				// bondP.setEndtime(textEnd.getText().toString());
+				// bondP.setStarttime(textStart.getText().toString());
+
+				// marcador = nome do BondPoint
 
 				finish();
 
@@ -152,13 +160,13 @@ public class ConnectActivity extends Activity {
 
 	}
 
-	private void savePreferences(String key, String value) {
-		SharedPreferences sharedPreferences = PreferenceManager
-				.getDefaultSharedPreferences(this);
-		Editor editor = sharedPreferences.edit();
-		editor.putString(key, value);
-		editor.commit();
-	}
+	// private void savePreferences(String key, String value) {
+	// SharedPreferences sharedPreferences = PreferenceManager
+	// .getDefaultSharedPreferences(this);
+	// Editor editor = sharedPreferences.edit();
+	// editor.putString(key, value);
+	// editor.commit();
+	// }
 
 	// acabam as funcoes fixes
 
