@@ -52,9 +52,6 @@ public class ConnectActivityBkp extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
-		// receber o objecto bondpoint
-		Bondpoint bondP = (Bondpoint) getIntent().getSerializableExtra(
-				"object bp");
 
 		// get the references of buttons
 		btnSelectDate = (Button) findViewById(R.id.datebutton);

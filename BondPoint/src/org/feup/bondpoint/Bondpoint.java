@@ -4,44 +4,36 @@ import com.google.android.gms.maps.model.Marker;
 
 public class Bondpoint {
 
-	private String Bpname;
-	private String Bpdate;
-	private String Bptype;
-	private String Description;
-	private String Endtime;
-	private String Starttime;
-	private Marker marker;
-	private String Bpid;
+	private String Bpname = "";
+	private String Bptype = "";
+	private String Description = "";
+	private String Endtime = "";
+	private String Starttime = "";
+	private Marker marker = null;
+	private String Bpid = "";
 
-	public String getBpid() {
+	public String getID() {
 		return Bpid;
 	}
 
-	public void setBpid(String bpid) {
+	public void setID(String bpid) {
 		Bpid = bpid;
 	}
 
-	public String getBpname() {
+	public String getName() {
 		return Bpname;
 	}
 
-	public void setBpname(String bpname) {
+	public void setName(String bpname) {
 		Bpname = bpname;
+		marker.setTitle(bpname);
 	}
 
-	public String getBpdate() {
-		return Bpdate;
-	}
-
-	public void setBpdate(String bpdate) {
-		Bpdate = bpdate;
-	}
-
-	public String getBptype() {
+	public String getType() {
 		return Bptype;
 	}
 
-	public void setBptype(String bptype) {
+	public void setType(String bptype) {
 		Bptype = bptype;
 	}
 
@@ -76,12 +68,4 @@ public class Bondpoint {
 	public void setMarker(Marker marker) {
 		this.marker = marker;
 	}
-
-	// bondP.setBpname(textName.getText().toString());
-	// bondP.setBpdate(textDate.getText().toString());
-	// bondP.setBptype(textType.getText().toString());
-	// bondP.setDescription(textDescr.getText().toString());
-	// bondP.setEndtime(textEnd.getText().toString());
-	// bondP.setStarttime(textStart.getText().toString());
-
 }

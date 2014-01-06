@@ -485,42 +485,25 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				SharedPreferences sharedPreferences = PreferenceManager
 						.getDefaultSharedPreferences(this);
 
-				newBondPoint.setBpname(sharedPreferences.getString("NameBP",
+				newBondPoint.setName(sharedPreferences.getString("NameBP",
 						"Name of Your Bond Point"));
 				sharedPreferences.edit().remove("NameBP").commit();
-				// Log.d(TAG, "NameBP: " + newBondPoint.getName());
 
-				newBondPoint.setBptype(sharedPreferences.getString("TypeBP",
+				newBondPoint.setType(sharedPreferences.getString("TypeBP",
 						"Type of Your Bond Point"));
 				sharedPreferences.edit().remove("TypeBP").commit();
-				// Log.d(TAG, "TypeBP: " + newBondPoint.getType());
 
 				newBondPoint.setDescription(sharedPreferences.getString(
 						"DescriptionBP", "Description of BP"));
 				sharedPreferences.edit().remove("DescriptionBP").commit();
-				// Log.d(TAG, "DescriptionBP: " +
-				// newBondPoint.getDescription());
 
 				newBondPoint.setStarttime(sharedPreferences.getString(
 						"InitDateTimeBP", "Initial Date and Time of your BP"));
 				sharedPreferences.edit().remove("InitDateTimeBP").commit();
-				// Log.d(TAG, "InitDateTimeBP: " +
-				// newBondPoint.getInitDateTime());
 
 				newBondPoint.setEndtime(sharedPreferences.getString(
 						"EndDateTimeBP", "End Date and Time of BP"));
 				sharedPreferences.edit().remove("EndDateTimeBP").commit();
-				// Log.d(TAG, "EndDateTimeBP: " +
-				// newBondPoint.getEndDateTime());
-
-				// Log.d(TAG, "Marker Title: "
-				// + newBondPoint.getMarker().getTitle());
-				// Log.d(TAG, "Marker Snippet: "
-				// + newBondPoint.getMarker().getSnippet());
-				// Log.d(TAG, "Marker Latitude: "
-				// + newBondPoint.getMarker().getPosition().latitude);
-				// Log.d(TAG, "Marker Longitude: "
-				// + newBondPoint.getMarker().getPosition().longitude);
 
 				// Muda Imagem do Marker!
 
@@ -546,13 +529,13 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 						BufferedWriter bw = new BufferedWriter(new FileWriter(
 								file, true));
 
-						bw.write(newBondPoint.getBpname());
+						bw.write(newBondPoint.getName());
 						bw.newLine();
-						bw.write(newBondPoint.getBptype());
+						bw.write(newBondPoint.getType());
 						bw.newLine();
 						bw.write(newBondPoint.getDescription());
 						bw.newLine();
-						bw.write(newBondPoint.getBpid());
+						bw.write(newBondPoint.getID());
 						bw.newLine();
 						bw.write(newBondPoint.getStarttime());
 						bw.newLine();
@@ -572,40 +555,38 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-				} else {
+				} else
 					Log.d(TAG, "File already exists: ");
-					BufferedReader br;
-					try {
-						br = new BufferedReader(new FileReader(file));
 
-						String line = br.readLine();
-						Log.d(TAG, "Nome: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Tipo: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Descrição: " + line);
-						line = br.readLine();
-						Log.d(TAG, "ID: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Data início: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Data fim: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Título: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Snippet: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Latitude: " + line);
-						line = br.readLine();
-						Log.d(TAG, "Longitude: " + line);
-						br.close();
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				BufferedReader br;
+				try {
+					br = new BufferedReader(new FileReader(file));
 
-					// file.delete();
+					String line = br.readLine();
+					Log.d(TAG, "Nome: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Tipo: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Descrição: " + line);
+					line = br.readLine();
+					Log.d(TAG, "ID: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Data início: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Data fim: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Título: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Snippet: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Latitude: " + line);
+					line = br.readLine();
+					Log.d(TAG, "Longitude: " + line);
+					br.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 
 				nBP++;
@@ -618,17 +599,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		}
 		}
 	}
-
-	/*
-	 * @Override public void onActivityCreated(Bundle savedInstanceState) {
-	 * super.onActivityCreated(savedInstanceState);
-	 * 
-	 * // Check for an incoming notification. Save the info Uri intentUri =
-	 * MapActivity.this.getIntent().getData(); if (intentUri != null) { String
-	 * requestIdParam = intentUri.getQueryParameter("request_ids"); if
-	 * (requestIdParam != null) { String array[] = requestIdParam.split(",");
-	 * requestId = array[0]; Log.i(TAG, "Request id: " + requestId); } } }
-	 */
 
 	private void loadBondPoints() {
 		String folderName = "BondPoints";
@@ -655,45 +625,45 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					br = new BufferedReader(new FileReader(file));
 
 					String nome = br.readLine();
-					// if (nome == null)
-					// nome = "";
+					if (nome == null)
+						nome = "";
 					Log.d(TAG, "Nome: " + nome);
 					String tipo = br.readLine();
-					// if (tipo == null)
-					// tipo = "";
+					if (tipo == null)
+						tipo = "";
 					Log.d(TAG, "Tipo: " + tipo);
 					String desc = br.readLine();
-					// if (desc == null)
-					// desc = "";
+					if (desc == null)
+						desc = "";
 					Log.d(TAG, "Descrição: " + desc);
 					String id = br.readLine();
-					// if (id == null)
-					// id = "";
+					if (id == null)
+						id = "";
 					Log.d(TAG, "ID: " + id);
 					String ini = br.readLine();
-					// if (ini == null)
-					// ini = "";
+					if (ini == null)
+						ini = "";
 					Log.d(TAG, "Data início: " + ini);
 					String end = br.readLine();
-					// if (end == null)
-					// end = "";
+					if (end == null)
+						end = "";
 					Log.d(TAG, "Data fim: " + end);
 					String title = br.readLine();
-					// if (title == null)
-					// title = "";
+					if (title == null)
+						title = "";
 					Log.d(TAG, "Título: " + title);
 					String snip = br.readLine();
-					// if (snip == null)
-					// snip = "";
+					if (snip == null)
+						snip = "";
 					Log.d(TAG, "Snippet: " + snip);
 					String latitude = br.readLine();
-					// if (latitude == null)
-					// latitude = "0.0";
+					if (latitude == null)
+						latitude = "0.0";
 					Double lat = Double.parseDouble(latitude);
 					Log.d(TAG, "Latitude: " + lat);
 					String longitude = br.readLine();
-					// if (longitude == null)
-					// longitude = "0.0";
+					if (longitude == null)
+						longitude = "0.0";
 					Double lon = Double.parseDouble(longitude);
 					Log.d(TAG, "Longitude: " + lon);
 					br.close();
