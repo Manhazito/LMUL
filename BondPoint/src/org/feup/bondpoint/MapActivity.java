@@ -20,6 +20,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -35,9 +36,13 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -52,6 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapActivity extends Activity implements OnMapLongClickListener,
 		OnMapClickListener, OnMarkerClickListener {
+
 	private static final String TAG = "MapActivity";
 	private static final int BP_RESPONSE = 300;
 
@@ -110,6 +116,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private Boolean friendsWithoutCoordinates = false;
 
 	private Session session;
+
+	private String requestId;
 
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
@@ -196,6 +204,17 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 		userLocation = new LatLng(Double.parseDouble(latitudesStr[nFriends]),
 				Double.parseDouble(longitudesStr[nFriends]));
+
+		// Check for an incoming notification. Save the info
+		Uri intentUri = MapActivity.this.getIntent().getData();
+		if (intentUri != null) {
+			String requestIdParam = intentUri.getQueryParameter("request_ids");
+			if (requestIdParam != null) {
+				String array[] = requestIdParam.split(",");
+				requestId = array[0];
+				Log.i(TAG, "Request id: " + requestId);
+			}
+		}
 
 		// -------------------------------------
 		// Friends marker with mask
@@ -345,8 +364,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	}
 
 	@Override
-	public void onMapClick(LatLng arg0) {
-
+	public void onMapClick(LatLng point) {
+		sendRequestDialog();
 	}
 
 	@Override
@@ -383,11 +402,67 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
+		// Check if the user is authenticated and
+		// an incoming notification needs handling
+		if (state.isOpened() && requestId != null) {
+			Toast.makeText(MapActivity.this.getApplicationContext(),
+					"Incoming request", Toast.LENGTH_SHORT).show();
+			requestId = null;
+		}
 		if (state.isClosed()) {
 			Intent intent = new Intent(this.getApplicationContext(),
 					MainActivity.class);
 			startActivity(intent);
 		}
+	}
+
+	// Send facebook request
+	private void sendRequestDialog() {
+		Bundle params = new Bundle();
+		params.putString("message", "Convite para novo BONDPOINT");
+
+		WebDialog requestsDialog = (new WebDialog.RequestsDialogBuilder(
+				MapActivity.this, Session.getActiveSession(), params))
+				.setOnCompleteListener(new OnCompleteListener() {
+
+					@Override
+					public void onComplete(Bundle values,
+							FacebookException error) {
+						if (error != null) {
+							if (error instanceof FacebookOperationCanceledException) {
+								Toast.makeText(
+										MapActivity.this
+												.getApplicationContext(),
+										"Request cancelled", Toast.LENGTH_SHORT)
+										.show();
+							} else {
+								Toast.makeText(
+										MapActivity.this
+												.getApplicationContext(),
+										"Network Error", Toast.LENGTH_SHORT)
+										.show();
+							}
+						} else {
+							final String requestId = values
+									.getString("request");
+							if (requestId != null) {
+								Toast.makeText(
+										MapActivity.this
+												.getApplicationContext(),
+										"Request sent", Toast.LENGTH_SHORT)
+										.show();
+							} else {
+								Toast.makeText(
+										MapActivity.this
+												.getApplicationContext(),
+										"Request cancelled", Toast.LENGTH_SHORT)
+										.show();
+							}
+						}
+					}
+
+				}).build();
+		requestsDialog.show();
 	}
 
 	@Override
@@ -544,6 +619,17 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		}
 	}
 
+	/*
+	 * @Override public void onActivityCreated(Bundle savedInstanceState) {
+	 * super.onActivityCreated(savedInstanceState);
+	 * 
+	 * // Check for an incoming notification. Save the info Uri intentUri =
+	 * MapActivity.this.getIntent().getData(); if (intentUri != null) { String
+	 * requestIdParam = intentUri.getQueryParameter("request_ids"); if
+	 * (requestIdParam != null) { String array[] = requestIdParam.split(",");
+	 * requestId = array[0]; Log.i(TAG, "Request id: " + requestId); } } }
+	 */
+
 	private void loadBondPoints() {
 		String folderName = "BondPoints";
 		File path = new File(getFilesDir(), folderName);
@@ -669,4 +755,5 @@ class MyInfoWindowAdapter implements InfoWindowAdapter {
 	public View getInfoWindow(Marker marker) {
 		return null;
 	}
+
 }

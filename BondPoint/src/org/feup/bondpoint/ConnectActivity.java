@@ -260,4 +260,5 @@ public class ConnectActivity extends Activity {
 		// Display the dialog
 		mDateTimeDialog.show();
 	}
+
 }
