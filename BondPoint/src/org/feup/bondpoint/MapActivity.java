@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.Context;
@@ -38,6 +39,10 @@ import android.widget.Toast;
 
 import com.facebook.FacebookException;
 import com.facebook.FacebookOperationCanceledException;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Request.Callback;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -63,7 +68,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	private static String bp_title = "New BondPoint";
 
-	private Bondpoint newBondPoint = null;
+	private BondPoint[] bondPointArray = null;
+	private BondPoint newBondPoint = null;
 	private int nBP = 0;
 	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
@@ -181,7 +187,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		imgsBmpByteArray = new byte[nFriends + 1][];
 		imgsBmp = new Bitmap[nFriends + 1];
 
-		Log.d(TAG, "Loaded " + nFriends + ".");
+		// Log.d(TAG, "Loaded " + nFriends + ".");
 
 		for (int i = 0; i <= nFriends; i++) {
 			label = "picture" + i;
@@ -225,7 +231,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				BitmapFactory.decodeResource(resources, R.drawable.av), 50, 50,
 				true);
 		for (int i = 0; i < nFriends; i++) {
-			Log.i("PEOPLE", namesStr[i]);
+			// Log.i("PEOPLE", namesStr[i]);
 
 			avFriendMarkerPic = (ImageView) avFriendMarkerLayout
 					.findViewById(R.id.friend_marker_pic);
@@ -259,7 +265,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					&& Double.parseDouble(longitudesStr[i]) == 0.0) {
 				friendsWithoutCoordinates = true;
 			} else {
-				Log.d(TAG, "LATITUDE: " + Double.parseDouble(latitudesStr[i]));
+				// Log.d(TAG, "LATITUDE: " +
+				// Double.parseDouble(latitudesStr[i]));
 				map.addMarker(
 						new MarkerOptions()
 								.anchor((float) 0.5, (float) 0.5)
@@ -275,12 +282,9 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 			}
 		}
 
-		// -------------------------------------
-
 		// ----------------------
 		// User marker with mask
 		// ----------------------
-
 		squaredUserBmp = createCenteredSquaredImage(imgsBmp[nFriends]);
 
 		userMarkerBmp = Bitmap
@@ -337,7 +341,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	public void onMapLongClick(LatLng point) {
 		Log.d("longclick", "criou um bondpoint!");
 		if (creatingMarker == false) {
-			newBondPoint = new Bondpoint();
+			newBondPoint = new BondPoint();
 
 			SharedPreferences sharedPreferences = PreferenceManager
 					.getDefaultSharedPreferences(this);
@@ -366,6 +370,33 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	@Override
 	public void onMapClick(LatLng point) {
 		sendRequestDialog();
+
+		Log.i(TAG, "A tentar criar evento...");
+		session = Session.getActiveSession();
+		if (session != null && session.isOpened()) {
+			try {
+				Session.OpenRequest request = new Session.OpenRequest(this);
+				request.setPermissions(Arrays.asList("create_event"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			Bundle bundle = new Bundle();
+			bundle.putString("name", "Pescar na Foz!");
+			bundle.putString("start_time", "2014-02-02");
+			Request postRequest = new Request(Session.getActiveSession(),
+					"me/events", bundle, HttpMethod.POST, new Callback() {
+						@Override
+						public void onCompleted(Response response) {
+							Log.i(TAG, response.toString());
+						}
+					});
+			postRequest.executeAsync();
+		} else {
+			Toast.makeText(MapActivity.this.getApplicationContext(),
+					"You are not logged in on Facebook.", Toast.LENGTH_LONG)
+					.show();
+		}
 	}
 
 	@Override
@@ -467,13 +498,32 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	@Override
 	public boolean onMarkerClick(Marker marker) {
+
+		BondPoint bp = getBondPoint(marker.getId());
+
 		String title = marker.getTitle();
 		if (title.equals(bp_title)) {
-			// abre atividade
+			// abre atividade para criar bond point
 			startActivityForResult(bpIntent, BP_RESPONSE);
+		} else if (bp != null) {
+			// Abre atividade para convidar amigos
 		}
 
 		return false;
+	}
+
+	private BondPoint getBondPoint(String idStr) {
+		if (bondPointArray == null)
+			return null;
+
+		int nElements = bondPointArray.length;
+
+		for (int i = 0; i < nElements; i++) {
+			if (bondPointArray[i].getID() == idStr)
+				return bondPointArray[i];
+		}
+
+		return null;
 	}
 
 	@Override
@@ -497,15 +547,20 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 						"DescriptionBP", "Description of BP"));
 				sharedPreferences.edit().remove("DescriptionBP").commit();
 
-				newBondPoint.setStarttime(sharedPreferences.getString(
+				newBondPoint.setStartTime(sharedPreferences.getString(
 						"InitDateTimeBP", "Initial Date and Time of your BP"));
 				sharedPreferences.edit().remove("InitDateTimeBP").commit();
 
-				newBondPoint.setEndtime(sharedPreferences.getString(
+				newBondPoint.setEndTime(sharedPreferences.getString(
 						"EndDateTimeBP", "End Date and Time of BP"));
 				sharedPreferences.edit().remove("EndDateTimeBP").commit();
 
 				// Muda Imagem do Marker!
+				bp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
+						resources, R.drawable.add_to_bp), 100, 100, true);
+
+				newBondPoint.getMarker().setIcon(
+						BitmapDescriptorFactory.fromBitmap(bp));
 
 				// Obriga a actualizar o nome na InfoWindow
 				newBondPoint.getMarker().hideInfoWindow();
@@ -537,9 +592,9 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 						bw.newLine();
 						bw.write(newBondPoint.getID());
 						bw.newLine();
-						bw.write(newBondPoint.getStarttime());
+						bw.write(newBondPoint.getStartTime());
 						bw.newLine();
-						bw.write(newBondPoint.getEndtime());
+						bw.write(newBondPoint.getEndTime());
 						bw.newLine();
 						bw.write(newBondPoint.getMarker().getTitle());
 						bw.newLine();
@@ -610,6 +665,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 		int nFiles = path.listFiles().length;
 		int filesLoaded = 0;
+		bondPointArray = new BondPoint[nFiles];
 		Log.d(TAG, "Existem " + nFiles + " ficheiros guardados.");
 		while (filesLoaded < nFiles) {
 			String fileName = "BondPoint_" + filesLoaded + ".data";
@@ -619,7 +675,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				Log.d(TAG, "File do not exists");
 				continue;
 			} else {
-				Log.d(TAG, "File already exists: ");
+				Log.d(TAG, "BondPoint file exists: ");
+				bondPointArray[filesLoaded] = new BondPoint();
 				BufferedReader br;
 				try {
 					br = new BufferedReader(new FileReader(file));
@@ -628,44 +685,54 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					if (nome == null)
 						nome = "";
 					Log.d(TAG, "Nome: " + nome);
+
 					String tipo = br.readLine();
 					if (tipo == null)
 						tipo = "";
 					Log.d(TAG, "Tipo: " + tipo);
+
 					String desc = br.readLine();
 					if (desc == null)
 						desc = "";
 					Log.d(TAG, "Descrição: " + desc);
+
 					String id = br.readLine();
 					if (id == null)
 						id = "";
 					Log.d(TAG, "ID: " + id);
+
 					String ini = br.readLine();
 					if (ini == null)
 						ini = "";
 					Log.d(TAG, "Data início: " + ini);
+
 					String end = br.readLine();
 					if (end == null)
 						end = "";
 					Log.d(TAG, "Data fim: " + end);
+
 					String title = br.readLine();
 					if (title == null)
 						title = "";
 					Log.d(TAG, "Título: " + title);
+
 					String snip = br.readLine();
 					if (snip == null)
 						snip = "";
 					Log.d(TAG, "Snippet: " + snip);
+
 					String latitude = br.readLine();
 					if (latitude == null)
 						latitude = "0.0";
 					Double lat = Double.parseDouble(latitude);
 					Log.d(TAG, "Latitude: " + lat);
+
 					String longitude = br.readLine();
 					if (longitude == null)
 						longitude = "0.0";
 					Double lon = Double.parseDouble(longitude);
 					Log.d(TAG, "Longitude: " + lon);
+
 					br.close();
 
 					LatLng location = new LatLng(lat, lon);
@@ -675,15 +742,20 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 							.decodeResource(resources, R.drawable.add_bp), 100,
 							100, true);
 
-					map.addMarker(
-							new MarkerOptions()
-									.anchor((float) 0.5, (float) 0.5)
-									.position(location)
-									.title(title)
-									.snippet(snip)
-									.icon(BitmapDescriptorFactory
-											.fromBitmap(bp))).setDraggable(
-							false);
+					Marker mkr = map.addMarker(new MarkerOptions()
+							.anchor((float) 0.5, (float) 0.5)
+							.position(location).title(title).snippet(snip)
+							.icon(BitmapDescriptorFactory.fromBitmap(bp)));
+					mkr.setDraggable(false);
+
+					bondPointArray[filesLoaded].setMarker(mkr);
+					bondPointArray[filesLoaded].setName(nome);
+					bondPointArray[filesLoaded].setType(tipo);
+					bondPointArray[filesLoaded].setDescription(desc);
+					bondPointArray[filesLoaded].setID(id);
+					bondPointArray[filesLoaded].setStartTime(ini);
+					bondPointArray[filesLoaded].setEndTime(end);
+
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -695,7 +767,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 			}
 		}
 		nBP = filesLoaded;
-
 	}
 }
 

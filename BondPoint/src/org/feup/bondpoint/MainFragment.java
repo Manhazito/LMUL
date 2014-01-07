@@ -21,10 +21,6 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.widget.LoginButton;
 
-//import android.R;
-
-//import android.service.textservice.SpellCheckerService.Session;
-
 public class MainFragment extends Fragment {
 
 	private static final String TAG = "MainFragment";
@@ -98,6 +94,7 @@ public class MainFragment extends Fragment {
 
 		authButton.setFragment(this);
 		authButton.clearPermissions();
+		// authButton.setPublishPermissions(Arrays.asList("create_event"));
 		authButton.setReadPermissions(Arrays.asList("friends_location",
 				"user_location", "user_friends"));
 
