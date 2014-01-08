@@ -11,6 +11,7 @@ public class BondPoint {
 	private String startTime = "";
 	private Marker marker = null;
 	private String id = "";
+<<<<<<< HEAD
 	private String event_id = "";
 	private String[] invited_people = {};
 
@@ -37,6 +38,8 @@ public class BondPoint {
 	public void setInvited_people(String[] invited_people) {
 		this.invited_people = invited_people;
 	}
+=======
+>>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490
 
 	public String getID() {
 		return id;
@@ -95,4 +98,8 @@ public class BondPoint {
 		this.marker = marker;
 		this.id = marker.getId();
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490

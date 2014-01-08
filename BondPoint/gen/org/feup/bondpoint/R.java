@@ -444,10 +444,10 @@ containing a value of this type.
         public static final int Startbutton=0x7f05001e;
         public static final int SwitchToDate=0x7f050042;
         public static final int SwitchToTime=0x7f050043;
-        public static final int TimePicker=0x7f050048;
+        public static final int TimePicker=0x7f05004c;
         public static final int TypeBP=0x7f05001a;
         public static final int ViewSwitchButtons=0x7f050041;
-        public static final int action_settings=0x7f05004a;
+        public static final int action_settings=0x7f05004e;
         public static final int authButton=0x7f050008;
         public static final int bpCancelButton=0x7f050017;
         public static final int bpDescriptionText=0x7f050015;
@@ -486,8 +486,9 @@ containing a value of this type.
         public static final int editText1=0x7f050019;
         public static final int friendName=0x7f050045;
         public static final int friend_marker_pic=0x7f05000d;
-        public static final int friend_picker_fragment=0x7f050046;
+        public static final int friend_picker_fragment=0x7f050049;
         public static final int hybrid=0x7f050004;
+        public static final int icon=0x7f050046;
         public static final int invbutton=0x7f050023;
         public static final int large=0x7f050006;
         public static final int logo=0x7f050007;
@@ -499,10 +500,13 @@ containing a value of this type.
         public static final int picker_subtitle=0x7f050033;
         public static final int satellite=0x7f050002;
         public static final int savebutton=0x7f050022;
+        public static final int selection_list=0x7f05004a;
         public static final int small=0x7f050005;
         public static final int terrain=0x7f050003;
-        public static final int timePicker1=0x7f050047;
-        public static final int user_marker_pic=0x7f050049;
+        public static final int text1=0x7f050047;
+        public static final int text2=0x7f050048;
+        public static final int timePicker1=0x7f05004b;
+        public static final int user_marker_pic=0x7f05004d;
         public static final int username=0x7f05000a;
     }
     public static final class layout {
@@ -530,10 +534,12 @@ containing a value of this type.
         public static final int datepicker=0x7f030015;
         public static final int datetimepicker=0x7f030016;
         public static final int info_window=0x7f030017;
-        public static final int pick_friends_activity=0x7f030018;
-        public static final int time_dialog=0x7f030019;
-        public static final int timepicker=0x7f03001a;
-        public static final int user_marker=0x7f03001b;
+        public static final int listitem=0x7f030018;
+        public static final int pick_friends_activity=0x7f030019;
+        public static final int selection=0x7f03001a;
+        public static final int time_dialog=0x7f03001b;
+        public static final int timepicker=0x7f03001c;
+        public static final int user_marker=0x7f03001d;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -542,6 +548,8 @@ containing a value of this type.
         public static final int Date_of_BP=0x7f060041;
         public static final int DescribeBP=0x7f060044;
         public static final int EndBP=0x7f060043;
+        public static final int action_people=0x7f060052;
+        public static final int action_people_default=0x7f060053;
         public static final int action_settings=0x7f060035;
         public static final int app_name=0x7f060032;
         /**   Title for notification shown when GooglePlayServices needs to be

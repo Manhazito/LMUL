@@ -44,4 +44,8 @@ public class MainActivity extends FragmentActivity {
 	// return true;
 	// }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490

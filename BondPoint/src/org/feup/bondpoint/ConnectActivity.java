@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -58,6 +59,16 @@ public class ConnectActivity extends Activity {
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
 
+<<<<<<< HEAD
+=======
+	// Picker Dialog first appears
+	// private int mYear, mMonth, mDay, mHour, mMinute;
+
+	// private Bondpoint bondP;
+
+	private Intent fbIntent;
+
+>>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490
 	// constructor
 	public ConnectActivity() {
 		// Assign current Date and Time Values to Variables
@@ -114,6 +125,13 @@ public class ConnectActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+<<<<<<< HEAD
+=======
+
+				SharedPreferences sharedPreferences = PreferenceManager
+						.getDefaultSharedPreferences(v.getContext());
+
+>>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490
 				savePreferences("NameBP", textBPName.getText().toString());
 				savePreferences("TypeBP", textBPType.getText().toString());
 				savePreferences("DescriptionBP", textBPDescription.getText()
@@ -125,7 +143,11 @@ public class ConnectActivity extends Activity {
 
 				setResult(Activity.RESULT_OK);
 
+<<<<<<< HEAD
 				sendRequestDialog();
+=======
+				// marcador = nome do BondPoint
+>>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490
 
 				// finish();
 			}
@@ -151,7 +173,10 @@ public class ConnectActivity extends Activity {
 		btnInvite.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Fazer coisas???
+				fbIntent = new Intent();
+				fbIntent.setClass(getApplicationContext(),
+						PickFriendsActivity.class);
+				startActivity(fbIntent);
 			}
 		});
 
