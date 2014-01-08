@@ -1,6 +1,9 @@
 package org.feup.bondpoint;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -16,6 +20,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.facebook.FacebookException;
+import com.facebook.FacebookOperationCanceledException;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Request.Callback;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.widget.WebDialog;
+import com.facebook.widget.WebDialog.OnCompleteListener;
 
 public class ConnectActivity extends Activity {
 
@@ -29,6 +44,12 @@ public class ConnectActivity extends Activity {
 	// criacao da variavel spinner para depois referenciar
 	Spinner spinnerBPType;
 
+	private Session session;
+
+	private static final String TAG = "ConnectActivity";
+	private static final List<String> PERMISSIONS = Arrays
+			.asList("create_event");
+
 	static final int INIT_DATE_TIME_ID = 100;
 	static final int END_DATE_TIME_ID = 200;
 
@@ -37,14 +58,6 @@ public class ConnectActivity extends Activity {
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
 
-<<<<<<< HEAD
-	// Picker Dialog first appears
-	// private int mYear, mMonth, mDay, mHour, mMinute;
-
-	// private Bondpoint bondP;
-
-=======
->>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 	// constructor
 	public ConnectActivity() {
 		// Assign current Date and Time Values to Variables
@@ -61,13 +74,6 @@ public class ConnectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
 
-<<<<<<< HEAD
-		// receber o objecto bondpoint
-
-		// bondP = (Bondpoint) getIntent().getSerializableExtra("object bp");
-
-=======
->>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 		// get the references of buttons
 		btnInitDateTime = (Button) findViewById(R.id.bpIniDateTimeButton);
 		btnEndDateTime = (Button) findViewById(R.id.bpEndDateTimeButton);
@@ -108,11 +114,6 @@ public class ConnectActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-<<<<<<< HEAD
-				SharedPreferences sharedPreferences = PreferenceManager
-						.getDefaultSharedPreferences(this);
-=======
->>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 				savePreferences("NameBP", textBPName.getText().toString());
 				savePreferences("TypeBP", textBPType.getText().toString());
 				savePreferences("DescriptionBP", textBPDescription.getText()
@@ -121,22 +122,12 @@ public class ConnectActivity extends Activity {
 						.toString());
 				savePreferences("EndDateTimeBP", textEndDateTime.getText()
 						.toString());
-<<<<<<< HEAD
-
-				// sets destas variaveis no objecto bondP
-				// bondP.setBpname(textBPName.getText().toString());
-				// bondP.setBpdate(textDate.getText().toString());
-				// bondP.setBptype(textBPType.getText().toString());
-				// bondP.setDescription(textDescr.getText().toString());
-				// bondP.setEndtime(textEndDateTime.getText().toString());
-				// bondP.setStarttime(textInitDateTime.getText().toString());
-
-				// marcador = nome do BondPoint
-=======
->>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 
 				setResult(Activity.RESULT_OK);
-				finish();
+
+				sendRequestDialog();
+
+				// finish();
 			}
 		});
 
@@ -166,7 +157,119 @@ public class ConnectActivity extends Activity {
 
 	}
 
-	// funÃ§Ãµes fixes
+	// Send facebook request
+	private void sendRequestDialog() {
+		Bundle params = new Bundle();
+		params.putString("message", "Convite para novo BONDPOINT");
+
+		WebDialog requestsDialog = (new WebDialog.RequestsDialogBuilder(
+				ConnectActivity.this, Session.getActiveSession(), params))
+				.setOnCompleteListener(new OnCompleteListener() {
+
+					@Override
+					public void onComplete(Bundle values,
+							FacebookException error) {
+						if (error != null) {
+							if (error instanceof FacebookOperationCanceledException) {
+								Toast.makeText(
+										ConnectActivity.this
+												.getApplicationContext(),
+										"Request cancelled", Toast.LENGTH_SHORT)
+										.show();
+								finish();
+							} else {
+								Toast.makeText(
+										ConnectActivity.this
+												.getApplicationContext(),
+										"Network Error", Toast.LENGTH_SHORT)
+										.show();
+							}
+						} else {
+							final String requestId = values
+									.getString("request");
+							if (requestId != null) {
+								Toast.makeText(
+										ConnectActivity.this
+												.getApplicationContext(),
+										"Request sent", Toast.LENGTH_SHORT)
+										.show();
+								sendEvent();
+							} else {
+								Toast.makeText(
+										ConnectActivity.this
+												.getApplicationContext(),
+										"Request cancelled", Toast.LENGTH_SHORT)
+										.show();
+								finish();
+							}
+						}
+					}
+
+				}).build();
+		requestsDialog.show();
+	}
+
+	private void sendEvent() {
+		Log.i(TAG, "A tentar criar evento...");
+		session = Session.getActiveSession();
+		if (session != null && session.isOpened()) {
+			// session.close();
+			// session.openForPublish(openRequest)
+			// try {
+			// Session.OpenRequest request = new Session.OpenRequest(this);
+			// request.setPermissions(Arrays.asList("create_event"));
+			// } catch (Exception e) {
+			// e.printStackTrace();
+			// }
+			// Check for publish permissions
+			List<String> permissions = session.getPermissions();
+			if (!isSubsetOf(PERMISSIONS, permissions)) {
+				// pendingPublishReauthorization = true;
+				Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(
+						this, PERMISSIONS);
+				session.requestNewPublishPermissions(newPermissionsRequest);
+			}
+
+			Bundle bundle = new Bundle();
+			bundle.putString("name", textBPName.getText().toString());
+			// bundle.putString("start_time", textInitDateTime.getText()
+			// .toString());
+			// bundle.putString("end_time",
+			// textEndDateTime.getText().toString());
+			bundle.putString("start_time", "19-01-2014");
+			bundle.putString("end_time", "19-01-2014");
+			bundle.putString("description", textBPDescription.getText()
+					.toString());
+			bundle.putString("privacy_type", "SECRET");
+			bundle.putString("message", "My message");
+			Request postRequest = new Request(Session.getActiveSession(),
+					"me/events", bundle, HttpMethod.POST, new Callback() {
+						@Override
+						public void onCompleted(Response response) {
+							Log.i(TAG, response.toString());
+						}
+					});
+			postRequest.executeAsync();
+			finish();
+		} else {
+			Toast.makeText(ConnectActivity.this.getApplicationContext(),
+					"You are not logged in on Facebook.", Toast.LENGTH_LONG)
+					.show();
+			finish();
+		}
+	}
+
+	private boolean isSubsetOf(Collection<String> subset,
+			Collection<String> superset) {
+		for (String string : subset) {
+			if (!superset.contains(string)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	// funções fixes
 	private void loadSavedPreferences() {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
@@ -196,7 +299,7 @@ public class ConnectActivity extends Activity {
 		editor.commit();
 	}
 
-	// acabam as funÃ§Ãµes fixes
+	// acabam as funções fixes
 
 	private void showDateTimeDialog() {
 		// Create the dialog
@@ -234,12 +337,12 @@ public class ConnectActivity extends Activity {
 						if (buttonClicked == INIT_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
 							textInitDateTime.setText("Initial date: " + day
-									+ "/" + month + "/" + year + " at " + hour
+									+ "/" + month + "/" + year + "T10:" + hour
 									+ ":" + minute + ampmStr);
 						} else if (buttonClicked == END_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
 							textEndDateTime.setText("Initial date: " + day
-									+ "/" + month + "/" + year + " at " + hour
+									+ "/" + month + "/" + year + "T10:" + hour
 									+ ":" + minute + ampmStr);
 						}
 

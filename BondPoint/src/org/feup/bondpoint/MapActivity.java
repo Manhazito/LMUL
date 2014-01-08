@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 
 import android.app.Activity;
 import android.content.Context;
@@ -36,17 +35,9 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.FacebookException;
-import com.facebook.FacebookOperationCanceledException;
-import com.facebook.HttpMethod;
-import com.facebook.Request;
-import com.facebook.Request.Callback;
-import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
-import com.facebook.widget.WebDialog;
-import com.facebook.widget.WebDialog.OnCompleteListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
@@ -357,34 +348,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	@Override
 	public void onMapClick(LatLng point) {
-		sendRequestDialog();
 
-		Log.i(TAG, "A tentar criar evento...");
-		session = Session.getActiveSession();
-		if (session != null && session.isOpened()) {
-			try {
-				Session.OpenRequest request = new Session.OpenRequest(this);
-				request.setPermissions(Arrays.asList("create_event"));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			Bundle bundle = new Bundle();
-			bundle.putString("name", "Pescar na Foz!");
-			bundle.putString("start_time", "2014-02-02");
-			Request postRequest = new Request(Session.getActiveSession(),
-					"me/events", bundle, HttpMethod.POST, new Callback() {
-						@Override
-						public void onCompleted(Response response) {
-							Log.i(TAG, response.toString());
-						}
-					});
-			postRequest.executeAsync();
-		} else {
-			Toast.makeText(MapActivity.this.getApplicationContext(),
-					"You are not logged in on Facebook.", Toast.LENGTH_LONG)
-					.show();
-		}
 	}
 
 	@Override
@@ -433,55 +397,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					MainActivity.class);
 			startActivity(intent);
 		}
-	}
-
-	// Send facebook request
-	private void sendRequestDialog() {
-		Bundle params = new Bundle();
-		params.putString("message", "Convite para novo BONDPOINT");
-
-		WebDialog requestsDialog = (new WebDialog.RequestsDialogBuilder(
-				MapActivity.this, Session.getActiveSession(), params))
-				.setOnCompleteListener(new OnCompleteListener() {
-
-					@Override
-					public void onComplete(Bundle values,
-							FacebookException error) {
-						if (error != null) {
-							if (error instanceof FacebookOperationCanceledException) {
-								Toast.makeText(
-										MapActivity.this
-												.getApplicationContext(),
-										"Request cancelled", Toast.LENGTH_SHORT)
-										.show();
-							} else {
-								Toast.makeText(
-										MapActivity.this
-												.getApplicationContext(),
-										"Network Error", Toast.LENGTH_SHORT)
-										.show();
-							}
-						} else {
-							final String requestId = values
-									.getString("request");
-							if (requestId != null) {
-								Toast.makeText(
-										MapActivity.this
-												.getApplicationContext(),
-										"Request sent", Toast.LENGTH_SHORT)
-										.show();
-							} else {
-								Toast.makeText(
-										MapActivity.this
-												.getApplicationContext(),
-										"Request cancelled", Toast.LENGTH_SHORT)
-										.show();
-							}
-						}
-					}
-
-				}).build();
-		requestsDialog.show();
 	}
 
 	@Override
@@ -751,11 +666,12 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				}
 
 				filesLoaded++;
-				// file.delete(); // Para fazer RESET
+				file.delete(); // Para fazer RESET
 			}
 		}
 		nBP = filesLoaded;
 	}
+
 }
 
 class MyInfoWindowAdapter implements InfoWindowAdapter {
