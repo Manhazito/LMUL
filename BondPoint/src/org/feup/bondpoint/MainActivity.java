@@ -25,7 +25,6 @@ public class MainActivity extends FragmentActivity {
 			mainFragment = (MainFragment) getSupportFragmentManager()
 					.findFragmentById(android.R.id.content);
 		}
-<<<<<<< HEAD
 
 		// Check for an incoming notification. Save the info
 		Uri intentUri = MainActivity.this.getIntent().getData();
@@ -45,7 +44,4 @@ public class MainActivity extends FragmentActivity {
 	// return true;
 	// }
 
-=======
-	}
->>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 }

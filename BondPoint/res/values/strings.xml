@@ -38,5 +38,7 @@
 	<string name="error_dialog_button_text">OK</string>
 	<string name="select_date_of_bp">Select Date of BP</string>
 	<string name="savebutton">Save Bond Point</string>
+	<string name="action_people">With whom?</string>
+	<string name="action_people_default">Select Friends</string>
 
 </resources>
