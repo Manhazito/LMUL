@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
@@ -36,11 +37,14 @@ public class ConnectActivity extends Activity {
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
 
+<<<<<<< HEAD
 	// Picker Dialog first appears
 	// private int mYear, mMonth, mDay, mHour, mMinute;
 
 	// private Bondpoint bondP;
 
+=======
+>>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 	// constructor
 	public ConnectActivity() {
 		// Assign current Date and Time Values to Variables
@@ -57,10 +61,13 @@ public class ConnectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
 
+<<<<<<< HEAD
 		// receber o objecto bondpoint
 
 		// bondP = (Bondpoint) getIntent().getSerializableExtra("object bp");
 
+=======
+>>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 		// get the references of buttons
 		btnInitDateTime = (Button) findViewById(R.id.bpIniDateTimeButton);
 		btnEndDateTime = (Button) findViewById(R.id.bpEndDateTimeButton);
@@ -101,8 +108,11 @@ public class ConnectActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+<<<<<<< HEAD
 				SharedPreferences sharedPreferences = PreferenceManager
 						.getDefaultSharedPreferences(this);
+=======
+>>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 				savePreferences("NameBP", textBPName.getText().toString());
 				savePreferences("TypeBP", textBPType.getText().toString());
 				savePreferences("DescriptionBP", textBPDescription.getText()
@@ -111,6 +121,7 @@ public class ConnectActivity extends Activity {
 						.toString());
 				savePreferences("EndDateTimeBP", textEndDateTime.getText()
 						.toString());
+<<<<<<< HEAD
 
 				// sets destas variaveis no objecto bondP
 				// bondP.setBpname(textBPName.getText().toString());
@@ -121,6 +132,8 @@ public class ConnectActivity extends Activity {
 				// bondP.setStarttime(textInitDateTime.getText().toString());
 
 				// marcador = nome do BondPoint
+=======
+>>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 
 				setResult(Activity.RESULT_OK);
 				finish();
@@ -131,8 +144,6 @@ public class ConnectActivity extends Activity {
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				// ir pa outro sitio
 
 				// savePreferences("NameBP", textName.getText().toString());
 				// savePreferences("TypeBP", textType.getText().toString());
@@ -177,13 +188,13 @@ public class ConnectActivity extends Activity {
 		textEndDateTime.setHint(BPEndDateTime);
 	}
 
-	// private void savePreferences(String key, String value) {
-	// SharedPreferences sharedPreferences = PreferenceManager
-	// .getDefaultSharedPreferences(this);
-	// Editor editor = sharedPreferences.edit();
-	// editor.putString(key, value);
-	// editor.commit();
-	// }
+	private void savePreferences(String key, String value) {
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		Editor editor = sharedPreferences.edit();
+		editor.putString(key, value);
+		editor.commit();
+	}
 
 	// acabam as funções fixes
 

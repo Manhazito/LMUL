@@ -15,15 +15,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Typeface Regular = Typeface.createFromAsset(getAssets(),
-		// "fonts/roboto_regular.ttf");
-		// Typeface Medium = Typeface.createFromAsset(getAssets(),
-		// "fonts/roboto_medium.ttf");
-		// Typeface Bold = Typeface.createFromAsset(getAssets(),
-		// "fonts/roboto_bold.ttf");
-		// Typeface Light = Typeface.createFromAsset(getAssets(),
-		// "fonts/roboto_light.ttf");
-
 		if (savedInstanceState == null) {
 			// Add the fragment on initial activity setup
 			mainFragment = new MainFragment();
@@ -34,6 +25,7 @@ public class MainActivity extends FragmentActivity {
 			mainFragment = (MainFragment) getSupportFragmentManager()
 					.findFragmentById(android.R.id.content);
 		}
+<<<<<<< HEAD
 
 		// Check for an incoming notification. Save the info
 		Uri intentUri = MainActivity.this.getIntent().getData();
@@ -53,4 +45,7 @@ public class MainActivity extends FragmentActivity {
 	// return true;
 	// }
 
+=======
+	}
+>>>>>>> 9b049edf2b4c241236cd4c31cfd3f212834d1534
 }
