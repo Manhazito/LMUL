@@ -39,7 +39,7 @@ public class ConnectActivity extends Activity {
 	// Picker Dialog first appears
 	// private int mYear, mMonth, mDay, mHour, mMinute;
 
-	private Bondpoint bondP;
+	// private Bondpoint bondP;
 
 	// constructor
 	public ConnectActivity() {
@@ -59,7 +59,7 @@ public class ConnectActivity extends Activity {
 
 		// receber o objecto bondpoint
 
-		bondP = (Bondpoint) getIntent().getSerializableExtra("object bp");
+		// bondP = (Bondpoint) getIntent().getSerializableExtra("object bp");
 
 		// get the references of buttons
 		btnInitDateTime = (Button) findViewById(R.id.bpIniDateTimeButton);
@@ -101,22 +101,24 @@ public class ConnectActivity extends Activity {
 		btnSave.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// savePreferences("NameBP", textBPName.getText().toString());
-				// savePreferences("TypeBP", textBPType.getText().toString());
-				// savePreferences("DescriptionBP", textBPDescription.getText()
-				// .toString());
-				// savePreferences("InitDateTimeBP", textInitDateTime.getText()
-				// .toString());
-				// savePreferences("EndDateTimeBP", textEndDateTime.getText()
-				// .toString());
+				SharedPreferences sharedPreferences = PreferenceManager
+						.getDefaultSharedPreferences(this);
+				savePreferences("NameBP", textBPName.getText().toString());
+				savePreferences("TypeBP", textBPType.getText().toString());
+				savePreferences("DescriptionBP", textBPDescription.getText()
+						.toString());
+				savePreferences("InitDateTimeBP", textInitDateTime.getText()
+						.toString());
+				savePreferences("EndDateTimeBP", textEndDateTime.getText()
+						.toString());
 
 				// sets destas variaveis no objecto bondP
-				bondP.setBpname(textBPName.getText().toString());
+				// bondP.setBpname(textBPName.getText().toString());
 				// bondP.setBpdate(textDate.getText().toString());
-				bondP.setBptype(textBPType.getText().toString());
+				// bondP.setBptype(textBPType.getText().toString());
 				// bondP.setDescription(textDescr.getText().toString());
-				bondP.setEndtime(textEndDateTime.getText().toString());
-				bondP.setStarttime(textInitDateTime.getText().toString());
+				// bondP.setEndtime(textEndDateTime.getText().toString());
+				// bondP.setStarttime(textInitDateTime.getText().toString());
 
 				// marcador = nome do BondPoint
 

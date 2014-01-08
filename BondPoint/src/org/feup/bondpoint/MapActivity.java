@@ -20,7 +20,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
@@ -205,17 +204,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		userLocation = new LatLng(Double.parseDouble(latitudesStr[nFriends]),
 				Double.parseDouble(longitudesStr[nFriends]));
 
-		// Check for an incoming notification. Save the info
-		Uri intentUri = MapActivity.this.getIntent().getData();
-		if (intentUri != null) {
-			String requestIdParam = intentUri.getQueryParameter("request_ids");
-			if (requestIdParam != null) {
-				String array[] = requestIdParam.split(",");
-				requestId = array[0];
-				Log.i(TAG, "Request id: " + requestId);
-			}
-		}
-
 		// -------------------------------------
 		// Friends marker with mask
 		// For now they all appear as AVailable
@@ -307,11 +295,11 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
 
 		if (friendsWithoutCoordinates) {
-			Log.d(TAG, "Some friends cannot be seen on map view!");
-			Toast toast = Toast.makeText(this.getApplicationContext(),
-					"Some friends cannot be seen on map view!",
-					Toast.LENGTH_LONG);
-			toast.show();
+			// Log.d(TAG, "Some friends cannot be seen on map view!");
+			// Toast toast = Toast.makeText(this.getApplicationContext(),
+			// "Some friends cannot be seen on map view!",
+			// Toast.LENGTH_LONG);
+			// toast.show();
 		}
 	}
 
@@ -406,7 +394,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		// an incoming notification needs handling
 		if (state.isOpened() && requestId != null) {
 			Toast.makeText(MapActivity.this.getApplicationContext(),
-					"Incoming request", Toast.LENGTH_SHORT).show();
+					"Incoming request", Toast.LENGTH_LONG).show();
 			requestId = null;
 		}
 		if (state.isClosed()) {
