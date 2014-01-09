@@ -58,7 +58,7 @@ public class BondPoint {
 		if (index != -1) {
 			int lengthSecondString = invitedPeople.length - index - 1;
 
-			if (lengthSecondString < 0) { // Foi removido o Ãºnico elemento...
+			if (lengthSecondString < 0) { // Foi removido o único elemento...
 				invitedPeople = null;
 				return true;
 			}

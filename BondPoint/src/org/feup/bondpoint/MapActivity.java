@@ -2,6 +2,7 @@ package org.feup.bondpoint;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -53,8 +54,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends Activity implements OnMapLongClickListener,
 		OnMapClickListener, OnMarkerClickListener {
 
+	private String[] friendNames = null;
+	private String[] friendIds = null;
+	private Bitmap[] friendImgsBmp = null;
+	private byte[][] friendImgsBmpByteArray = null;
+	private ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+	private ReceiveFriends receiveFriends = null;
 	private static final String TAG = "MapActivity";
 	private static final int BP_RESPONSE = 300;
+	private static final int FRIEND_RESPONSE = 400;
 
 	private static String bp_title = "New BondPoint";
 
@@ -63,6 +72,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private int nBP = 0;
 	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
+	private Intent friendIntent = null;
 
 	private boolean creatingMarker = false;
 
@@ -134,6 +144,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		mapView = findViewById(android.R.id.content).getRootView();
 
 		bpIntent = new Intent(mapView.getContext(), ConnectActivity.class);
+		friendIntent = new Intent(mapView.getContext(),
+				ListFriendsActivity.class);
 
 		logoutBtn = (Button) mapView.findViewById(R.id.logout);
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
@@ -408,8 +420,16 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		if (title.equals(bp_title)) {
 			// abre atividade para criar bond point
 			startActivityForResult(bpIntent, BP_RESPONSE);
-		} else if (bp != null) {
+		} else {
+
+			// if (bp != null) {
 			// Abre atividade para convidar amigos
+			// startActivityForResult(friendIntent, FRIEND_RESPONSE);
+			// Log.i("TESTE", "Chegou aqui!");
+			if (receiveFriends == null) {
+				receiveFriends = new ReceiveFriends();
+				receiveFriends.execute(this);
+			}
 		}
 
 		return false;
@@ -666,12 +686,41 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				}
 
 				filesLoaded++;
-				file.delete(); // Para fazer RESET
+				// file.delete(); // Para fazer RESET
 			}
 		}
 		nBP = filesLoaded;
 	}
 
+	public void setFriendNames(String[] names) {
+		this.friendNames = names;
+	}
+
+	public void setFriendIds(String[] ids) {
+		this.friendIds = ids;
+	}
+
+	public void setByteArray(Bitmap[] imgsBmp) {
+		this.friendImgsBmp = imgsBmp;
+	}
+
+	public void setnFriends(int nFriends) {
+		this.nFriends = nFriends;
+		this.friendNames = new String[nFriends];
+		this.friendIds = new String[nFriends];
+		this.friendImgsBmpByteArray = new byte[nFriends][];
+	}
+
+	public void showList() {
+		Log.i("TESTE", "Entrou no showList");
+		friendIntent.putExtra("names", friendNames);
+		for (int i = 0; i < nFriends; i++) {
+			label = "picture" + i;
+			friendIntent.putExtra(label, imgsBmpByteArray[i]);
+
+		}
+		startActivityForResult(friendIntent, FRIEND_RESPONSE);
+	}
 }
 
 class MyInfoWindowAdapter implements InfoWindowAdapter {
