@@ -39,8 +39,8 @@ public class ConnectActivity extends Activity {
 	Button btnInitDateTime, btnEndDateTime, btnSave, btnCancel, btnInvite;
 
 	// criacao das variaveis de text para depois referenciar
-	EditText textInitDateTime, textEndDateTime, textBPName, textBPType,
-			textBPDescription;
+	EditText textInitDateTime, textEndDateTime, textEndDateHour, textBPName,
+			textBPType, textBPDescription;
 
 	// criacao da variavel spinner para depois referenciar
 	Spinner spinnerBPType;
@@ -92,6 +92,7 @@ public class ConnectActivity extends Activity {
 		// get the references of texts
 		textInitDateTime = (EditText) findViewById(R.id.bpInitDateTimeText);
 		textEndDateTime = (EditText) findViewById(R.id.bpEndDateTimeText);
+		textEndDateHour = (EditText) findViewById(R.id.bpEndDateTimeText);
 		textBPName = (EditText) findViewById(R.id.bpNameText);
 		textBPType = (EditText) findViewById(R.id.bpType);
 		textBPDescription = (EditText) findViewById(R.id.bpDescriptionText);
@@ -134,8 +135,8 @@ public class ConnectActivity extends Activity {
 
 				setResult(Activity.RESULT_OK);
 
-				sendRequestDialog();
-
+				// sendRequestDialog();
+				sendEvent();
 				// marcador = nome do BondPoint
 
 				// finish();
@@ -246,12 +247,13 @@ public class ConnectActivity extends Activity {
 
 			Bundle bundle = new Bundle();
 			bundle.putString("name", textBPName.getText().toString());
-			// bundle.putString("start_time", textInitDateTime.getText()
-			// .toString());
+			bundle.putString("start_time", textInitDateTime.getText()
+					.toString() + "-" + textEndDateHour.getText().toString());
 			// bundle.putString("end_time",
 			// textEndDateTime.getText().toString());
-			bundle.putString("start_time", "19-01-2014");
-			bundle.putString("end_time", "-01-2014");
+			// bundle.putString("start_time", "11-1-2014T1:23:30-23:55");
+			// bundle.putString("end_time",
+			// textEndDateTime.getText().toString());
 			bundle.putString("description", textBPDescription.getText()
 					.toString());
 			bundle.putString("privacy_type", "SECRET");
@@ -350,14 +352,15 @@ public class ConnectActivity extends Activity {
 
 						if (buttonClicked == INIT_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
-							textInitDateTime.setText("Initial date: " + day
-									+ "/" + month + "/" + year + "T10:" + hour
-									+ ":" + minute + ampmStr);
+							textInitDateTime.setText(day + "-" + month + "-"
+									+ year + "T1:" + hour + ":" + minute
+									+ ampmStr);
 						} else if (buttonClicked == END_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
-							textEndDateTime.setText("Initial date: " + day
-									+ "/" + month + "/" + year + "T10:" + hour
-									+ ":" + minute + ampmStr);
+							textEndDateTime.setText(day + "-" + month + "-"
+									+ year);
+							textEndDateHour.setText(hour + ":" + minute
+									+ ampmStr);
 						}
 
 						buttonClicked = -1;
