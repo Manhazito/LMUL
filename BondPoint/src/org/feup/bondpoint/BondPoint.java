@@ -11,9 +11,8 @@ public class BondPoint {
 	private String startTime = "";
 	private Marker marker = null;
 	private String id = "";
-<<<<<<< HEAD
-	private String event_id = "";
-	private String[] invited_people = {};
+	private String eventID = "";
+	private String[] invitedPeople = null;
 
 	public String getId() {
 		return id;
@@ -23,23 +22,60 @@ public class BondPoint {
 		this.id = id;
 	}
 
-	public String getEvent_id() {
-		return event_id;
+	public String getEventId() {
+		return eventID;
 	}
 
-	public void setEvent_id(String event_id) {
-		this.event_id = event_id;
+	public void setEventId(String eventID) {
+		this.eventID = eventID;
 	}
 
-	public String[] getInvited_people() {
-		return invited_people;
+	public String[] getInvitedPeople() {
+		return invitedPeople;
 	}
 
-	public void setInvited_people(String[] invited_people) {
-		this.invited_people = invited_people;
+	public void setInvitedPeople(String[] invitedPeople) {
+		this.invitedPeople = invitedPeople;
 	}
-=======
->>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490
+
+	public Boolean addInvitedPerson(String personId) {
+		String[] tmp = new String[invitedPeople.length + 1];
+
+		if (indexOfInvited(personId) == -1) {
+			System.arraycopy(invitedPeople, 0, tmp, 0, invitedPeople.length);
+			tmp[invitedPeople.length] = personId;
+			setInvitedPeople(tmp);
+
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean removeInvitedPerson(String personId) {
+		String[] tmp = new String[invitedPeople.length - 1];
+
+		int index = indexOfInvited(personId);
+		if (index != -1) {
+			int lengthSecondString = invitedPeople.length - index - 1;
+
+			if (lengthSecondString < 0) { // Foi removido o único elemento...
+				invitedPeople = null;
+				return true;
+			}
+
+			System.arraycopy(invitedPeople, 0, tmp, 0, index);
+
+			if (lengthSecondString > 0) {
+				System.arraycopy(invitedPeople, index + 1, tmp, index,
+						lengthSecondString);
+			}
+
+			setInvitedPeople(tmp);
+			return true;
+		}
+
+		return false;
+	}
 
 	public String getID() {
 		return id;
@@ -98,8 +134,12 @@ public class BondPoint {
 		this.marker = marker;
 		this.id = marker.getId();
 	}
-<<<<<<< HEAD
+
+	int indexOfInvited(String personId) {
+		for (int i = 0; i < invitedPeople.length; i++) {
+			if (invitedPeople[i].equalsIgnoreCase(personId))
+				return i;
+		}
+		return (-1);
+	}
 }
-=======
-}
->>>>>>> 29a73f88af493a2b4666e66ef481cad29999d490
