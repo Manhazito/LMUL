@@ -138,16 +138,12 @@ public class ConnectActivity extends Activity {
 
 				setResult(Activity.RESULT_OK);
 
-<<<<<<< HEAD
 				sendRequestDialog();
 
-=======
-				// sendRequestDialog();
 				sendEvent();
 				// marcador = nome do BondPoint
 
 				// finish();
->>>>>>> 375f920a96a73f47dda5a7c156ccce9d128b1ab6
 			}
 		});
 
@@ -255,18 +251,9 @@ public class ConnectActivity extends Activity {
 
 			Bundle bundle = new Bundle();
 			bundle.putString("name", textBPName.getText().toString());
-<<<<<<< HEAD
+
 			bundle.putString("start_time", initDateTime);
 			bundle.putString("end_time", endDateTime);
-=======
-			bundle.putString("start_time", textInitDateTime.getText()
-					.toString() + "-" + textEndDateHour.getText().toString());
-			// bundle.putString("end_time",
-			// textEndDateTime.getText().toString());
-			// bundle.putString("start_time", "11-1-2014T1:23:30-23:55");
-			// bundle.putString("end_time",
-			// textEndDateTime.getText().toString());
->>>>>>> 375f920a96a73f47dda5a7c156ccce9d128b1ab6
 			bundle.putString("description", textBPDescription.getText()
 					.toString());
 			bundle.putString("privacy_type", "SECRET");
@@ -365,7 +352,6 @@ public class ConnectActivity extends Activity {
 
 						if (buttonClicked == INIT_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
-<<<<<<< HEAD
 							textInitDateTime.setText("Initial date: " + year
 									+ "-" + month + "-" + day + "T" + hour
 									+ ":" + minute + "Z" + ampmStr);
@@ -378,17 +364,6 @@ public class ConnectActivity extends Activity {
 									+ minute + "Z" + ampmStr);
 							endDateTime = year + "-" + month + "-" + day + "T"
 									+ hour + ":" + minute + "Z";
-=======
-							textInitDateTime.setText(day + "-" + month + "-"
-									+ year + "T1:" + hour + ":" + minute
-									+ ampmStr);
-						} else if (buttonClicked == END_DATE_TIME_ID) {
-							// Set the Selected Date in Select date Button
-							textEndDateTime.setText(day + "-" + month + "-"
-									+ year);
-							textEndDateHour.setText(hour + ":" + minute
-									+ ampmStr);
->>>>>>> 375f920a96a73f47dda5a7c156ccce9d128b1ab6
 						}
 
 						buttonClicked = -1;
