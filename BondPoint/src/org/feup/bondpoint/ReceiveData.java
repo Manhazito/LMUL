@@ -36,6 +36,13 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 		fragment = fragments[0];
 		Session session = fragment.getFacebookSession();
 
+		fragment.getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				fragment.setProgressDialogMessage("Logging to Facebook... Please Wait...");
+			}
+		});
+
 		request = new Request(session, "me");
 		response = request.executeAndWait();
 
@@ -48,6 +55,13 @@ public class ReceiveData extends AsyncTask<MainFragment, Integer, Void> {
 		JSONObject obj = response.getGraphObject().getInnerJSONObject();
 		fragment.setUserID(obj.optString("id"));
 		fragment.setUserName(obj.optString("name"));
+
+		fragment.getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				fragment.setProgressDialogMessage("Loading Friends... Please Wait...");
+			}
+		});
 
 		String fqlQuery = "SELECT uid, name, pic_small, current_location.latitude, current_location.longitude FROM user WHERE uid IN "
 				+ "(SELECT uid2 FROM friend WHERE uid1 = me() LIMIT 10)";

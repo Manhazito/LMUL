@@ -58,7 +58,7 @@ public class BondPoint {
 		if (index != -1) {
 			int lengthSecondString = invitedPeople.length - index - 1;
 
-			if (lengthSecondString < 0) { // Foi removido o único elemento...
+			if (lengthSecondString < 0) { // Foi removido o Ãºnico elemento...
 				invitedPeople = null;
 				return true;
 			}
@@ -77,21 +77,14 @@ public class BondPoint {
 		return false;
 	}
 
-	public String getID() {
-		return id;
-	}
-
-	public void setID(String id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
-		this.marker.setTitle(name);
+		if (this.marker != null)
+			this.marker.setTitle(name);
 	}
 
 	public String getType() {

@@ -5,32 +5,35 @@
     android:orientation="horizontal"
     android:padding="5dip" >
  
-<RelativeLayout android:id="@+id/picture_layout"
+    <RelativeLayout android:id="@+id/picture_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="3dip"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="5dip">
+        
         <ImageView
             android:id="@+id/picture"
             android:contentDescription="@+string/picture"
             android:layout_width="50dip"
             android:layout_height="50dip"/>
- 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:layout_toRightOf="@+id/picture"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
-                
-        <CheckBox android:id="@+id/checkbox_meat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onCheckboxClicked"/>
 
- </RelativeLayout> </RelativeLayout>
+ 
+	    <TextView
+	        android:id="@+id/name"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@+id/picture"
+	        android:layout_marginTop="20sp"
+	        android:textSize="20sp"
+	        android:textStyle="bold"/>
+	            
+        <CheckBox android:id="@+id/checkbox_meat"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+	        android:layout_gravity="center_horizontal"
+	        android:onClick="onCheckboxClicked"/>
+	
+	</RelativeLayout>
+</RelativeLayout>

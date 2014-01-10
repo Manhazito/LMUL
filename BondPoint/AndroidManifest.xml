@@ -51,11 +51,11 @@
                   android:label="@string/app_name" >
         </activity>
         
-        <activity android:name="org.feup.bondpoint.PickFriendsActivity"
+		<activity android:name="org.feup.bondpoint.PickFriendsActivity"
                   android:label="@string/app_name" >
         </activity>
         
-       <activity android:name="org.feup.bondpoint.ListFriendsActivity"
+        <activity android:name="org.feup.bondpoint.ListFriendsActivity"
                   android:label="@string/app_name" >
         </activity>
         

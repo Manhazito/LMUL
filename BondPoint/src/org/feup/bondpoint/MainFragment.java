@@ -1,16 +1,12 @@
 package org.feup.bondpoint;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -19,10 +15,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -50,14 +42,6 @@ public class MainFragment extends Fragment {
 	private String[] longitudes = null;
 
 	private int nElements = 0;
-
-	// FB
-
-	private ListView listView;
-	private List<BaseListElement> listElements;
-	private Intent fbIntent = null;
-
-	// "FB
 
 	private Intent mapIntent = null;
 	private ReceiveData receiveData = null;
@@ -124,6 +108,7 @@ public class MainFragment extends Fragment {
 			// Mostrar mensagem ao utilizador...
 			if (progressDialog == null)
 				progressDialog = new ProgressDialog(this.getActivity());
+			progressDialog.setCanceledOnTouchOutside(false);
 			progressDialog.setMessage("Processing... Please Wait...");
 			progressDialog.show();
 
@@ -267,92 +252,7 @@ public class MainFragment extends Fragment {
 		this.imgsBmpByteArray = new byte[nElements][];
 	}
 
-	// FBLIST
-
-	private class PeopleListElement extends BaseListElement {
-
-		public PeopleListElement(int requestCode) {
-			super(getActivity().getResources().getDrawable(R.drawable.av_mask),
-					getActivity().getResources().getString(
-							R.string.action_people), getActivity()
-							.getResources().getString(
-									R.string.action_people_default),
-					requestCode);
-		}
-
-		@Override
-		protected View.OnClickListener getOnClickListener() {
-			return new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					// Find the list view
-					listView = (ListView) view
-							.findViewById(R.id.selection_list);
-
-					// Set up the list view items, based on a list of
-					// BaseListElement items
-					listElements = new ArrayList<BaseListElement>();
-					// Add an item for the friend picker
-					listElements.add(new PeopleListElement(0));
-					// Set the list view adapter
-					listView.setAdapter(new ActionListAdapter(getActivity(),
-							R.id.selection_list, listElements));
-
-					startPickerActivity(PickFriendsActivity.FRIEND_PICKER);
-				}
-			};
-		}
+	public void setProgressDialogMessage(String msg) {
+		progressDialog.setMessage(msg);
 	}
-
-	public class ActionListAdapter extends ArrayAdapter<BaseListElement> {
-		private List<BaseListElement> listElements;
-
-		public ActionListAdapter(Context context, int resourceId,
-				List<BaseListElement> listElements) {
-			super(context, resourceId, listElements);
-			this.listElements = listElements;
-			// Set up as an observer for list item changes to
-			// refresh the view.
-			for (int i = 0; i < listElements.size(); i++) {
-				listElements.get(i).setAdapter(this);
-			}
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = convertView;
-			/*
-			 * if (view == null) { LayoutInflater inflater = (LayoutInflater)
-			 * getActivity() .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			 * view = inflater.inflate(R.layout.listitem, null); }
-			 */
-
-			BaseListElement listElement = listElements.get(position);
-			if (listElement != null) {
-				view.setOnClickListener(listElement.getOnClickListener());
-				ImageView icon = (ImageView) view.findViewById(R.id.icon);
-				TextView text1 = (TextView) view.findViewById(R.id.text1);
-				TextView text2 = (TextView) view.findViewById(R.id.text2);
-				if (icon != null) {
-					icon.setImageDrawable(listElement.getIcon());
-				}
-				if (text1 != null) {
-					text1.setText(listElement.getText1());
-				}
-				if (text2 != null) {
-					text2.setText(listElement.getText2());
-				}
-			}
-			return view;
-		}
-
-	}
-
-	public void startPickerActivity(Uri data) {
-		fbIntent = new Intent();
-		fbIntent.setData(data);
-		fbIntent.setClass(getActivity(), PickFriendsActivity.class);
-		startActivityForResult(fbIntent, 0);
-	}
-
 }

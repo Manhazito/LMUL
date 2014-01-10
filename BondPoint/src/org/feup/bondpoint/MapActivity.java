@@ -57,7 +57,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private String[] friendIds = null;
 	private Bitmap[] friendImgsBmp = null;
 	private byte[][] friendImgsBmpByteArray = null;
-	// private ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 	private ReceiveFriends receiveFriends = null;
 	private static final String TAG = "MapActivity";
@@ -72,8 +71,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private Marker newBondPointMarker = null;
 	private Intent bpIntent = null;
 	private Intent friendIntent = null;
-
-	private boolean creatingMarker = false;
 
 	Resources resources = null;
 	private Intent mapIntent = null;
@@ -182,11 +179,9 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 			label = "picture" + i;
 			imgsBmpByteArray[i] = mapIntent.getByteArrayExtra(label);
 			if (imgsBmpByteArray[i] != null) {
-
 				imgsBmp[i] = BitmapFactory.decodeByteArray(imgsBmpByteArray[i],
 						0, imgsBmpByteArray[i].length);
 			} else {
-
 				if (i == nFriends) { // User Picture!
 					imgsBmp[i] = BitmapFactory.decodeResource(resources,
 							R.drawable.user_no_pic);
@@ -202,7 +197,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 		// -------------------------------------
 		// Friends marker with mask
-		// For now they all appear as AVailable
 		// -------------------------------------
 		friendsWithoutCoordinates = false;
 		friendMarkerBmp = Bitmap.createScaledBitmap(
@@ -278,11 +272,11 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		userTopName = (TextView) mapView.findViewById(R.id.username);
 		userTopName.setText(namesStr[nFriends]);
 
-		// Move the camera instantly with a zoom of 17.
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 17));
+		// Move the camera instantly with a zoom of 9.
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 9));
 
 		// Zoom in, animating the camera.
-		map.animateCamera(CameraUpdateFactory.zoomTo(12), 2000, null);
+		map.animateCamera(CameraUpdateFactory.zoomTo(17), 2000, null);
 
 		if (friendsWithoutCoordinates) {
 			// Log.d(TAG, "Some friends cannot be seen on map view!");
@@ -311,37 +305,39 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	@Override
 	public void onMapLongClick(LatLng point) {
-		Log.d("longclick", "criou um bondpoint!");
-		if (creatingMarker == false) {
-			newBondPoint = new BondPoint();
+		Log.d("longclick", "criou um bondpoint marker!");
 
-			SharedPreferences sharedPreferences = PreferenceManager
-					.getDefaultSharedPreferences(this);
-			sharedPreferences.edit().remove("NameBP").commit();
-			sharedPreferences.edit().remove("TypeBP").commit();
-			sharedPreferences.edit().remove("DescriptionBP").commit();
-			sharedPreferences.edit().remove("InitDateTimeBP").commit();
-			sharedPreferences.edit().remove("EndDateTimeBP").commit();
-
-			bp = Bitmap.createScaledBitmap(
-					BitmapFactory.decodeResource(resources, R.drawable.add_bp),
-					100, 100, true);
-
-			newBondPointMarker = map.addMarker(new MarkerOptions()
-					.anchor((float) 0.5, (float) 0.5).position(point)
-					.title(bp_title)
-					.icon(BitmapDescriptorFactory.fromBitmap(bp)));
-			newBondPointMarker.setSnippet("");
-			newBondPointMarker.setDraggable(true);
-			newBondPoint.setMarker(newBondPointMarker);
-
-			creatingMarker = true;
+		if (newBondPoint != null) {
+			newBondPoint.getMarker().remove();
+			newBondPoint = null;
 		}
+
+		newBondPoint = new BondPoint();
+
+		SharedPreferences sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		sharedPreferences.edit().remove("NameBP").commit();
+		sharedPreferences.edit().remove("TypeBP").commit();
+		sharedPreferences.edit().remove("DescriptionBP").commit();
+		sharedPreferences.edit().remove("InitDateTimeBP").commit();
+		sharedPreferences.edit().remove("EndDateTimeBP").commit();
+
+		bp = Bitmap.createScaledBitmap(
+				BitmapFactory.decodeResource(resources, R.drawable.add_bp),
+				100, 100, true);
+
+		newBondPointMarker = map.addMarker(new MarkerOptions()
+				.anchor((float) 0.5, (float) 0.5).position(point)
+				.title(bp_title).icon(BitmapDescriptorFactory.fromBitmap(bp)));
+		newBondPointMarker.setSnippet("");
+		newBondPointMarker.setDraggable(true);
+		newBondPoint.setMarker(newBondPointMarker);
 	}
 
 	@Override
 	public void onMapClick(LatLng point) {
-
+		if (newBondPointMarker != null)
+			newBondPointMarker.remove();
 	}
 
 	@Override
@@ -398,14 +394,20 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		BondPoint bp = getBondPoint(marker.getId());
 
 		String title = marker.getTitle();
+		// devia usar o marker id...
 		if (title.equals(bp_title)) {
 			// abre atividade para criar bond point
 			startActivityForResult(bpIntent, BP_RESPONSE);
 		} else {
-			if (receiveFriends == null) {
-				receiveFriends = new ReceiveFriends();
-				receiveFriends.execute(this);
-			}
+			// if (bp != null) {
+			// Abre atividade para convidar amigos
+			// startActivityForResult(friendIntent, FRIEND_RESPONSE);
+			// Log.i("TESTE", "Chegou aqui!");
+
+			// if (receiveFriends == null) {
+			// receiveFriends = new ReceiveFriends();
+			// receiveFriends.execute(this);
+			// }
 		}
 
 		return false;
@@ -418,7 +420,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		int nElements = bondPointArray.length;
 
 		for (int i = 0; i < nElements; i++) {
-			if (bondPointArray[i].getID() == idStr)
+			if (bondPointArray[i].getId() == idStr)
 				return bondPointArray[i];
 		}
 
@@ -434,39 +436,57 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				SharedPreferences sharedPreferences = PreferenceManager
 						.getDefaultSharedPreferences(this);
 
-				newBondPoint.setName(sharedPreferences.getString("NameBP",
-						"Name of Your Bond Point"));
+				newBondPointMarker.remove();
+
+				String eventId = sharedPreferences.getString("IdEv", "");
+
+				if (eventId.equals("")) {
+					Log.d(TAG, "Evento Facebook não foi criado!");
+					break;
+				}
+
+				BondPoint disposableBondPoint = new BondPoint();
+				disposableBondPoint.setName(sharedPreferences.getString(
+						"NameBP", "Name of Your Bond Point"));
 				sharedPreferences.edit().remove("NameBP").commit();
 
-				newBondPoint.setType(sharedPreferences.getString("TypeBP",
-						"Type of Your Bond Point"));
+				disposableBondPoint.setType(sharedPreferences.getString(
+						"TypeBP", "Type of Your Bond Point"));
 				sharedPreferences.edit().remove("TypeBP").commit();
 
-				newBondPoint.setDescription(sharedPreferences.getString(
+				disposableBondPoint.setDescription(sharedPreferences.getString(
 						"DescriptionBP", "Description of BP"));
 				sharedPreferences.edit().remove("DescriptionBP").commit();
 
-				newBondPoint.setStartTime(sharedPreferences.getString(
+				disposableBondPoint.setStartTime(sharedPreferences.getString(
 						"InitDateTimeBP", "Initial Date and Time of your BP"));
 				sharedPreferences.edit().remove("InitDateTimeBP").commit();
 
-				newBondPoint.setEndTime(sharedPreferences.getString(
+				disposableBondPoint.setEndTime(sharedPreferences.getString(
 						"EndDateTimeBP", "End Date and Time of BP"));
 				sharedPreferences.edit().remove("EndDateTimeBP").commit();
+
+				disposableBondPoint.setEventId(eventId);
+				sharedPreferences.edit().remove("IdEv").commit();
 
 				// Muda Imagem do Marker!
 				bp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(
 						resources, R.drawable.add_to_bp), 100, 100, true);
 
-				newBondPoint.getMarker().setIcon(
-						BitmapDescriptorFactory.fromBitmap(bp));
+				Marker disposableBondPointMarker = map
+						.addMarker(new MarkerOptions()
+								.anchor((float) 0.5, (float) 0.5)
+								.position(
+										newBondPoint.getMarker().getPosition())
+								.title(disposableBondPoint.getName())
+								.icon(BitmapDescriptorFactory.fromBitmap(bp)));
+				disposableBondPointMarker.setSnippet("");
+				disposableBondPointMarker.setDraggable(false);
+				disposableBondPoint.setMarker(disposableBondPointMarker);
 
 				// Obriga a actualizar o nome na InfoWindow
-				newBondPoint.getMarker().hideInfoWindow();
-				newBondPoint.getMarker().showInfoWindow();
-
-				// Disable Draggable
-				newBondPoint.getMarker().setDraggable(false);
+				disposableBondPoint.getMarker().hideInfoWindow();
+				disposableBondPoint.getMarker().showInfoWindow();
 
 				// Save BondPoint to System File
 				String folderName = "BondPoints";
@@ -483,27 +503,29 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 						BufferedWriter bw = new BufferedWriter(new FileWriter(
 								file, true));
 
-						bw.write(newBondPoint.getName());
+						bw.write(disposableBondPoint.getName());
 						bw.newLine();
-						bw.write(newBondPoint.getType());
+						bw.write(disposableBondPoint.getType());
 						bw.newLine();
-						bw.write(newBondPoint.getDescription());
+						bw.write(disposableBondPoint.getDescription());
 						bw.newLine();
-						bw.write(newBondPoint.getID());
+						bw.write(disposableBondPoint.getId());
 						bw.newLine();
-						bw.write(newBondPoint.getStartTime());
+						bw.write(disposableBondPoint.getStartTime());
 						bw.newLine();
-						bw.write(newBondPoint.getEndTime());
+						bw.write(disposableBondPoint.getEndTime());
 						bw.newLine();
-						bw.write(newBondPoint.getMarker().getTitle());
+						bw.write(disposableBondPoint.getMarker().getTitle());
 						bw.newLine();
-						bw.write(newBondPoint.getMarker().getSnippet());
+						bw.write(disposableBondPoint.getMarker().getSnippet());
 						bw.newLine();
-						bw.write(Double.toString(newBondPoint.getMarker()
-								.getPosition().latitude));
+						bw.write(Double.toString(disposableBondPoint
+								.getMarker().getPosition().latitude));
 						bw.newLine();
-						bw.write(Double.toString(newBondPoint.getMarker()
-								.getPosition().longitude));
+						bw.write(Double.toString(disposableBondPoint
+								.getMarker().getPosition().longitude));
+						bw.newLine();
+						bw.write(disposableBondPoint.getEventId());
 						bw.flush();
 						bw.close();
 					} catch (IOException e) {
@@ -512,6 +534,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				} else
 					Log.d(TAG, "File already exists: ");
 
+				// Reads saved Bond Point
 				BufferedReader br;
 				try {
 					br = new BufferedReader(new FileReader(file));
@@ -536,6 +559,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					Log.d(TAG, "Latitude: " + line);
 					line = br.readLine();
 					Log.d(TAG, "Longitude: " + line);
+					line = br.readLine();
+					Log.d(TAG, "ID do evento: " + line);
 					br.close();
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -547,8 +572,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 			} else if (resultCode == Activity.RESULT_CANCELED) {
 				newBondPoint.getMarker().remove();
 			}
-
-			creatingMarker = false;
 			break;
 		}
 		}
@@ -564,14 +587,16 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 		int nFiles = path.listFiles().length;
 		int filesLoaded = 0;
+		int fileIndex = 0;
 		bondPointArray = new BondPoint[nFiles];
 		Log.d(TAG, "Existem " + nFiles + " ficheiros guardados.");
 		while (filesLoaded < nFiles) {
-			String fileName = "BondPoint_" + filesLoaded + ".data";
+			String fileName = "BondPoint_" + fileIndex + ".data";
 
 			File file = new File(path, fileName);
 			if (!file.exists()) {
 				Log.d(TAG, "File do not exists");
+				fileIndex++;
 				continue;
 			} else {
 				Log.d(TAG, "BondPoint file exists: ");
@@ -632,14 +657,19 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					Double lon = Double.parseDouble(longitude);
 					Log.d(TAG, "Longitude: " + lon);
 
+					String evId = br.readLine();
+					if (evId == null)
+						evId = "";
+					Log.d(TAG, "Event ID: " + evId);
+
 					br.close();
 
 					LatLng location = new LatLng(lat, lon);
 
 					// criar Marker
 					bp = Bitmap.createScaledBitmap(BitmapFactory
-							.decodeResource(resources, R.drawable.add_bp), 100,
-							100, true);
+							.decodeResource(resources, R.drawable.add_to_bp),
+							100, 100, true);
 
 					Marker mkr = map.addMarker(new MarkerOptions()
 							.anchor((float) 0.5, (float) 0.5)
@@ -651,9 +681,10 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					bondPointArray[filesLoaded].setName(nome);
 					bondPointArray[filesLoaded].setType(tipo);
 					bondPointArray[filesLoaded].setDescription(desc);
-					bondPointArray[filesLoaded].setID(id);
+					bondPointArray[filesLoaded].setId(id);
 					bondPointArray[filesLoaded].setStartTime(ini);
 					bondPointArray[filesLoaded].setEndTime(end);
+					bondPointArray[filesLoaded].setEventId(evId);
 
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
@@ -662,6 +693,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				}
 
 				filesLoaded++;
+				fileIndex++;
 				// file.delete(); // Para fazer RESET
 			}
 		}
@@ -693,8 +725,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		for (int i = 0; i < nFriends; i++) {
 			label = "picture" + i;
 			friendIntent.putExtra(label, imgsBmpByteArray[i]);
-
 		}
+
 		startActivityForResult(friendIntent, FRIEND_RESPONSE);
 	}
 }
@@ -725,5 +757,4 @@ class MyInfoWindowAdapter implements InfoWindowAdapter {
 	public View getInfoWindow(Marker marker) {
 		return null;
 	}
-
 }

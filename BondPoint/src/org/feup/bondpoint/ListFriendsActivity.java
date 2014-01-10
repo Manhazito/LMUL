@@ -20,28 +20,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Session;
-import com.facebook.SessionState;
-
 public class ListFriendsActivity extends Activity {
 	private static String TAG = "ListFriendsActivity";
 
 	private ProgressDialog progressDialog = null;
-	// private ReceiveFriends receiveFriends = null;
 	private ListView listView;
 	private Intent friendIntent = null;
 
 	private String[] friendNames = null;
 	private byte[][] friendImgsBmp = null;
 	private Bitmap[] imgsBmp = null;
-
-	private Session.StatusCallback callback = new Session.StatusCallback() {
-		@Override
-		public void call(Session session, SessionState state,
-				Exception exception) {
-			onSessionStateChange(session, state, exception);
-		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -123,22 +111,6 @@ public class ListFriendsActivity extends Activity {
 		}
 	}
 
-	private void onSessionStateChange(Session session, SessionState state,
-			Exception exception) {
-		if (state.isOpened()) {
-
-			// Mostrar mensagem ao utilizador...
-			if (progressDialog == null)
-				progressDialog = new ProgressDialog(this);
-			progressDialog.setMessage("Loading Friends... Please Wait...");
-			progressDialog.show();
-
-		} else if (state.isClosed()) {
-			progressDialog = null;
-			Log.i(TAG, "Logged out...");
-		}
-	}
-
 	private class MyAdapter extends ArrayAdapter<String> {
 
 		public MyAdapter(Context context, int textViewResourceId,
@@ -170,7 +142,7 @@ public class ListFriendsActivity extends Activity {
 			ImageView picture = (ImageView) row.findViewById(R.id.picture);
 			TextView name = (TextView) row.findViewById(R.id.name);
 
-			Log.i("TESTE", "Ol·");
+			Log.i("TESTE", "Ol√°");
 			picture.setImageBitmap(imgsBmp[position]);
 
 			name.setText(friendNames[position]);

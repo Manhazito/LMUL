@@ -5,8 +5,12 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
+import org.json.JSONException;
+
 import android.app.Activity;
+import android.app.Application;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -30,17 +34,20 @@ import com.facebook.Request;
 import com.facebook.Request.Callback;
 import com.facebook.Response;
 import com.facebook.Session;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.OnCompleteListener;
 
 public class ConnectActivity extends Activity {
 
+	private ProgressDialog progressDialog = null;
+
 	// criacao das variaveis para depois referenciar
 	Button btnInitDateTime, btnEndDateTime, btnSave, btnCancel, btnInvite;
 
 	// criacao das variaveis de text para depois referenciar
-	EditText textInitDateTime, textEndDateTime, textEndDateHour, textBPName,
-			textBPType, textBPDescription;
+	EditText textInitDateTime, textEndDateTime, textBPName, textBPType,
+			textBPDescription;
 
 	// criacao da variavel spinner para depois referenciar
 	Spinner spinnerBPType;
@@ -62,22 +69,29 @@ public class ConnectActivity extends Activity {
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
 
-	// Picker Dialog first appears
-	// private int mYear, mMonth, mDay, mHour, mMinute;
-
-	// private Bondpoint bondP;
-
 	private Intent fbIntent;
 
-	// constructor
-	public ConnectActivity() {
+	public class FriendPickerApplication extends Application {
+		private Collection<GraphUser> selectedUsers;
 
+		public Collection<GraphUser> getSelectedUsers() {
+			return selectedUsers;
+		}
+
+		public void setSelectedUsers(Collection<GraphUser> selectedUsers) {
+			this.selectedUsers = selectedUsers;
+		}
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bpcreation);
+
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setCanceledOnTouchOutside(false);
+		progressDialog.setMessage("Creating Event... Please Wait...");
+		progressDialog.hide();
 
 		// get the references of buttons
 		btnInitDateTime = (Button) findViewById(R.id.bpIniDateTimeButton);
@@ -120,6 +134,12 @@ public class ConnectActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
+				// Mostrar mensagem ao utilizador...
+				progressDialog.show();
+
+				sendRequestDialog();
+				// sendEvent(); // Comentar, se estiver a fazer requests!
+
 				savePreferences("NameBP", textBPName.getText().toString());
 				savePreferences("TypeBP", textBPType.getText().toString());
 				savePreferences("DescriptionBP", textBPDescription.getText()
@@ -131,12 +151,6 @@ public class ConnectActivity extends Activity {
 
 				setResult(Activity.RESULT_OK);
 
-				sendRequestDialog();
-
-				sendEvent();
-				// marcador = nome do BondPoint
-
-				// finish();
 			}
 		});
 
@@ -144,6 +158,7 @@ public class ConnectActivity extends Activity {
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				setResult(Activity.RESULT_CANCELED);
 				finish();
 			}
 		});
@@ -152,6 +167,10 @@ public class ConnectActivity extends Activity {
 		btnInvite.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// fbIntent = new Intent();
+				// fbIntent.setClass(getApplicationContext(),
+				// PickFriendsActivity.class);
+				// startActivity(fbIntent);
 				fbIntent = new Intent();
 				fbIntent.setClass(getApplicationContext(),
 						PickFriendsActivity.class);
@@ -159,6 +178,11 @@ public class ConnectActivity extends Activity {
 			}
 		});
 
+	}
+
+	private void goodBye() {
+		progressDialog.dismiss();
+		finish();
 	}
 
 	// Send facebook request
@@ -228,7 +252,6 @@ public class ConnectActivity extends Activity {
 
 			Bundle bundle = new Bundle();
 			bundle.putString("name", textBPName.getText().toString());
-
 			bundle.putString("start_time", initDateTime);
 			bundle.putString("end_time", endDateTime);
 			bundle.putString("description", textBPDescription.getText()
@@ -239,16 +262,27 @@ public class ConnectActivity extends Activity {
 					"me/events", bundle, HttpMethod.POST, new Callback() {
 						@Override
 						public void onCompleted(Response response) {
-							Log.i(TAG, response.toString());
+							String eventId = "";
+							try {
+								eventId = response.getGraphObject()
+										.getInnerJSONObject().get("id")
+										.toString();
+							} catch (JSONException e) {
+								e.printStackTrace();
+							} catch (java.lang.NullPointerException e) {
+								e.printStackTrace();
+							}
+							savePreferences("IdEv", eventId);
+
+							goodBye();
 						}
 					});
 			postRequest.executeAsync();
-			finish();
 		} else {
 			Toast.makeText(ConnectActivity.this.getApplicationContext(),
 					"You are not logged in on Facebook.", Toast.LENGTH_LONG)
 					.show();
-			finish();
+			goodBye();
 		}
 	}
 
@@ -262,7 +296,7 @@ public class ConnectActivity extends Activity {
 		return true;
 	}
 
-	// funções fixes
+	// funÃ§Ãµes fixes
 	private void loadSavedPreferences() {
 		SharedPreferences sharedPreferences = PreferenceManager
 				.getDefaultSharedPreferences(this);
@@ -292,7 +326,7 @@ public class ConnectActivity extends Activity {
 		editor.commit();
 	}
 
-	// acabam as funções fixes
+	// acabam as funÃ§Ãµes fixes
 
 	private void showDateTimeDialog() {
 		// Create the dialog
