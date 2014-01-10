@@ -71,13 +71,7 @@ public class ConnectActivity extends Activity {
 
 	// constructor
 	public ConnectActivity() {
-		// Assign current Date and Time Values to Variables
-		// final Calendar calendar = Calendar.getInstance();
-		// mYear = calendar.get(Calendar.YEAR);
-		// mMonth = calendar.get(Calendar.MONTH);
-		// mDay = calendar.get(Calendar.DAY_OF_MONTH);
-		// mHour = calendar.get(Calendar.HOUR_OF_DAY);
-		// mMinute = calendar.get(Calendar.MINUTE);
+
 	}
 
 	@Override
@@ -95,7 +89,6 @@ public class ConnectActivity extends Activity {
 		// get the references of texts
 		textInitDateTime = (EditText) findViewById(R.id.bpInitDateTimeText);
 		textEndDateTime = (EditText) findViewById(R.id.bpEndDateTimeText);
-		textEndDateHour = (EditText) findViewById(R.id.bpEndDateTimeText);
 		textBPName = (EditText) findViewById(R.id.bpNameText);
 		textBPType = (EditText) findViewById(R.id.bpType);
 		textBPDescription = (EditText) findViewById(R.id.bpDescriptionText);
@@ -151,14 +144,6 @@ public class ConnectActivity extends Activity {
 		btnCancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				// savePreferences("NameBP", textName.getText().toString());
-				// savePreferences("TypeBP", textType.getText().toString());
-				// savePreferences("BPDescr", textDescr.getText().toString());
-				// savePreferences("DateBP", textDate.getText().toString());
-				// savePreferences("StartBP", textStart.getText().toString());
-				// savePreferences("EndBP", textEnd.getText().toString());
-
 				finish();
 			}
 		});
@@ -232,14 +217,6 @@ public class ConnectActivity extends Activity {
 		Log.i(TAG, "A tentar criar evento...");
 		session = Session.getActiveSession();
 		if (session != null && session.isOpened()) {
-			// session.close();
-			// session.openForPublish(openRequest)
-			// try {
-			// Session.OpenRequest request = new Session.OpenRequest(this);
-			// request.setPermissions(Arrays.asList("create_event"));
-			// } catch (Exception e) {
-			// e.printStackTrace();
-			// }
 			// Check for publish permissions
 			List<String> permissions = session.getPermissions();
 			if (!isSubsetOf(PERMISSIONS, permissions)) {

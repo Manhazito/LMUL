@@ -2,7 +2,6 @@ package org.feup.bondpoint;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -58,7 +57,7 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private String[] friendIds = null;
 	private Bitmap[] friendImgsBmp = null;
 	private byte[][] friendImgsBmpByteArray = null;
-	private ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	// private ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
 	private ReceiveFriends receiveFriends = null;
 	private static final String TAG = "MapActivity";
@@ -88,8 +87,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private Bitmap[] imgsBmp = null;
 	private UiLifecycleHelper uiHelper;
 
-	// private View userMarkerLayout = null;
-	// private ImageView userMarkerPic = null;
 	private View avFriendMarkerLayout = null;
 	private ImageView avFriendMarkerPic = null;
 
@@ -97,20 +94,15 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	private String label = "";
 	private LatLng userLocation = null;
 
-	// private Bitmap userMaskBmp = null;
 	private Bitmap friendMaskBmp = null;
 	private Bitmap bp = null;
-	// private Bitmap scaledUserMaskBmp = null;
 	private Bitmap scaledFriendMaskBmp = null;
 	private Bitmap userMarkerBmp = null;
 	private Bitmap friendMarkerBmp = null;
 	private Bitmap squaredUserBmp = null;
 	private Bitmap squaredFriendBmp = null;
-	// private Canvas userCanvas = null;
 	private Canvas friendCanvas = null;
-	// private Paint userPaint = null;
 	private Paint friendPaint = null;
-	// private Bitmap userResultBmp = null;
 	private Bitmap friendResultBmp = null;
 
 	private Button logoutBtn = null;
@@ -152,9 +144,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				.getMap();
 		map.setInfoWindowAdapter(new MyInfoWindowAdapter(this));
 
-		// userMarkerLayout = ((LayoutInflater)
-		// getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-		// .inflate(R.layout.user_marker, null);
 		avFriendMarkerLayout = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
 				.inflate(R.layout.av_friend_marker, null);
 
@@ -189,17 +178,15 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 		imgsBmpByteArray = new byte[nFriends + 1][];
 		imgsBmp = new Bitmap[nFriends + 1];
 
-		// Log.d(TAG, "Loaded " + nFriends + ".");
-
 		for (int i = 0; i <= nFriends; i++) {
 			label = "picture" + i;
 			imgsBmpByteArray[i] = mapIntent.getByteArrayExtra(label);
 			if (imgsBmpByteArray[i] != null) {
-				// Log.d(TAG, "Friend " + i + "-> Label: " + label + ".");
+
 				imgsBmp[i] = BitmapFactory.decodeByteArray(imgsBmpByteArray[i],
 						0, imgsBmpByteArray[i].length);
 			} else {
-				// Log.d(TAG, "Friend " + i + "-> no picyure!");
+
 				if (i == nFriends) { // User Picture!
 					imgsBmp[i] = BitmapFactory.decodeResource(resources,
 							R.drawable.user_no_pic);
@@ -222,7 +209,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 				BitmapFactory.decodeResource(resources, R.drawable.av), 50, 50,
 				true);
 		for (int i = 0; i < nFriends; i++) {
-			// Log.i("PEOPLE", namesStr[i]);
 
 			avFriendMarkerPic = (ImageView) avFriendMarkerLayout
 					.findViewById(R.id.friend_marker_pic);
@@ -256,8 +242,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 					&& Double.parseDouble(longitudesStr[i]) == 0.0) {
 				friendsWithoutCoordinates = true;
 			} else {
-				// Log.d(TAG, "LATITUDE: " +
-				// Double.parseDouble(latitudesStr[i]));
 				map.addMarker(
 						new MarkerOptions()
 								.anchor((float) 0.5, (float) 0.5)
@@ -266,7 +250,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 												Double.parseDouble(latitudesStr[i]),
 												Double.parseDouble(longitudesStr[i])))
 								.title(namesStr[i])
-								// .snippet(idsStr[i])
 								.icon(BitmapDescriptorFactory
 										.fromBitmap(friendMarkerBmp)))
 						.setDraggable(true);
@@ -312,10 +295,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 
 	private Bitmap createCenteredSquaredImage(Bitmap tmpBmp) {
 		if (tmpBmp == null) {
-			// Log.d(TAG, "Imagem vazia...");
 			return Bitmap.createBitmap(10, 10, Bitmap.Config.ARGB_8888);
 		} else {
-			// Log.d(TAG, "Imagem carregada.");
 			if (tmpBmp.getHeight() > tmpBmp.getWidth()) {
 				int startY = (int) ((tmpBmp.getHeight() - tmpBmp.getWidth()) / 2);
 				return Bitmap.createBitmap(tmpBmp, 0, startY,
@@ -421,11 +402,6 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 			// abre atividade para criar bond point
 			startActivityForResult(bpIntent, BP_RESPONSE);
 		} else {
-
-			// if (bp != null) {
-			// Abre atividade para convidar amigos
-			// startActivityForResult(friendIntent, FRIEND_RESPONSE);
-			// Log.i("TESTE", "Chegou aqui!");
 			if (receiveFriends == null) {
 				receiveFriends = new ReceiveFriends();
 				receiveFriends.execute(this);
@@ -712,8 +688,8 @@ public class MapActivity extends Activity implements OnMapLongClickListener,
 	}
 
 	public void showList() {
-		Log.i("TESTE", "Entrou no showList");
 		friendIntent.putExtra("names", friendNames);
+		friendIntent.putExtra("id", friendIds);
 		for (int i = 0; i < nFriends; i++) {
 			label = "picture" + i;
 			friendIntent.putExtra(label, imgsBmpByteArray[i]);

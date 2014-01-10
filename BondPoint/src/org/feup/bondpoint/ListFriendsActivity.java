@@ -27,9 +27,8 @@ public class ListFriendsActivity extends Activity {
 	private static String TAG = "ListFriendsActivity";
 
 	private ProgressDialog progressDialog = null;
-	private ReceiveFriends receiveFriends = null;
+	// private ReceiveFriends receiveFriends = null;
 	private ListView listView;
-	private String[] strings = {};
 	private Intent friendIntent = null;
 
 	private String[] friendNames = null;
@@ -62,11 +61,9 @@ public class ListFriendsActivity extends Activity {
 			label = "picture" + i;
 			friendImgsBmp[i] = friendIntent.getByteArrayExtra(label);
 			if (friendImgsBmp[i] != null) {
-				// Log.d(TAG, "Friend " + i + "-> Label: " + label + ".");
 				imgsBmp[i] = BitmapFactory.decodeByteArray(friendImgsBmp[i], 0,
 						friendImgsBmp[i].length);
 			} else {
-				// Log.d(TAG, "Friend " + i + "-> no picyure!");
 				if (i == nFriends) { // User Picture!
 					imgsBmp[i] = BitmapFactory.decodeResource(
 							this.getResources(), R.drawable.user_no_pic);
@@ -108,6 +105,7 @@ public class ListFriendsActivity extends Activity {
 		});
 	}
 
+	// tratamento das checkboxes de convidar amigos
 	public void onCheckboxClicked(View view) {
 		// Is the view now checked?
 		boolean checked = ((CheckBox) view).isChecked();
