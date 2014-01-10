@@ -66,13 +66,23 @@ public class ConnectActivity extends Activity {
 	private String initDateTime = null;
 	private String endDateTime = null;
 
+	private static final int INVITE_FRIENDS = 99;
+
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
 
 	private Intent fbIntent;
 
-	public class FriendPickerApplication extends Application {
+	private String userIDs = "";
+
+	private String eventId = "";
+
+	public static class FriendPickerApplication extends Application {
 		private Collection<GraphUser> selectedUsers;
+
+		public FriendPickerApplication() {
+			super();
+		}
 
 		public Collection<GraphUser> getSelectedUsers() {
 			return selectedUsers;
@@ -134,23 +144,30 @@ public class ConnectActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				// Mostrar mensagem ao utilizador...
-				progressDialog.show();
+				if (textBPName == null || initDateTime == null
+						|| endDateTime == null || textBPDescription == null) {
+					Toast.makeText(getApplicationContext(),
+							"Please insert event data", Toast.LENGTH_LONG)
+							.show();
 
-				sendRequestDialog();
-				// sendEvent(); // Comentar, se estiver a fazer requests!
+				} else {
+					// Mostrar mensagem ao utilizador...
+					progressDialog.show();
 
-				savePreferences("NameBP", textBPName.getText().toString());
-				savePreferences("TypeBP", textBPType.getText().toString());
-				savePreferences("DescriptionBP", textBPDescription.getText()
-						.toString());
-				savePreferences("InitDateTimeBP", textInitDateTime.getText()
-						.toString());
-				savePreferences("EndDateTimeBP", textEndDateTime.getText()
-						.toString());
+					sendRequestDialog();
+					// sendEvent(); // Comentar, se estiver a fazer requests!
 
-				setResult(Activity.RESULT_OK);
+					savePreferences("NameBP", textBPName.getText().toString());
+					savePreferences("TypeBP", textBPType.getText().toString());
+					savePreferences("DescriptionBP", textBPDescription
+							.getText().toString());
+					savePreferences("InitDateTimeBP", textInitDateTime
+							.getText().toString());
+					savePreferences("EndDateTimeBP", textEndDateTime.getText()
+							.toString());
 
+					setResult(Activity.RESULT_OK);
+				}
 			}
 		});
 
@@ -174,7 +191,7 @@ public class ConnectActivity extends Activity {
 				fbIntent = new Intent();
 				fbIntent.setClass(getApplicationContext(),
 						PickFriendsActivity.class);
-				startActivity(fbIntent);
+				startActivityForResult(fbIntent, INVITE_FRIENDS);
 			}
 		});
 
@@ -262,7 +279,6 @@ public class ConnectActivity extends Activity {
 					"me/events", bundle, HttpMethod.POST, new Callback() {
 						@Override
 						public void onCompleted(Response response) {
-							String eventId = "";
 							try {
 								eventId = response.getGraphObject()
 										.getInnerJSONObject().get("id")
@@ -274,6 +290,7 @@ public class ConnectActivity extends Activity {
 							}
 							savePreferences("IdEv", eventId);
 
+							inviteFriends();
 							goodBye();
 						}
 					});
@@ -284,6 +301,29 @@ public class ConnectActivity extends Activity {
 					.show();
 			goodBye();
 		}
+	}
+
+	private void inviteFriends() {
+
+		Bundle params = new Bundle();
+		if (userIDs.length() > 0) {
+			userIDs = userIDs.substring(0, userIDs.length() - 1); // to remove
+																	// last
+																	// comma
+		}
+		params.putString("users", userIDs);
+		Log.i("TESTE", "Dados: " + eventId + "::::::" + userIDs.toString());
+		Request inviteFriendsRequest = new Request(Session.getActiveSession(),
+				eventId + "/invited", params, HttpMethod.POST,
+
+				new Request.Callback() {
+					@Override
+					public void onCompleted(Response response) {
+						// Handle response
+						Log.i("TESTE", "resposta" + response.toString());
+					}
+				});
+		Request.executeAndWait(inviteFriendsRequest);
 	}
 
 	private boolean isSubsetOf(Collection<String> subset,
@@ -408,4 +448,21 @@ public class ConnectActivity extends Activity {
 		mDateTimeDialog.show();
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case (INVITE_FRIENDS): {
+			if (resultCode == Activity.RESULT_OK) {
+				FriendPickerApplication fpa = (FriendPickerApplication) getApplication();
+				final Collection<GraphUser> users = fpa.getSelectedUsers();
+				for (GraphUser gu : users) {
+					// Log.i("TESTE", "friendName: " + gu.getId());
+					userIDs += gu.getId() + ",";
+				}
+			}
+			break;
+		}
+		}
+	}
 }

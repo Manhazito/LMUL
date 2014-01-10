@@ -28,7 +28,9 @@
         android:allowBackup="true"
         android:icon="@drawable/bp_launcher"
         android:label="@string/app_name"
+  		android:name="org.feup.bondpoint.ConnectActivity$FriendPickerApplication"
         android:theme="@style/bond_point" >
+  
         
         <activity
             android:name="org.feup.bondpoint.MainActivity"
