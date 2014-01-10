@@ -56,6 +56,9 @@ public class ConnectActivity extends Activity {
 
 	private int buttonClicked = -1;
 
+	private String initDateTime = null;
+	private String endDateTime = null;
+
 	// variables to save user selected date and time
 	public int year, month, day, hour, minute;
 
@@ -136,9 +139,6 @@ public class ConnectActivity extends Activity {
 
 				sendRequestDialog();
 
-				// marcador = nome do BondPoint
-
-				// finish();
 			}
 		});
 
@@ -246,12 +246,8 @@ public class ConnectActivity extends Activity {
 
 			Bundle bundle = new Bundle();
 			bundle.putString("name", textBPName.getText().toString());
-			// bundle.putString("start_time", textInitDateTime.getText()
-			// .toString());
-			// bundle.putString("end_time",
-			// textEndDateTime.getText().toString());
-			bundle.putString("start_time", "19-01-2014");
-			bundle.putString("end_time", "-01-2014");
+			bundle.putString("start_time", initDateTime);
+			bundle.putString("end_time", endDateTime);
 			bundle.putString("description", textBPDescription.getText()
 					.toString());
 			bundle.putString("privacy_type", "SECRET");
@@ -350,14 +346,18 @@ public class ConnectActivity extends Activity {
 
 						if (buttonClicked == INIT_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
-							textInitDateTime.setText("Initial date: " + day
-									+ "/" + month + "/" + year + "T10:" + hour
-									+ ":" + minute + ampmStr);
+							textInitDateTime.setText("Initial date: " + year
+									+ "-" + month + "-" + day + "T" + hour
+									+ ":" + minute + "Z" + ampmStr);
+							initDateTime = year + "-" + month + "-" + day + "T"
+									+ hour + ":" + minute + "Z";
 						} else if (buttonClicked == END_DATE_TIME_ID) {
 							// Set the Selected Date in Select date Button
-							textEndDateTime.setText("Initial date: " + day
-									+ "/" + month + "/" + year + "T10:" + hour
-									+ ":" + minute + ampmStr);
+							textEndDateTime.setText("End date: " + year + "-"
+									+ month + "-" + day + "T" + hour + ":"
+									+ minute + "Z" + ampmStr);
+							endDateTime = year + "-" + month + "-" + day + "T"
+									+ hour + ":" + minute + "Z";
 						}
 
 						buttonClicked = -1;
