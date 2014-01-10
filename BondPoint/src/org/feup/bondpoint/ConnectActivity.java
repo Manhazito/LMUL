@@ -52,7 +52,7 @@ public class ConnectActivity extends Activity {
 	// criacao da variavel spinner para depois referenciar
 	Spinner spinnerBPType;
 
-	private Session session;
+	private Session session = Session.getActiveSession();
 
 	private static final String TAG = "ConnectActivity";
 	private static final List<String> PERMISSIONS = Arrays
