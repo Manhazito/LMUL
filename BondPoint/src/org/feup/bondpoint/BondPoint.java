@@ -38,45 +38,6 @@ public class BondPoint {
 		this.invitedPeople = invitedPeople;
 	}
 
-	public Boolean addInvitedPerson(String personId) {
-		String[] tmp = new String[invitedPeople.length + 1];
-
-		if (indexOfInvited(personId) == -1) {
-			System.arraycopy(invitedPeople, 0, tmp, 0, invitedPeople.length);
-			tmp[invitedPeople.length] = personId;
-			setInvitedPeople(tmp);
-
-			return true;
-		}
-		return false;
-	}
-
-	public Boolean removeInvitedPerson(String personId) {
-		String[] tmp = new String[invitedPeople.length - 1];
-
-		int index = indexOfInvited(personId);
-		if (index != -1) {
-			int lengthSecondString = invitedPeople.length - index - 1;
-
-			if (lengthSecondString < 0) { // Foi removido o único elemento...
-				invitedPeople = null;
-				return true;
-			}
-
-			System.arraycopy(invitedPeople, 0, tmp, 0, index);
-
-			if (lengthSecondString > 0) {
-				System.arraycopy(invitedPeople, index + 1, tmp, index,
-						lengthSecondString);
-			}
-
-			setInvitedPeople(tmp);
-			return true;
-		}
-
-		return false;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -126,6 +87,45 @@ public class BondPoint {
 	public void setMarker(Marker marker) {
 		this.marker = marker;
 		this.id = marker.getId();
+	}
+
+	public Boolean addInvitedPerson(String personId) {
+		String[] tmp = new String[invitedPeople.length + 1];
+
+		if (indexOfInvited(personId) == -1) {
+			System.arraycopy(invitedPeople, 0, tmp, 0, invitedPeople.length);
+			tmp[invitedPeople.length] = personId;
+			setInvitedPeople(tmp);
+
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean removeInvitedPerson(String personId) {
+		String[] tmp = new String[invitedPeople.length - 1];
+
+		int index = indexOfInvited(personId);
+		if (index != -1) {
+			int lengthSecondString = invitedPeople.length - index - 1;
+
+			if (lengthSecondString < 0) { // Foi removido o único elemento...
+				invitedPeople = null;
+				return true;
+			}
+
+			System.arraycopy(invitedPeople, 0, tmp, 0, index);
+
+			if (lengthSecondString > 0) {
+				System.arraycopy(invitedPeople, index + 1, tmp, index,
+						lengthSecondString);
+			}
+
+			setInvitedPeople(tmp);
+			return true;
+		}
+
+		return false;
 	}
 
 	int indexOfInvited(String personId) {
